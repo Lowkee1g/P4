@@ -1,4 +1,3 @@
-
 (* Abstract Syntax of Mini-Python *)
 
 (* Parsed trees.
