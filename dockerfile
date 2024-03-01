@@ -15,7 +15,3 @@ COPY . .
 
 # Command to run your application
 # CMD [ "your_application_command_here" ]
-
-
-
-#asdfoinjasdo;fijasdoifjaos;idjfahs
