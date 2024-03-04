@@ -42,6 +42,7 @@ let letter = ['a'-'z' 'A'-'Z']
 let digit = ['0'-'9']
 let ident = (letter | '_') (letter | digit | '_')*
 let integer = '0' | ['1'-'9'] digit*
+let float = integer '.' digit+ | integer ('.' digit+)? ['eE'] ['+-']? digit+
 let space = ' ' | '\t'
 let comment = "#" [^'\n']*
 
