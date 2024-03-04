@@ -24,6 +24,7 @@ type constant =
   | Cbool of bool    (* Boolean constant (true or false) *)
   | Cstring of string (* String constant *)
   | Cint of int64    (* Integer constant, using a 64-bit representation *)
+  | Cfloat of float  (* Floating-point constant *) 
 
 (* Expressions, representing the smallest elements of computation *)
 type expr =
