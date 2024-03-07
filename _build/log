@@ -1,9 +1,9 @@
-# C:\OCaml64\home\ksika\.opam\4.14.0+mingw64c\bin\dune.exe exec p4
+# C:\OCaml64\home\ksika\.opam\4.14.0+mingw64c\bin\dune.exe build
 # OCAMLPARAM: unset
 # Shared cache: disabled
 # Workspace root: "C:\\OCaml64\\home\\ksika\\p4"
 # Auto-detected concurrency: 8
-$ C:\OCaml64\home\ksika\.opam\4.14.0+mingw64c\bin\ocamlc.opt.exe -config > C:\OCaml64\tmp\dune_4f6f19_output
+$ C:\OCaml64\home\ksika\.opam\4.14.0+mingw64c\bin\ocamlc.opt.exe -config > C:\OCaml64\tmp\dune_b229ec_output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
