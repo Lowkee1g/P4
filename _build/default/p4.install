@@ -4,5 +4,5 @@ lib: [
   "_build/install/default/lib/p4/opam"
 ]
 bin: [
-  "_build/install/default/bin/p4"
+  "_build/install/default/bin/p4.exe"
 ]

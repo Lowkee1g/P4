@@ -1,4 +1,3 @@
-
 open Ast
 open Format
 
@@ -44,7 +43,7 @@ let rec print_value = function
    the empty string, and the empty list are all considered to be
    False, and any other value to be True.
 *)
-let is_false v =
+let is_false v 
     match v with
     | None -> true
     | Some x -> 
@@ -143,6 +142,7 @@ let rec expr ctx = function
       if not (Hashtbl.mem ctx id) then error ("unbound variable " ^ id);
       Hashtbl.find ctx id
   (* function call *)
+  (*
   | Ecall ({id="len"}, [e1]) ->
       assert false (* TODO (question 5) *)
   | Ecall ({id="list"}, [Ecall ({id="range"}, [e1])]) ->
@@ -153,11 +153,12 @@ let rec expr ctx = function
       assert false (* TODO (question 5) *)
   | Eget (e1, e2) ->
       assert false (* TODO (question 5) *)
+      *)
 
 (* Interpreting a statement
 
    returns nothing but may raise exception `Return` *)
-
+(*
 and stmt ctx = function
   | Seval e ->
       ignore (expr ctx e)
@@ -182,18 +183,19 @@ and stmt ctx = function
       assert false (* TODO (question 5) *)
   | Sset (e1, e2, e3) ->
       assert false (* TODO (question 5) *)
-
-(* Interpreting a block (a sequence of statements) *)
-
-and block ctx = function
-  | [] -> ()
-  | s :: sl -> stmt ctx s; block ctx sl
-
-(* Interpreting a file
-   - `dl` is a list of function definitions (see type `def` in ast.ml)
-   - `s` is a statement (the toplevel code)
-*)
-
-let file (dl, s) =
-  (* TODO (question 4) *)
-  stmt (Hashtbl.create 16) s
+      (* Interpreting a block (a sequence of statements) *)
+      
+      and block ctx = function
+      | [] -> ()
+      | s :: sl -> stmt ctx s; block ctx sl
+      
+      (* Interpreting a file
+      - `dl` is a list of function definitions (see type `def` in ast.ml)
+      - `s` is a statement (the toplevel code)
+      *)
+      
+      let file (dl, s) =
+        (* TODO (question 4) *)
+        stmt (Hashtbl.create 16) s
+        
+        *)

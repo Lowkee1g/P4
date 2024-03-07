@@ -26,6 +26,7 @@ type constant =
   | Cint of int64    (* Integer constant, using a 64-bit representation *)
   | Cfloat of float  (* Floating-point constant *) 
 
+
 (* Expressions, representing the smallest elements of computation *)
 type expr =
   | Ecst of constant  (* Constant value *)
@@ -35,6 +36,13 @@ type expr =
   | Ecall of ident * expr list (* Function call with a list of argument expressions *)
   | Elist of expr list (* List of expressions *)
   | Eget of expr * expr (* Array or list access, e1[e2] *)
+  (*| Ematrix of expr list list  New: Matrix of expressions * TODO: spørg om det er nødvendigt *)
+  | Erange of expr * expr (* Range expression, representing a range of values from e1 to e2 *)
+  | Elen of expr (* Length of an array or list *)
+  | Einput (* New: Input expression *)
+  | Eerror of expr (* New: Error expression *)
+  
+
 
 (* Statements, representing actions or commands in the program *)
 and stmt =
@@ -47,6 +55,10 @@ and stmt =
   | Sfor of ident * expr * stmt (* For loop with an identifier, an expression representing the range or condition, and the loop body as a statement *)
   | Seval of expr (* Evaluation of an expression without using its result *)
   | Sset of expr * expr * expr (* Array or list assignment, e1[e2] = e3 *)
+  | Sswap of expr * expr (* Swap two variables *)
+  | Ssort of expr (* Sort an array or list *)
+  | Serror of expr (* New: Error statement *)
+
 
 (* Definition of a function or procedure *)
 and def = ident * ident list * stmt

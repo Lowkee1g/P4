@@ -1,4 +1,4 @@
-(lang dune 3.14)
+(lang dune 3.5)
 (name p4)
 (sections (lib .) (bin ../../bin))
-(files (lib (META dune-package opam)) (bin (p4)))
+(files (lib (META dune-package opam)) (bin (p4.exe)))
