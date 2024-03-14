@@ -2,8 +2,8 @@
 # OCAMLPARAM: unset
 # Shared cache: disabled
 # Shared cache location: /home/opam/.cache/dune/db
-# Workspace root: /home/opam/P4
-# Auto-detected concurrency: 8
+# Workspace root: /workspaces/P4
+# Auto-detected concurrency: 24
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -13,21 +13,26 @@
 #  ; build_dir = In_build_dir "default"
 #  ; installed_env =
 #      map
-#        { "INSIDE_DUNE" : "/home/opam/P4/_build/default"
+#        { "INSIDE_DUNE" : "/workspaces/P4/_build/default"
 #        ; "OCAML_COLOR" : "always"
 #        ; "OPAMCOLOR" : "always"
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_516e52_output
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -bin-annot -I lib/.p4.objs/byte -no-alias-deps -opaque -o lib/.p4.objs/byte/p4.cmo -c -impl lib/p4.ml-gen)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o lib/p4.cma lib/.p4.objs/byte/p4.cmo)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I test/.test_p4.eobjs/byte -no-alias-deps -opaque -o test/.test_p4.eobjs/byte/dune__exe__Test_p4.cmi -c -intf test/test_p4.mli)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I bin/.main.eobjs/byte -I lib/.p4.objs/byte -no-alias-deps -opaque -o bin/.main.eobjs/byte/dune__exe__Main.cmi -c -intf bin/main.mli)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -49 -nopervasives -nostdlib -g -I lib/.p4.objs/byte -I lib/.p4.objs/native -intf-suffix .ml-gen -no-alias-deps -opaque -o lib/.p4.objs/native/p4.cmx -c -impl lib/p4.ml-gen)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I bin/.main.eobjs/byte -I bin/.main.eobjs/native -I lib/.p4.objs/byte -I lib/.p4.objs/native -intf-suffix .ml -no-alias-deps -opaque -o bin/.main.eobjs/native/dune__exe__Main.cmx -c -impl bin/main.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I test/.test_p4.eobjs/byte -I test/.test_p4.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o test/.test_p4.eobjs/native/dune__exe__Test_p4.cmx -c -impl test/test_p4.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o lib/p4.cmxa lib/.p4.objs/native/p4.cmx)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -shared -linkall -I lib -o lib/p4.cmxs lib/p4.cmxa)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o test/test_p4.exe test/.test_p4.eobjs/native/dune__exe__Test_p4.cmx)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o bin/main.exe lib/p4.cmxa bin/.main.eobjs/native/dune__exe__Main.cmx)
+$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_9192d7_output
+$ (cd _build/default && /home/opam/.opam/5.1/bin/menhir parser.mly --base parser --infer-write-query parser__mock.ml.mock)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl parser__mock.ml.mock) > _build/default/.interp.eobjs/parser__mock.impl.d
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .interp.eobjs/byte -no-alias-deps -opaque -o .interp.eobjs/byte/ast.cmo -c -impl ast.ml)
+$ (cd _build/.sandbox/383a1adbc5bcdd3c415c5cc88a3f9c10/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -I .interp.eobjs/byte -short-paths -i -impl parser__mock.ml.mock) > _build/.sandbox/383a1adbc5bcdd3c415c5cc88a3f9c10/default/parser__mock.mli.inferred
+$ (cd _build/default && /home/opam/.opam/5.1/bin/menhir parser.mly --base parser --infer-read-reply parser__mock.mli.inferred)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -intf parser.mli) > _build/default/.interp.eobjs/parser.intf.d
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl parser.ml) > _build/default/.interp.eobjs/parser.impl.d
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .interp.eobjs/byte -I .interp.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .interp.eobjs/native/ast.cmx -c -impl ast.ml)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .interp.eobjs/byte -no-alias-deps -opaque -o .interp.eobjs/byte/parser.cmi -c -intf parser.mli)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .interp.eobjs/byte -no-alias-deps -opaque -o .interp.eobjs/byte/lexer.cmo -c -impl lexer.ml)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .interp.eobjs/byte -I .interp.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .interp.eobjs/native/parser.cmx -c -impl parser.ml)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .interp.eobjs/byte -I .interp.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .interp.eobjs/native/lexer.cmx -c -impl lexer.ml)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .interp.eobjs/byte -no-alias-deps -opaque -o .interp.eobjs/byte/interp.cmo -c -impl interp.ml)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .interp.eobjs/byte -I .interp.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .interp.eobjs/native/interp.cmx -c -impl interp.ml)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -o interp.exe .interp.eobjs/native/ast.cmx .interp.eobjs/native/parser.cmx .interp.eobjs/native/lexer.cmx .interp.eobjs/native/interp.cmx)
+# Promoting "_build/default/interp.exe" to "interp.exe"

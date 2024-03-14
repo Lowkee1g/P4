@@ -1,8 +1,0 @@
-lib: [
-  "_build/install/default/lib/p4/META"
-  "_build/install/default/lib/p4/dune-package"
-  "_build/install/default/lib/p4/opam"
-]
-bin: [
-  "_build/install/default/bin/p4"
-]
