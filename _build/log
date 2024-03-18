@@ -19,4 +19,9 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_ef3875_output
+$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_6d8e2a_output
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl interp.ml) > _build/default/.interp.eobjs/interp.impl.d
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .interp.eobjs/byte -no-alias-deps -opaque -o .interp.eobjs/byte/interp.cmo -c -impl interp.ml)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .interp.eobjs/byte -I .interp.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .interp.eobjs/native/interp.cmx -c -impl interp.ml)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -o interp.exe .interp.eobjs/native/ast.cmx .interp.eobjs/native/parser.cmx .interp.eobjs/native/lexer.cmx .interp.eobjs/native/interp.cmx)
+# Promoting "_build/default/interp.exe" to "interp.exe"

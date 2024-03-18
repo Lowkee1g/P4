@@ -40,7 +40,7 @@ stmt:
   | FOR id = ident EQUAL expr TO expr {
       Sfor(id, $4, $6)
     }
-  | IF expr THEN stmt {
+  | IF expr THEN stmt_list {
       Sif($2, $4)
     }
   | PRINT expr  {

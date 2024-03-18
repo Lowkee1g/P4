@@ -52,15 +52,21 @@ let rec print_value expr =
 
 
 let rec interpret ast =
+	let blockcounter = ref 0 in
 	match ast with
 	| Sfor(ident, start_val, end_val) ->
 		let start_val_int = eval_expr start_val in
 		let end_val_int = eval_expr end_val in
 		Printf.sprintf "for %s in range(%d, %d):" ident.id start_val_int end_val_int
 	| Sif(cond, body) ->
-		let cond_str = string_of_expr cond in  (* Directly convert the condition to a string *)
-		let body_str = interpret body in
-		Printf.sprintf "if %s:\n    %s" cond_str body_str (* Note the indentation for the body *)
+		blockcounter := !blockcounter + 1;
+		let cond_str = string_of_expr cond in
+		let spaces = String.make (!blockcounter * 4) ' ' in  (* Create a string of spaces *)
+		let body_str = String.concat "\n" (List.map (fun s -> spaces ^ interpret s) body) in
+		blockcounter := !blockcounter - 1;  (* Decrement blockcounter after processing this block *)
+		Printf.sprintf "if %s:\n%s" cond_str body_str
+		
+		
 		
 	| Sprint(expr) ->
 		print_value expr

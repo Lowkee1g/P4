@@ -28,7 +28,8 @@ type expr =
   | Ecst of constant
   | Eident of ident
   
-  type stmt =
+type stmt =
   | Sfor of ident * expr * expr
-  | Sif of expr * stmt
+  | Sif of expr * stmt list
   | Sprint of expr
+

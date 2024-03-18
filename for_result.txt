@@ -1,2 +1,4 @@
 if 1 == 1:
-    print(hej)
+    if 2 == 2:
+    print(Hej)
+    print(diller)

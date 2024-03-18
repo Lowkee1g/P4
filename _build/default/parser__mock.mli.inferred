@@ -11,6 +11,7 @@ type token =
   | EOF
   | CST of Ast.constant
 val menhir_begin_marker : int
+val xv_stmt_list : Ast.stmt list
 val xv_stmt : Ast.stmt
 val xv_main : Ast.stmt
 val xv_ident : Ast.ident
