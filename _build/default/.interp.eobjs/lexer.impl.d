@@ -1,1 +1,1 @@
-lexer.ml: Ast Hashtbl Lexing List Parser String
+lexer.ml: Ast Buffer Hashtbl Lexing List Parser String

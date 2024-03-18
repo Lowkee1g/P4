@@ -10,13 +10,65 @@ let rec eval_expr expr =
   | Ecst (Cint i) -> i
   | _ -> failwith "Cannot evaluate non-integer expression"
 
-  let interpret ast =
-    match ast with
-    | Sfor(ident, start_val, end_val) ->
-        let start_val_int = eval_expr start_val in
-        let end_val_int = eval_expr end_val in
-        Printf.sprintf "for %s in range(%d, %d):" ident.id start_val_int end_val_int
-    
+let rec string_of_expr expr =
+	match expr with
+	| Ebinop(op, e1, e2) ->
+		let e1_str = string_of_expr e1 in
+		let e2_str = string_of_expr e2 in
+		Printf.sprintf "%s %s %s" e1_str (string_of_binop op) e2_str (* This will handle expressions like '1 == 1' *)
+	| Ecst c -> string_of_constant c
+	| Eident id -> id.id
+	(* Add cases for other types of expressions as needed *)
+	
+	and string_of_constant = function
+	| Cint i -> Printf.sprintf "%d" i
+	| Cstring s -> Printf.sprintf "%s" s  (* For string constants, you might want to adjust this to match your output preference *)
+	| Cbool b -> if b then "true" else "false"
+	| Cnone -> "None"
+	
+	and string_of_binop = function
+	| Badd -> "+"
+	| Bsub -> "-"
+	| Bmul -> "*"
+	| Bdiv -> "/"
+	| Beq -> "=="
+	| Bneq -> "!="
+	| Blt -> "<"
+	| Ble -> "<="
+	| Bgt -> ">"
+	| Bge -> ">="
+	| Band -> "&&"
+	| Bor -> "||"
+	(* Add more cases here as necessary *)
+
+
+let rec print_value expr = 
+	match expr with
+	| Ecst (Cint i) -> Printf.sprintf "print(%d)" i
+	| Ecst (Cbool b) -> Printf.sprintf "print(%b)" b
+	| Ecst (Cstring s) -> Printf.sprintf "print(%s)" s
+	| _ -> failwith "Cannot print expression"
+
+
+
+let rec interpret ast =
+	match ast with
+	| Sfor(ident, start_val, end_val) ->
+		let start_val_int = eval_expr start_val in
+		let end_val_int = eval_expr end_val in
+		Printf.sprintf "for %s in range(%d, %d):" ident.id start_val_int end_val_int
+	| Sif(cond, body) ->
+		let cond_str = string_of_expr cond in  (* Directly convert the condition to a string *)
+		let body_str = interpret body in
+		Printf.sprintf "if %s:\n    %s" cond_str body_str (* Note the indentation for the body *)
+		
+	| Sprint(expr) ->
+		print_value expr
+		
+
+
+
+      
 
   let _ =
     let filename = "for.txt" in

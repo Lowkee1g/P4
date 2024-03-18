@@ -3,7 +3,12 @@
 
 type token = 
   | TO
+  | THEN
+  | STRING of (string)
+  | PRINT
+  | IF
   | IDENT of (string)
+  | GT
   | FOR
   | EQUAL
   | EOF

@@ -19,20 +19,4 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_9192d7_output
-$ (cd _build/default && /home/opam/.opam/5.1/bin/menhir parser.mly --base parser --infer-write-query parser__mock.ml.mock)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl parser__mock.ml.mock) > _build/default/.interp.eobjs/parser__mock.impl.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .interp.eobjs/byte -no-alias-deps -opaque -o .interp.eobjs/byte/ast.cmo -c -impl ast.ml)
-$ (cd _build/.sandbox/383a1adbc5bcdd3c415c5cc88a3f9c10/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -I .interp.eobjs/byte -short-paths -i -impl parser__mock.ml.mock) > _build/.sandbox/383a1adbc5bcdd3c415c5cc88a3f9c10/default/parser__mock.mli.inferred
-$ (cd _build/default && /home/opam/.opam/5.1/bin/menhir parser.mly --base parser --infer-read-reply parser__mock.mli.inferred)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -intf parser.mli) > _build/default/.interp.eobjs/parser.intf.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl parser.ml) > _build/default/.interp.eobjs/parser.impl.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .interp.eobjs/byte -I .interp.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .interp.eobjs/native/ast.cmx -c -impl ast.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .interp.eobjs/byte -no-alias-deps -opaque -o .interp.eobjs/byte/parser.cmi -c -intf parser.mli)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .interp.eobjs/byte -no-alias-deps -opaque -o .interp.eobjs/byte/lexer.cmo -c -impl lexer.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .interp.eobjs/byte -I .interp.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .interp.eobjs/native/parser.cmx -c -impl parser.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .interp.eobjs/byte -I .interp.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .interp.eobjs/native/lexer.cmx -c -impl lexer.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .interp.eobjs/byte -no-alias-deps -opaque -o .interp.eobjs/byte/interp.cmo -c -impl interp.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .interp.eobjs/byte -I .interp.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .interp.eobjs/native/interp.cmx -c -impl interp.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -o interp.exe .interp.eobjs/native/ast.cmx .interp.eobjs/native/parser.cmx .interp.eobjs/native/lexer.cmx .interp.eobjs/native/interp.cmx)
-# Promoting "_build/default/interp.exe" to "interp.exe"
+$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_ef3875_output
