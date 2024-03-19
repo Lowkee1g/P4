@@ -49,29 +49,27 @@ let rec print_value expr =
 	| Ecst (Cstring s) -> Printf.sprintf "print(%s)" s
 	| _ -> failwith "Cannot print expression"
 
+let make_indentation blockcounter = 
+	String.make (!blockcounter * 4) ' '
 
-
-let rec interpret ast =
-	let blockcounter = ref 0 in
+let rec interpret ast blockcounter =
+	let spaces = make_indentation blockcounter in
 	match ast with
 	| Sfor(ident, start_val, end_val) ->
 		let start_val_int = eval_expr start_val in
 		let end_val_int = eval_expr end_val in
 		Printf.sprintf "for %s in range(%d, %d):" ident.id start_val_int end_val_int
 	| Sif(cond, body) ->
-		blockcounter := !blockcounter + 1;
+		let new_blockcounter = !blockcounter + 1 in
 		let cond_str = string_of_expr cond in
-		let spaces = String.make (!blockcounter * 4) ' ' in  (* Create a string of spaces *)
-		let body_str = String.concat "\n" (List.map (fun s -> spaces ^ interpret s) body) in
-		blockcounter := !blockcounter - 1;  (* Decrement blockcounter after processing this block *)
-		Printf.sprintf "if %s:\n%s" cond_str body_str
-		
-		
-		
+		let body_str = String.concat "\n" (List.map (fun s -> interpret s (ref new_blockcounter)) body) in
+		Printf.sprintf "%sif %s:\n%s" spaces cond_str body_str
 	| Sprint(expr) ->
-		print_value expr
+		let expr_str = print_value expr in
+		Printf.sprintf "%s%s" spaces expr_str
 		
-
+		
+		
 
 
       
@@ -82,7 +80,7 @@ let rec interpret ast =
       let channel = open_in filename in
       let lexbuf = Lexing.from_channel channel in
       let ast = Parser.main Lexer.token lexbuf in
-      let result = interpret ast in
+      let result = interpret ast (ref 0) in
       close_in channel;
       let out_channel = open_out "for_result.txt" in
       fprintf out_channel "%s\n" result;
