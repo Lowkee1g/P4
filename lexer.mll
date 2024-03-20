@@ -19,8 +19,11 @@ let backslash_escapes = ['\\'; '\''; '"'; 'n'; 't'; 'b'; 'r'; ' ']
 let kwd_tbl = [
   "for", FOR;
   "to", TO;
+  "downto", DOWNTO;
+  "swap", SWAP;
+  "length", LENGTH;
+  "with", WITH;
   "if", IF;
-  "then", THEN;
   "print", PRINT;
 ]
 
@@ -28,7 +31,7 @@ let id_or_kwd =
   let h = Hashtbl.create 17 in
   List.iter (fun (s, t) -> Hashtbl.add h s t) kwd_tbl;
   fun s ->
-    let s = String.lowercase_ascii s in
+    (*let s = String.lowercase_ascii s in*)
     try Hashtbl.find h s with Not_found -> IDENT s
 }
 
@@ -39,10 +42,15 @@ let integer = '0' | ['1'-'9'] digit*
 
 
 rule token = parse
-  | '>'                     { print_endline "GreaterThan"; GT }
   | [' ' '\t' '\n']+        { token lexbuf }  (* Ignore white spaces *)
   | ident as id             { print_endline ("Identifier: " ^ id); id_or_kwd id }
+  | '>'                     { print_endline "GreaterThan"; GT }
+  | '<'                     { print_endline "LessThan"; LT }
   | '='                     { print_endline "Equal"; EQUAL }
+  | '['                     { print_endline "LBracket"; LBRACKET }
+  | ']'                     { print_endline "RBracket"; RBRACKET }
+  | '.'                     { print_endline "Dot"; DOT }
+  | '-'                     { print_endline "Minus"; MINUS }
   | '"'                     { Buffer.clear string_buff; string lexbuf; STRING (Buffer.contents string_buff) }
   | integer as s            { CST (Cint(int_of_string s)) }
   | eof                     { print_endline "eof"; EOF }
