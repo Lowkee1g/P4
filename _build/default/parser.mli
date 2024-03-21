@@ -3,13 +3,20 @@
 
 type token = 
   | WITH
+  | WHILE
   | TO
+  | TIMES
   | SWAP
   | STRING of (string)
+  | ROWS
+  | RETURN
   | RBRACKET
   | PRINT
+  | PLUS
   | MINUS
+  | MATRIX
   | LT
+  | LET
   | LENGTH
   | LBRACKET
   | IF
@@ -21,6 +28,9 @@ type token =
   | DOWNTO
   | DOT
   | CST of (Ast.constant)
+  | CROSS
+  | COLUMNS
+  | BE_A_NEW
 
 (* This exception is raised by the monolithic API functions. *)
 

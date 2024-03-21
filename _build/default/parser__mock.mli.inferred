@@ -1,12 +1,19 @@
 type token =
     WITH
+  | WHILE
   | TO
+  | TIMES
   | SWAP
   | STRING of string
+  | ROWS
+  | RETURN
   | RBRACKET
   | PRINT
+  | PLUS
   | MINUS
+  | MATRIX
   | LT
+  | LET
   | LENGTH
   | LBRACKET
   | IF
@@ -18,6 +25,9 @@ type token =
   | DOWNTO
   | DOT
   | CST of Ast.constant
+  | CROSS
+  | COLUMNS
+  | BE_A_NEW
 val menhir_begin_marker : int
 val xv_stmt_list : Ast.stmt list
 val xv_stmt : Ast.stmt

@@ -5,11 +5,6 @@ open Parser
 open Lexing
 open Parsing
 
-let rec eval_expr expr = 
-  match expr with
-  | Ecst (Cint i) -> i
-  | _ -> failwith "Cannot evaluate non-integer expression"
-
 
 let rec string_of_expr expr =
 	match expr with
@@ -20,7 +15,10 @@ let rec string_of_expr expr =
 	| Ecst c -> string_of_constant c
 	| Eident id -> id.id
 	| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (string_of_expr index)
+	| Ematrix (id, ident1, ident2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr ident1) (string_of_expr ident2)
 	| Elength expr -> Printf.sprintf "len(%s)" (string_of_expr expr)
+	| Ecolumns expr -> Printf.sprintf "len(%s[0])" (string_of_expr expr)
+	| Erows expr -> Printf.sprintf "len(%s)" (string_of_expr expr)
 	(* Add cases for other types of expressions as needed *)
 	
 	and string_of_constant = function
@@ -49,7 +47,7 @@ let rec print_value expr =
 	match expr with
 	| Ecst (Cint i) -> Printf.sprintf "print(%d)" i
 	| Ecst (Cbool b) -> Printf.sprintf "print(%b)" b
-	| Ecst (Cstring s) -> Printf.sprintf "print(%s)" s
+	| Ecst (Cstring s) -> Printf.sprintf "print('%s')" s
 	| _ -> failwith "Cannot print expression"
 
 let make_indentation blockcounter = 
@@ -75,15 +73,41 @@ let rec interpret ast blockcounter =
 		let expr_str = print_value expr in
 		Printf.sprintf "%s%s" spaces expr_str
 	| Sarray (id, size) ->
-		let size_int = eval_expr size in
-		Printf.sprintf "%s%s = [None] * %d" spaces id.id size_int
+		let size_int = string_of_expr size in
+		Printf.sprintf "%s%s = [None] * %s" spaces id.id size_int
 	| Slength (expr) ->
+		let expr_str = string_of_expr expr in
+		Printf.sprintf "%slen(%s)" spaces expr_str
+	| Scolumns (expr) ->
+		let expr_str = string_of_expr expr in
+		Printf.sprintf "%slen(%s[0])" spaces expr_str
+	| Srows (expr) ->
 		let expr_str = string_of_expr expr in
 		Printf.sprintf "%slen(%s)" spaces expr_str
 	| Sswap (expr1, expr2) ->
 		let expr1_str = string_of_expr expr1 in
 		let expr2_str = string_of_expr expr2 in
 		Printf.sprintf "%s%s, %s = %s, %s" spaces expr1_str expr2_str expr2_str expr1_str
+	| Swhile (cond, body) ->
+		let new_blockcounter = !blockcounter + 1 in
+		let cond_str = string_of_expr cond in
+		let body_str = String.concat "\n" (List.map (fun s -> interpret s (ref new_blockcounter)) body) in
+		Printf.sprintf "%swhile %s:\n%s" spaces cond_str body_str
+	| Sinitmatrix (id, size1, size2) ->
+		let size1_str = string_of_expr size1 in
+		let size2_str = string_of_expr size2 in
+		Printf.sprintf "%s%s = [[0 for _ in range(%s)] for _ in range(%s)]" spaces id.id size2_str size1_str
+	| Smatrix (id, size1, size2) ->
+		let size1_str = string_of_expr size1 in
+		let size2_str = string_of_expr size2 in
+		Printf.sprintf "%s%s[%s][%s]" spaces id.id size2_str size1_str
+	| Sassign (expr1, expr2) ->
+		let expr1_str = string_of_expr expr1 in
+		let expr2_str = string_of_expr expr2 in
+		Printf.sprintf "%s%s = %s" spaces expr1_str expr2_str
+	| Sreturn (expr) ->
+		let expr_str = string_of_expr expr in
+		Printf.sprintf "%sreturn %s" spaces expr_str
 	
 
 		
@@ -101,7 +125,7 @@ let rec interpret ast blockcounter =
       let ast_list = Parser.main Lexer.token lexbuf in
       let result_list = List.map (fun stmt -> interpret stmt (ref 0)) ast_list in
       close_in channel;
-      let out_channel = open_out "for_result.txt" in
+      let out_channel = open_out "for_result.py" in
         List.iter (fun result -> fprintf out_channel "%s\n" result) result_list;
         close_out out_channel;
         printf "Successfully interpreted and wrote the result to for_result.txt\n"
