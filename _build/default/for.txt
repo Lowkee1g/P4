@@ -1,8 +1,2 @@
-n = A.rows
-let C be a new n cross n matrix
-for i = 1 to n
-  for j = 1 to n
-    C[i][j] = 0
-    for k = 1 to n
-      C[i][j] = C[i][j] + a[i][k] * b[k][j]
-return C
+def func(b)
+    return b

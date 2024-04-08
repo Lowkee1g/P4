@@ -3,25 +3,30 @@
 %}
 
 %token <Ast.constant> CST
-%token EOF  
+%token EOF END BEGIN NEWLINE
 %token IF
 %token PRINT RETURN
-%token WHILE FOR TO DOWNTO
+%token WHILE FOR TO DOWNTO DEF
 %token SWAP WITH LENGTH 
-%token GT LT MINUS PLUS EQUAL TIMES
+%token GT LT MINUS PLUS EQUAL TIMES COLON COMMA LPAREN RPAREN
 %token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS
 %token LBRACKET RBRACKET DOT
 %token <string> STRING
 %token <string> IDENT
 %start main
-%type <Ast.stmt list> main
+%type <Ast.main> main
 %%
 
 main:
-  | l = list(stmt) EOF { l }
+  | NEWLINE? l = list(def) b = nonempty_list(stmt) NEWLINE? EOF
+     { l, Sblock b }
   ;
 
-
+def:
+| DEF f = ident LPAREN x = separated_list(COMMA, ident) RPAREN
+  s = suite
+    { f, x, s }
+;
 
 expr:
   | c = CST 
@@ -53,18 +58,26 @@ expr:
   | expr DOT ROWS
 	{ Erows($1) }
   ;
-  
+
+suite:
+| stmt NEWLINE
+    { $1 }
+| NEWLINE BEGIN nonempty_list(stmt) END
+    { Sblock $3}
+;
+
 
 stmt:
+  | stmt NEWLINE 
+    { $1  }
   | FOR id = ident EQUAL expr TO expr {
 	  Sfor(id, $4, $6)
 	}
   | FOR id = ident EQUAL expr DOWNTO expr {
 	  Sford(id, $4, $6)
 	}
-  | IF expr stmt_list {
-	  Sif($2, $3)
-	}
+  | IF c = expr s = suite
+    { Sif (c, s, Sblock []) }
   | PRINT expr  {
 	  Sprint($2)
 	}
@@ -83,8 +96,8 @@ stmt:
   | expr DOT ROWS {
 	  Srows($1)
 	}
-  | WHILE expr stmt_list {
-	  Swhile($2, $3)
+  | WHILE expr s = suite {
+	  Swhile($2, s, Sblock [])
 	}
   | LET ident BE_A_NEW expr CROSS expr MATRIX {
 	  Sinitmatrix($2, $4, $6)
@@ -99,6 +112,8 @@ stmt:
 	  Sreturn($2)
 	}
   ;
+
+
 
 stmt_list:
   | stmt { [$1] }  (* A list with a single statement *)

@@ -36,19 +36,21 @@ type expr =
 type stmt =
   | Sfor of ident * expr * expr
   | Sford of ident * expr * expr
-  | Sif of expr * stmt list
+  | Sif of expr * stmt * stmt
   | Sprint of expr
   | Sarray of ident * expr
   | Sswap of expr * expr
   | Slength of expr
   | Srows of expr
   | Scolumns of expr
-  | Swhile of expr * stmt list
+  | Swhile of expr * stmt * stmt
   | Sinitmatrix of ident * expr * expr
   | Smatrix of ident * expr * expr
   | Sassign of expr * expr
   | Sreturn of expr
+  | Sblock of stmt list
   
+and def = ident * ident list * stmt
 
-
+and main = def list * stmt
 

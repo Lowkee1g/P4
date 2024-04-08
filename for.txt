@@ -1,6 +1,2 @@
-if n == 1
-	if m == 1
-		print "hej"
-		print "hej"
-	if m == 1
-		print "hej"
+def func(b)
+    return b

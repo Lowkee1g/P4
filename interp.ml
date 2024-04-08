@@ -5,7 +5,6 @@ open Parser
 open Lexing
 open Parsing
 
-
 let rec string_of_expr expr =
 	match expr with
 	| Ebinop(op, e1, e2) ->
@@ -50,11 +49,7 @@ let rec print_value expr =
 	| Ecst (Cstring s) -> Printf.sprintf "print('%s')" s
 	| _ -> failwith "Cannot print expression"
 
-let make_indentation blockcounter = 
-	String.make (!blockcounter * 4) ' '
-
-let rec interpret ast blockcounter =
-	let spaces = make_indentation blockcounter in
+let rec interpret ast  =
 	match ast with
 	| Sfor(ident, start_val, end_val) ->
 		let start_val_int = string_of_expr start_val in
@@ -64,82 +59,48 @@ let rec interpret ast blockcounter =
 		let start_val_int = string_of_expr start_val in
 		let end_val_int = string_of_expr end_val in
 		Printf.sprintf "for %s in range(%s, %s, -1):" ident.id start_val_int end_val_int
-	| Sif(cond, body) ->
-		let new_blockcounter = !blockcounter + 1 in
-		let cond_str = string_of_expr cond in
-		let body_str = String.concat "\n" (List.map (fun s -> interpret s (ref new_blockcounter)) body) in
-		Printf.sprintf "%sif %s:\n%s" spaces cond_str body_str
+	| Sif(e, s1, s2) ->
+		let e_str = string_of_expr e in
+		let s1_str = interpret s1 in
+		let s2_str = interpret s2 in
+		Printf.sprintf "if %s:\n%s\nelse:\n%s" e_str s1_str s2_str
 	| Sprint(expr) ->
 		let expr_str = print_value expr in
-		Printf.sprintf "%s%s" spaces expr_str
+		Printf.sprintf "%s" expr_str
 	| Sarray (id, size) ->
 		let size_int = string_of_expr size in
-		Printf.sprintf "%s%s = [None] * %s" spaces id.id size_int
+		Printf.sprintf "%s = [None] * %s" id.id size_int
 	| Slength (expr) ->
 		let expr_str = string_of_expr expr in
-		Printf.sprintf "%slen(%s)" spaces expr_str
+		Printf.sprintf "len(%s)" expr_str
 	| Scolumns (expr) ->
 		let expr_str = string_of_expr expr in
-		Printf.sprintf "%slen(%s[0])" spaces expr_str
+		Printf.sprintf "len(%s[0])" expr_str
 	| Srows (expr) ->
 		let expr_str = string_of_expr expr in
-		Printf.sprintf "%slen(%s)" spaces expr_str
+		Printf.sprintf "len(%s)" expr_str
 	| Sswap (expr1, expr2) ->
 		let expr1_str = string_of_expr expr1 in
 		let expr2_str = string_of_expr expr2 in
-		Printf.sprintf "%s%s, %s = %s, %s" spaces expr1_str expr2_str expr2_str expr1_str
-	| Swhile (cond, body) ->
-		let new_blockcounter = !blockcounter + 1 in
-		let cond_str = string_of_expr cond in
-		let body_str = String.concat "\n" (List.map (fun s -> interpret s (ref new_blockcounter)) body) in
-		Printf.sprintf "%swhile %s:\n%s" spaces cond_str body_str
+		Printf.sprintf "%s, %s = %s, %s" expr1_str expr2_str expr2_str expr1_str
+	| Swhile (e, s1, s2) ->
+		let e_str = string_of_expr e in
+		let s1_str = interpret s1 in
+		let s2_str = interpret s2 in
+		Printf.sprintf "while %s:\n%s\n%s" e_str s1_str s2_str 
 	| Sinitmatrix (id, size1, size2) ->
 		let size1_str = string_of_expr size1 in
 		let size2_str = string_of_expr size2 in
-		Printf.sprintf "%s%s = [[0 for _ in range(%s)] for _ in range(%s)]" spaces id.id size2_str size1_str
+		Printf.sprintf "%s = [[0 for _ in range(%s)] for _ in range(%s)]" id.id size2_str size1_str
 	| Smatrix (id, size1, size2) ->
 		let size1_str = string_of_expr size1 in
 		let size2_str = string_of_expr size2 in
-		Printf.sprintf "%s%s[%s][%s]" spaces id.id size2_str size1_str
+		Printf.sprintf "%s[%s][%s]" id.id size2_str size1_str
 	| Sassign (expr1, expr2) ->
 		let expr1_str = string_of_expr expr1 in
 		let expr2_str = string_of_expr expr2 in
-		Printf.sprintf "%s%s = %s" spaces expr1_str expr2_str
+		Printf.sprintf "%s = %s" expr1_str expr2_str
 	| Sreturn (expr) ->
 		let expr_str = string_of_expr expr in
-		Printf.sprintf "%sreturn %s" spaces expr_str
-	
+		Printf.sprintf "return %s" expr_str
 
-		
-		
-		
-
-
-      
-
-  let _ =
-    let filename = "for.txt" in
-    try
-      let channel = open_in filename in
-      let lexbuf = Lexing.from_channel channel in
-      let ast_list = Parser.main Lexer.token lexbuf in
-      let result_list = List.map (fun stmt -> interpret stmt (ref 0)) ast_list in
-      close_in channel;
-      let out_channel = open_out "for_result.py" in
-        List.iter (fun result -> fprintf out_channel "%s\n" result) result_list;
-        close_out out_channel;
-        printf "Successfully interpreted and wrote the result to for_result.txt\n"
-    with
-    | Sys_error msg ->
-        printf "Error: %s\n" msg
-    | Lexer.Lexing_error msg ->
-        printf "Lexer error: %s\n" msg
-    | Parser.Error ->
-          let curr_token = symbol_start_pos () in
-          let curr_line = curr_token.pos_lnum in
-          let curr_col = curr_token.pos_cnum - curr_token.pos_bol in
-          let error_msg = Printf.sprintf "Parser error: syntax error at line %d, column %d\n" curr_line curr_col in
-          printf "%s" error_msg
-    | End_of_file ->
-        printf "End of file\n"
-  
