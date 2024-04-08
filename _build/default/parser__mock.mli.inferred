@@ -1,52 +1,22 @@
 type token =
-    WITH
-  | WHILE
-  | TO
-  | TIMES
-  | SWAP
+    TO
   | STRING of string
-  | RPAREN
-  | ROWS
-  | RETURN
-  | RBRACKET
   | PRINT
-  | PLUS
   | NEWLINE
-  | MINUS
-  | MATRIX
-  | LT
-  | LPAREN
-  | LET
-  | LENGTH
-  | LBRACKET
-  | IF
   | IDENT of string
-  | GT
   | FOR
   | EQUAL
   | EOF
   | END
-  | DOWNTO
-  | DOT
-  | DEF
   | CST of Ast.constant
-  | CROSS
-  | COMMA
-  | COLUMNS
-  | COLON
-  | BE_A_NEW
   | BEGIN
 val menhir_begin_marker : int
 val xv_suite : Ast.stmt
 val xv_stmt : Ast.stmt
-val xv_separated_nonempty_list_COMMA_ident_ : Ast.ident list
-val xv_separated_list_COMMA_ident_ : Ast.ident list
+val xv_simple_stmt : Ast.stmt
 val xv_option_NEWLINE_ : unit option
 val xv_nonempty_list_stmt_ : Ast.stmt list
-val xv_main : Ast.main
-val xv_loption_separated_nonempty_list_COMMA_ident__ : Ast.ident list
-val xv_list_def_ : Ast.def list
 val xv_ident : Ast.ident
+val xv_file : Ast.stmt
 val xv_expr : Ast.expr
-val xv_def : Ast.def
 val menhir_end_marker : int

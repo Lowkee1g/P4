@@ -4,28 +4,17 @@
 
 %token <Ast.constant> CST
 %token EOF END BEGIN NEWLINE
-%token IF
-%token PRINT RETURN
-%token WHILE FOR TO DOWNTO DEF
-%token SWAP WITH LENGTH 
-%token GT LT MINUS PLUS EQUAL TIMES COLON COMMA LPAREN RPAREN
-%token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS
-%token LBRACKET RBRACKET DOT
+%token PRINT 
+%token FOR TO EQUAL
 %token <string> STRING
 %token <string> IDENT
-%start main
-%type <Ast.main> main
+%start file
+%type <Ast.file> file
 %%
 
-main:
-  | NEWLINE? l = list(def) b = nonempty_list(stmt) NEWLINE? EOF
-     { l, Sblock b }
-  ;
-
-def:
-| DEF f = ident LPAREN x = separated_list(COMMA, ident) RPAREN
-  s = suite
-    { f, x, s }
+file:
+  | NEWLINE? b = nonempty_list(stmt) NEWLINE? EOF
+    { Sblock b }
 ;
 
 expr:
@@ -35,91 +24,31 @@ expr:
 	{ Eident id }
   | s = STRING 
 	{ Ecst (Cstring s) }
-  | expr GT expr 
-	{ Ebinop(Bgt, $1, $3) }
-  |  expr LT expr 
-	{ Ebinop(Blt, $1, $3) }
-  | expr MINUS expr 
-	{ Ebinop(Bsub, $1, $3) }
-  | expr PLUS expr 
-	{ Ebinop(Badd, $1, $3) }
-  | expr TIMES expr 
-	{ Ebinop(Bmul, $1, $3) }
-  | expr EQUAL EQUAL expr 
-	{ Ebinop(Beq, $1, $4) }
-  | ident LBRACKET expr RBRACKET
-	{ Earray($1, $3) }
-  | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET
-	{ Ematrix($1, $3, $6) }
-  | expr DOT LENGTH
-	{ Elength($1) }
-  | expr DOT COLUMNS
-	{ Ecolumns($1) }
-  | expr DOT ROWS
-	{ Erows($1) }
   ;
 
 suite:
-| stmt NEWLINE
-    { $1 }
-| NEWLINE BEGIN nonempty_list(stmt) END
-    { Sblock $3}
+| s = simple_stmt NEWLINE
+    { s }
+| NEWLINE BEGIN l = nonempty_list(stmt) END
+    { Sblock l }
 ;
 
 
 stmt:
-  | stmt NEWLINE 
-    { $1  }
-  | FOR id = ident EQUAL expr TO expr {
-	  Sfor(id, $4, $6)
-	}
-  | FOR id = ident EQUAL expr DOWNTO expr {
-	  Sford(id, $4, $6)
-	}
-  | IF c = expr s = suite
-    { Sif (c, s, Sblock []) }
-  | PRINT expr  {
-	  Sprint($2)
-	}
-  | ident LBRACKET expr RBRACKET {
-	  Sarray($1, $3)
-	}
-  | SWAP expr WITH expr {
-	  Sswap($2, $4)
-	}
-  | expr DOT LENGTH {
-	  Slength($1)
-	}
-  | expr DOT COLUMNS {
-	  Scolumns($1)
-	}
-  | expr DOT ROWS {
-	  Srows($1)
-	}
-  | WHILE expr s = suite {
-	  Swhile($2, s, Sblock [])
-	}
-  | LET ident BE_A_NEW expr CROSS expr MATRIX {
-	  Sinitmatrix($2, $4, $6)
-	}
-  | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET {
-	  Smatrix($1, $3, $6)
-	}
-  | expr EQUAL expr {
-	  Sassign($1, $3)
-	}
-  | RETURN expr {
-	  Sreturn($2)
+  | s = simple_stmt NEWLINE
+    { s }
+  | FOR id = ident EQUAL expr TO expr s = suite {
+	  Sfor(id, $4, $6, s)
 	}
   ;
 
 
+simple_stmt:
+  | PRINT e = expr
+    { Sprint e }
+;
 
-stmt_list:
-  | stmt { [$1] }  (* A list with a single statement *)
-  | stmt_list stmt { $1 @ [$2] }  (* Appending a statement to an existing list *)
-  ;
-  
+
 ident:
   id = IDENT { { loc = ($startpos, $endpos); id } }
 ;

@@ -35,12 +35,11 @@ let filename = "for.txt" in
 let channel = open_in filename in
 let lexbuf = Lexing.from_channel channel in
 try
-  let ast_list = Parser.main Lexer.next_token lexbuf in
-  let (defs, stmt) = ast_list in
-  let result_list = Interp.interpret stmt in
+  let ast_list = Parser.file Lexer.next_token lexbuf in
+  let result_string = interpret ast_list 0 in
   close_in channel;
   let out_channel = open_out "for_result.py" in
-    Printf.fprintf out_channel "%s\n" result_list;
+  Printf.fprintf out_channel "%s\n" result_string;
     close_out out_channel;
     printf "Successfully interpreted and wrote the result to for_result.txt\n"
 with

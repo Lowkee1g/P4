@@ -18,22 +18,9 @@ let char_for_backslash = function
 let backslash_escapes = ['\\'; '\''; '"'; 'n'; 't'; 'b'; 'r'; ' ']
 
 let kwd_tbl = [
-  "def", DEF;
   "for", FOR;
   "to", TO;
-  "downto", DOWNTO;
-  "swap", SWAP;
-  "length", LENGTH;
-  "with", WITH;
-  "if", IF;
   "print", PRINT;
-  "while", WHILE;
-  "let", LET;
-  "cross", CROSS; (* Produktet af to matrixer *)
-  "matrix", MATRIX;
-  "columns", COLUMNS;
-  "rows", ROWS;
-  "return", RETURN;
 ]
 
 let id_or_kwd = 
@@ -71,21 +58,8 @@ rule next_tokens = parse
   | '\n'    { new_line lexbuf; update_stack (indentation lexbuf) }
   | (space)+ { next_tokens lexbuf }
   | ident as id             { print_endline ("Identifier: " ^ id); [id_or_kwd id] }
-  | '>'                     { print_endline "GreaterThan"; [GT] }
-  | '<'                     { print_endline "LessThan"; [LT] }
   | '='                     { print_endline "Equal"; [EQUAL] }
-  | '['                     { print_endline "LBracket"; [LBRACKET] }
-  | ']'                     { print_endline "RBracket"; [RBRACKET] }
-  | '('                     { print_endline "LParen"; [LPAREN] }
-  | ')'                     { print_endline "RParen"; [RPAREN] }
-  | '.'                     { print_endline "Dot"; [DOT] }
-  | '-'                     { print_endline "Minus"; [MINUS] }
-  | '+'                     { print_endline "Plus"; [PLUS] }
-  | '*'                     { print_endline "Times"; [TIMES] }
-  | ':'                     { print_endline "Colon"; [COLON] }
-  | ','                     { print_endline "Comma"; [COMMA] }
   | '"'                     { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
-  | "be a new"              { print_endline "be a new"; [BE_A_NEW] }
   | integer as s            { [CST (Cint(int_of_string s))] }
   | eof                     { print_endline "eof"; NEWLINE :: unindent 0 @ [EOF] }
   | _ as c                  { raise (Lexing_error ("illegal character: " ^ String.make 1 c)) }
