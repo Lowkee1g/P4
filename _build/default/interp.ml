@@ -26,7 +26,7 @@ let rec print_value expr =
 
 let rec interpret ast indent_level : string =
 	(* Generate a string for indentation: *)
-	let indent_str = String.make (indent_level * 2) ' ' in
+	let indent_str = if indent_level = 0 then "" else String.make (indent_level * 2) ' ' in
 	match ast with
 	| Sfor(ident, start_val, end_val, stmt) ->
 		let start_val_str = string_of_expr start_val in
@@ -37,7 +37,7 @@ let rec interpret ast indent_level : string =
 		let expr_str = print_value expr in
 		Printf.sprintf "%s%s\n" indent_str expr_str
 	| Sblock(stmts) ->
-		let stmt_strs = List.map (fun s -> interpret s (indent_level + 1)) stmts in
+		let stmt_strs = List.map (fun s -> interpret s indent_level) stmts in
 		String.concat "" stmt_strs
-	| _ -> error "Unrecognized AST node"
+	(*| _ -> error "Unrecognized AST node"*)
 	

@@ -1,7 +1,8 @@
 for i = 10 to 20
     print "hej"
-    print "diller"
-    for i = 10 to 200
-        print "gustaws mor er sort"
-for i = 1 to 2
     print "hej"
+    for i = 10 to 200
+        print "hej"
+        for i = 1 to 2
+            print "hej"
+print "hej"

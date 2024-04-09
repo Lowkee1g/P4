@@ -19,17 +19,4 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_b85d66_output
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl interp.ml) > _build/default/.main.eobjs/interp.impl.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -o .main.eobjs/byte/interp.cmo -c -impl interp.ml)
-> File "interp.ml", line 42, characters 3-4:
-> 42 | 	| _ -> error "Unrecognized AST node"
->      	  ^
-> Warning 11 [redundant-case]: this match case is unused.
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/interp.cmx -c -impl interp.ml)
-> File "interp.ml", line 42, characters 3-4:
-> 42 | 	| _ -> error "Unrecognized AST node"
->      	  ^
-> Warning 11 [redundant-case]: this match case is unused.
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -o main.exe .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
-# Promoting "_build/default/main.exe" to "main.exe"
+$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_6c567c_output
