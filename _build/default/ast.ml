@@ -35,13 +35,13 @@ type expr =
   | Ecolumns of expr
   
 
-
 type stmt =
   | Sfor of ident * expr * expr * stmt
   | Sford of ident * expr * expr * stmt
-  | Sif of expr * stmt 
-  | Sifelse of expr * stmt * stmt
-  | Sifelseif of expr * stmt * expr * stmt
+  | Sif of expr * stmt * stmt
+  | Selseif  of expr * stmt * stmt
+  | Selse of stmt
+  | Sendif
   | Sprint of expr
   | Sarray of ident * expr
   | Sswap of expr * expr

@@ -90,7 +90,6 @@ simple_stmt:
 	}
 ;
 
-
 stmt:
   | s = simple_stmt NEWLINE
     { s }
@@ -104,12 +103,13 @@ stmt:
 	}
 
   // IF STATEMENTS
-  | IF expr s = suite 
-    { Sif($2, s) }
-  | IF expr s1 = suite ELSE s2 = suite 
-    { Sifelse($2, s1, s2) }
-  | IF expr s1 = suite ELSEIF expr s2 = suite 
-    { Sifelseif($2, s1, $5, s2) }
+  | IF expr s = suite stmt
+    { Sif($2, s, $4) }
+  | ELSEIF expr s = suite stmt
+    { Selseif($2, s, $4) }
+  | ELSE s = suite 
+    { Selse(s) }
+
   
   | WHILE expr s = suite {
 	  Swhile($2, s)
