@@ -2,7 +2,7 @@
 # OCAMLPARAM: unset
 # Shared cache: disabled
 # Shared cache location: /home/opam/.cache/dune/db
-# Workspace root: /workspaces/P4
+# Workspace root: /home/opam/P4
 # Auto-detected concurrency: 8
 # Dune context:
 #  { name = "default"
@@ -13,20 +13,10 @@
 #  ; build_dir = In_build_dir "default"
 #  ; installed_env =
 #      map
-#        { "INSIDE_DUNE" : "/workspaces/P4/_build/default"
+#        { "INSIDE_DUNE" : "/home/opam/P4/_build/default"
 #        ; "OCAML_COLOR" : "always"
 #        ; "OPAMCOLOR" : "always"
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_3b715b_output
-$ (cd _build/default && /home/opam/.opam/5.1/bin/menhir parser.mly --base parser --infer-write-query parser__mock.ml.mock)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl parser__mock.ml.mock) > _build/default/.interp.eobjs/parser__mock.impl.d
-$ (cd _build/.sandbox/2b0b7ff9a5d15e83c154f3913707d324/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -I .interp.eobjs/byte -short-paths -i -impl parser__mock.ml.mock) > _build/.sandbox/2b0b7ff9a5d15e83c154f3913707d324/default/parser__mock.mli.inferred
-$ (cd _build/default && /home/opam/.opam/5.1/bin/menhir parser.mly --base parser --infer-read-reply parser__mock.mli.inferred)
-> Warning: 8 states have shift/reduce conflicts.
-> Warning: 62 shift/reduce conflicts were arbitrarily resolved.
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl parser.ml) > _build/default/.interp.eobjs/parser.impl.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .interp.eobjs/byte -I .interp.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .interp.eobjs/native/parser.cmx -c -impl parser.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -o interp.exe .interp.eobjs/native/ast.cmx .interp.eobjs/native/parser.cmx .interp.eobjs/native/lexer.cmx .interp.eobjs/native/interp.cmx)
-# Promoting "_build/default/interp.exe" to "interp.exe"
+$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_6c567c_output
