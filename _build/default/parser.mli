@@ -27,6 +27,8 @@ type token =
   | EQUAL
   | EOF
   | END
+  | ELSEIF
+  | ELSE
   | DOWNTO
   | DOT
   | CST of (Ast.constant)

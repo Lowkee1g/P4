@@ -4,7 +4,7 @@
 
 %token <Ast.constant> CST
 %token EOF END BEGIN NEWLINE 
-%token IF
+%token IF ELSE ELSEIF
 %token PRINT RETURN
 %token WHILE FOR TO DOWNTO
 %token SWAP WITH LENGTH 
@@ -94,14 +94,22 @@ simple_stmt:
 stmt:
   | s = simple_stmt NEWLINE
     { s }
+  
+  // FOR LOOPS
   | FOR id = ident EQUAL expr TO expr s = suite {
 	  Sfor(id, $4, $6, s)
 	}
   | FOR id = ident EQUAL expr DOWNTO expr s = suite {
 	  Sford(id, $4, $6, s)
 	}
+
+  // IF STATEMENTS
   | IF expr s = suite 
     { Sif($2, s) }
+  | IF expr s1 = suite ELSE s2 = suite 
+    { Sifelse($2, s1, s2) }
+  | IF expr s1 = suite ELSEIF expr s2 = suite 
+    { Sifelseif($2, s1, $5, s2) }
   
   | WHILE expr s = suite {
 	  Swhile($2, s)
@@ -110,8 +118,6 @@ stmt:
 	  Sinitmatrix($2, $4, $6)
 	}
   ;
-
-
 
 
 

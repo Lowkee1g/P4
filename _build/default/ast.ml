@@ -34,10 +34,14 @@ type expr =
   | Erows of expr
   | Ecolumns of expr
   
+
+
 type stmt =
   | Sfor of ident * expr * expr * stmt
   | Sford of ident * expr * expr * stmt
   | Sif of expr * stmt 
+  | Sifelse of expr * stmt * stmt
+  | Sifelseif of expr * stmt * expr * stmt
   | Sprint of expr
   | Sarray of ident * expr
   | Sswap of expr * expr
@@ -50,6 +54,7 @@ type stmt =
   | Sassign of expr * expr
   | Sreturn of expr
   | Sblock of stmt list
+
   
 
 type file = stmt

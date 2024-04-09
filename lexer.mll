@@ -25,6 +25,8 @@ let kwd_tbl = [
   "length", LENGTH;
   "with", WITH;
   "if", IF;
+  "else", ELSE;
+  "elseif", ELSEIF;
   "print", PRINT;
   "while", WHILE;
   "let", LET;
