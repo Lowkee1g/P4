@@ -3,9 +3,14 @@
 %}
 
 %token <Ast.constant> CST
-%token EOF END BEGIN NEWLINE
-%token PRINT 
-%token FOR TO EQUAL
+%token EOF END BEGIN NEWLINE 
+%token IF
+%token PRINT RETURN
+%token WHILE FOR TO DOWNTO
+%token SWAP WITH LENGTH 
+%token GT LT MINUS PLUS EQUAL TIMES
+%token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS
+%token LBRACKET RBRACKET DOT
 %token <string> STRING
 %token <string> IDENT
 %start file
@@ -17,6 +22,13 @@ file:
     { Sblock b }
 ;
 
+  suite:
+| s = simple_stmt NEWLINE
+    { s }
+| NEWLINE BEGIN l = nonempty_list(stmt) END
+    { Sblock l }
+;
+
 expr:
   | c = CST 
   { Ecst c }
@@ -24,13 +36,58 @@ expr:
 	{ Eident id }
   | s = STRING 
 	{ Ecst (Cstring s) }
+  | expr GT expr 
+	{ Ebinop(Bgt, $1, $3) }
+  |  expr LT expr 
+	{ Ebinop(Blt, $1, $3) }
+  | expr MINUS expr 
+	{ Ebinop(Bsub, $1, $3) }
+  | expr PLUS expr 
+	{ Ebinop(Badd, $1, $3) }
+  | expr TIMES expr 
+	{ Ebinop(Bmul, $1, $3) }
+  | expr EQUAL EQUAL expr 
+	{ Ebinop(Beq, $1, $4) }
+  | ident LBRACKET expr RBRACKET
+	{ Earray($1, $3) }
+  | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET
+	{ Ematrix($1, $3, $6) }
+  | expr DOT LENGTH
+	{ Elength($1) }
+  | expr DOT COLUMNS
+	{ Ecolumns($1) }
+  | expr DOT ROWS
+	{ Erows($1) }
   ;
 
-suite:
-| s = simple_stmt NEWLINE
-    { s }
-| NEWLINE BEGIN l = nonempty_list(stmt) END
-    { Sblock l }
+
+simple_stmt:
+  | PRINT e = expr
+    { Sprint e }
+  | ident LBRACKET expr RBRACKET {
+  Sarray($1, $3)
+	}
+  | SWAP expr WITH expr {
+	  Sswap($2, $4)
+	}
+  | expr DOT LENGTH {
+	  Slength($1)
+	}
+  | expr DOT COLUMNS {
+	  Scolumns($1)
+	}
+  | expr DOT ROWS {
+	  Srows($1)
+	}
+  | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET {
+	  Smatrix($1, $3, $6)
+	}
+  | expr EQUAL expr {
+	  Sassign($1, $3)
+	}
+  | RETURN expr {
+	  Sreturn($2)
+	}
 ;
 
 
@@ -40,13 +97,22 @@ stmt:
   | FOR id = ident EQUAL expr TO expr s = suite {
 	  Sfor(id, $4, $6, s)
 	}
+  | FOR id = ident EQUAL expr DOWNTO expr s = suite {
+	  Sford(id, $4, $6, s)
+	}
+  | IF expr s = suite 
+    { Sif($2, s) }
+  
+  | WHILE expr s = suite {
+	  Swhile($2, s)
+	}
+  | LET ident BE_A_NEW expr CROSS expr MATRIX {
+	  Sinitmatrix($2, $4, $6)
+	}
   ;
 
 
-simple_stmt:
-  | PRINT e = expr
-    { Sprint e }
-;
+
 
 
 ident:

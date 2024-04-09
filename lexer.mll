@@ -20,7 +20,19 @@ let backslash_escapes = ['\\'; '\''; '"'; 'n'; 't'; 'b'; 'r'; ' ']
 let kwd_tbl = [
   "for", FOR;
   "to", TO;
+  "downto", DOWNTO;
+  "swap", SWAP;
+  "length", LENGTH;
+  "with", WITH;
+  "if", IF;
   "print", PRINT;
+  "while", WHILE;
+  "let", LET;
+  "cross", CROSS; (* Produktet af to matrixer *)
+  "matrix", MATRIX;
+  "columns", COLUMNS;
+  "rows", ROWS;
+  "return", RETURN;
 ]
 
 let id_or_kwd = 
@@ -59,6 +71,14 @@ rule next_tokens = parse
   | (space)+ { next_tokens lexbuf }
   | ident as id             { print_endline ("Identifier: " ^ id); [id_or_kwd id] }
   | '='                     { print_endline "Equal"; [EQUAL] }
+  | '>'                     { print_endline "GreaterThan"; [GT] }
+  | '<'                     { print_endline "LessThan"; [LT] }
+  | '['                     { print_endline "LBracket"; [LBRACKET] }
+  | ']'                     { print_endline "RBracket"; [RBRACKET] }
+  | '.'                     { print_endline "Dot"; [DOT] }
+  | '-'                     { print_endline "Minus"; [MINUS] }
+  | '+'                     { print_endline "Plus"; [PLUS] }
+  | '*'                     { print_endline "Times"; [TIMES] }
   | '"'                     { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
   | integer as s            { [CST (Cint(int_of_string s))] }
   | eof                     { print_endline "eof"; NEWLINE :: unindent 0 @ [EOF] }
