@@ -49,6 +49,7 @@ let rec interpret ast indent_level : string =
 	(* Generate a string for indentation: *)
 	let indent_str = if indent_level = 0 then "" else String.make (indent_level * 4) ' ' in
 	match ast with
+
 	(* FOR LOOPS*)
 	| Sfor(ident, start_val, end_val, stmt) ->
 		let start_val_str = string_of_expr start_val in
@@ -63,19 +64,24 @@ let rec interpret ast indent_level : string =
 			indent_str ident.id start_val_int end_val_int (interpret stmt (indent_level + 1))
 
 	(* IF STATEMENTS*)
-	| Sif(cond, body) ->
+	| Sif(cond, body, body2) ->
 		let cond_str = string_of_expr cond in
-		Printf.sprintf "%sif %s:\n%s" 
-			indent_str cond_str (interpret body (indent_level + 1))
-	| Sifelse(cond, body1, body2) ->
+		let body_str = interpret body (indent_level + 1) in
+		let body2_str = interpret body2 (indent_level) in
+		Printf.sprintf "%sif %s:\n%s%s" 
+			indent_str cond_str body_str body2_str
+
+	| Selseif(cond, body1, nextIfStmt) ->
 		let cond_str = string_of_expr cond in
-		Printf.sprintf "%sif %s:\n%s%selse:\n%s" 
-			indent_str cond_str (interpret body1 (indent_level + 1)) indent_str (interpret body2 (indent_level + 1))
-	| Sifelseif(cond1, body1, cond2, body2) ->
-		let cond1_str = string_of_expr cond1 in
-		let cond2_str = string_of_expr cond2 in
-		Printf.sprintf "%sif %s:\n%s%selif %s:\n%s" 
-			indent_str cond1_str (interpret body1 (indent_level + 1)) indent_str cond2_str (interpret body2 (indent_level + 1))
+		Printf.sprintf "%selif (%s):\n%s%s" 
+			indent_str cond_str (interpret body1 (indent_level + 1)) (interpret nextIfStmt (indent_level))
+	
+	| Selse(body) ->
+		Printf.sprintf "%selse:\n%s" indent_str (interpret body (indent_level + 1))
+
+	| Sendif -> "" 
+	  
+
 
 	(* WHILE LOOPS*)
 	| Swhile (cond, body) ->
