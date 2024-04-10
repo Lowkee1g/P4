@@ -10,7 +10,7 @@
 %token SWAP WITH LENGTH 
 %token GT LT MINUS PLUS EQUAL TIMES
 %token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS
-%token LBRACKET RBRACKET DOT
+%token LBRACKET RBRACKET DOT COMMA LPAREN RPAREN
 %token <string> STRING
 %token <string> IDENT
 %start file
@@ -93,6 +93,11 @@ simple_stmt:
 stmt:
   | s = simple_stmt NEWLINE
     { s }
+
+  // FUNCTION DEFINITIONS
+  | id = ident LPAREN l = ident_list RPAREN s = suite {
+    Sfunc (id, l, s)
+  }
   
   // FOR LOOPS
   | FOR id = ident EQUAL expr TO expr s = suite {
@@ -119,8 +124,12 @@ stmt:
 	}
   ;
 
-
-
 ident:
-  id = IDENT { { loc = ($startpos, $endpos); id } }
+  | id = IDENT { { loc = ($startpos, $endpos); id } }
 ;
+
+ident_list:
+  | id = ident { [id] }  (* Base case: a single identifier *)
+  | id = ident COMMA ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
+;
+

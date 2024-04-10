@@ -8,6 +8,7 @@ type token =
   | TIMES
   | SWAP
   | STRING of (string)
+  | RPAREN
   | ROWS
   | RETURN
   | RBRACKET
@@ -17,6 +18,7 @@ type token =
   | MINUS
   | MATRIX
   | LT
+  | LPAREN
   | LET
   | LENGTH
   | LBRACKET
@@ -33,6 +35,7 @@ type token =
   | DOT
   | CST of (Ast.constant)
   | CROSS
+  | COMMA
   | COLUMNS
   | BE_A_NEW
   | BEGIN

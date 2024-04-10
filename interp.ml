@@ -4,6 +4,12 @@ open Format
 exception Error of string
 let error s = raise (Error s)
 
+let rec string_of_idents idents =
+	match idents with
+	| [] -> ""
+	| id::[] -> id.id
+	| id::rest -> id.id ^ ", " ^ string_of_idents rest
+
 let rec string_of_expr expr =
 	match expr with
 	| Ebinop(op, e1, e2) ->
@@ -49,6 +55,15 @@ let rec interpret ast indent_level : string =
 	(* Generate a string for indentation: *)
 	let indent_str = if indent_level = 0 then "" else String.make (indent_level * 4) ' ' in
 	match ast with
+	(* Function *)
+	(* Handle the function definition case *)
+	| Sfunc(id, args, stmt) ->
+		(* Use string_of_idents to turn the list of idents into a comma-separated string *)
+		let args_str = string_of_idents args in
+
+		(* Use args_str in the formatted string for the function definition *)
+		Printf.sprintf "%sdef %s(%s):\n%s" indent_str id.id args_str (interpret stmt (indent_level + 1))
+
 
 	(* FOR LOOPS*)
 	| Sfor(ident, start_val, end_val, stmt) ->

@@ -53,6 +53,7 @@ type stmt =
   | Smatrix of ident * expr * expr
   | Sassign of expr * expr
   | Sreturn of expr
+  | Sfunc of ident * ident list * stmt 
   | Sblock of stmt list
 
   

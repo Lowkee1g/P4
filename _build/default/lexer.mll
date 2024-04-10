@@ -77,7 +77,10 @@ rule next_tokens = parse
   | '<'                     { print_endline "LessThan"; [LT] }
   | '['                     { print_endline "LBracket"; [LBRACKET] }
   | ']'                     { print_endline "RBracket"; [RBRACKET] }
+  | '('                     { print_endline "LParen"; [LPAREN] }
+  | ')'                     { print_endline "RParen"; [RPAREN] }
   | '.'                     { print_endline "Dot"; [DOT] }
+  | ','                     { print_endline "Comma"; [COMMA] }
   | '-'                     { print_endline "Minus"; [MINUS] }
   | '+'                     { print_endline "Plus"; [PLUS] }
   | '*'                     { print_endline "Times"; [TIMES] }

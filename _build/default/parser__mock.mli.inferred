@@ -5,6 +5,7 @@ type token =
   | TIMES
   | SWAP
   | STRING of string
+  | RPAREN
   | ROWS
   | RETURN
   | RBRACKET
@@ -14,6 +15,7 @@ type token =
   | MINUS
   | MATRIX
   | LT
+  | LPAREN
   | LET
   | LENGTH
   | LBRACKET
@@ -30,6 +32,7 @@ type token =
   | DOT
   | CST of Ast.constant
   | CROSS
+  | COMMA
   | COLUMNS
   | BE_A_NEW
   | BEGIN
@@ -39,6 +42,7 @@ val xv_stmt : Ast.stmt
 val xv_simple_stmt : Ast.stmt
 val xv_option_NEWLINE_ : unit option
 val xv_nonempty_list_stmt_ : Ast.stmt list
+val xv_ident_list : Ast.ident list
 val xv_ident : Ast.ident
 val xv_file : Ast.stmt
 val xv_expr : Ast.expr
