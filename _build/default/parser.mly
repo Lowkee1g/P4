@@ -11,7 +11,7 @@
 %token GT LT MINUS PLUS EQUAL TIMES INFINITY
 %token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS
 %token LBRACKET RBRACKET DOT COMMA LPAREN RPAREN
-%token RANDOM 
+%token RANDOM ERROR
 %token <string> STRING
 %token <string> IDENT
 %start file
@@ -61,6 +61,8 @@ expr:
 	{ Erows($1) }
   | RANDOM LPAREN expr COMMA expr RPAREN
   { Erandom($3, $5) }
+  | ident LPAREN l = ident_list RPAREN
+  { EfunctionCall($1, l) }
   ;
 
 
@@ -94,6 +96,9 @@ simple_stmt:
   | RETURN expr {
 	  Sreturn($2)
 	}
+  | ERROR expr {
+    Serror($2)
+  }
 ;
 
 stmt:

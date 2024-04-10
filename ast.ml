@@ -34,6 +34,7 @@ type expr =
   | Erows of expr
   | Ecolumns of expr
   | Erandom of expr * expr
+  | EfunctionCall of ident * ident list
   
 
 type stmt =
@@ -56,6 +57,7 @@ type stmt =
   | Sassign of expr * expr
   | Sreturn of expr
   | Sfunc of ident * ident list * stmt 
+  | Serror of expr
   | Sblock of stmt list
   
 

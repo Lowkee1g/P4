@@ -24,6 +24,7 @@ let rec string_of_expr expr =
 	| Ecolumns expr -> Printf.sprintf "len(%s[0])" (string_of_expr expr)
 	| Erows expr -> Printf.sprintf "len(%s)" (string_of_expr expr)
 	| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
+	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents args)
 	(* Add cases for other types of expressions as needed *)
 	
 	and string_of_constant = function
@@ -106,52 +107,56 @@ let rec interpret ast indent_level : string =
 
 	| Sarray (id, size) ->
 		let size_int = string_of_expr size in
-		Printf.sprintf "%s%s = [None] * %s" indent_str id.id size_int
+		Printf.sprintf "%s%s = [None] * %s\n" indent_str id.id size_int
 
 	| Slength (expr) ->
 		let expr_str = string_of_expr expr in
-		Printf.sprintf "%slen(%s)" indent_str expr_str
+		Printf.sprintf "%slen(%s)\n" indent_str expr_str
 
 	| Scolumns (expr) ->
 		let expr_str = string_of_expr expr in
-		Printf.sprintf "%slen(%s[0])" indent_str expr_str
+		Printf.sprintf "%slen(%s[0])\n" indent_str expr_str
 
 	| Srows (expr) ->
 		let expr_str = string_of_expr expr in
-		Printf.sprintf "%slen(%s)" indent_str expr_str
+		Printf.sprintf "%slen(%s)\n" indent_str expr_str
 
 	| Sswap (expr1, expr2) ->
 		let expr1_str = string_of_expr expr1 in
 		let expr2_str = string_of_expr expr2 in
-		Printf.sprintf "%s%s, %s = %s, %s" indent_str expr1_str expr2_str expr2_str expr1_str
+		Printf.sprintf "%s%s, %s = %s, %s\n" indent_str expr1_str expr2_str expr2_str expr1_str
 		
 	| Sexchange (expr1, expr2) ->
 		let expr1_str = string_of_expr expr1 in
 		let expr2_str = string_of_expr expr2 in
-		Printf.sprintf "%s%s, %s = %s, %s" indent_str expr1_str expr2_str expr2_str expr1_str
+		Printf.sprintf "%s%s, %s = %s, %s\n" indent_str expr1_str expr2_str expr2_str expr1_str
 
 	| Sinitmatrix (id, size1, size2) ->
 		let size1_str = string_of_expr size1 in
 		let size2_str = string_of_expr size2 in
-		Printf.sprintf "%s%s = [[0 for _ in range(%s)] for _ in range(%s)]" indent_str id.id size2_str size1_str
+		Printf.sprintf "%s%s = [[0 for _ in range(%s)] for _ in range(%s)]\n" indent_str id.id size2_str size1_str
 
 	| Smatrix (id, size1, size2) ->
 		let size1_str = string_of_expr size1 in
 		let size2_str = string_of_expr size2 in
-		Printf.sprintf "%s%s[%s][%s]" indent_str id.id size2_str size1_str
+		Printf.sprintf "%s%s[%s][%s]\n" indent_str id.id size2_str size1_str
 
 	| Sassign (expr1, expr2) ->
 		let expr1_str = string_of_expr expr1 in
 		let expr2_str = string_of_expr expr2 in
-		Printf.sprintf "%s%s = %s" indent_str expr1_str expr2_str
+		Printf.sprintf "%s%s = %s\n" indent_str expr1_str expr2_str
 
 	| Sreturn (expr) ->
 		let expr_str = string_of_expr expr in
-		Printf.sprintf "%sreturn %s" indent_str expr_str
+		Printf.sprintf "%sreturn %s\n" indent_str expr_str
 			
 	| Sprint(expr) ->
 		let expr_str = print_value expr in
 		Printf.sprintf "%s%s\n" indent_str expr_str
+
+	| Serror(expr) ->
+		let expr_str = string_of_expr expr in
+		Printf.sprintf "%sraise Exception('%s')\n" indent_str expr_str
 
 	| Sblock(stmts) ->
 		let stmt_strs = List.map (fun s -> interpret s indent_level) stmts in

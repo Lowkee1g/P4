@@ -1,3 +1,4 @@
 Daller(A, B, C)
     A = Random(A,C)
-    ∞
+    error "peepeepoopoo diller daller"
+    return Daller(A,C)

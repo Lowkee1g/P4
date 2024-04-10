@@ -37,6 +37,7 @@ let kwd_tbl = [
   "rows", ROWS;
   "return", RETURN;
   "Random", RANDOM;
+  "error", ERROR;
 ]
 
 let id_or_kwd = 
@@ -68,7 +69,6 @@ let digit = ['0'-'9']
 let ident = (letter | '_') (letter | digit | '_')*
 let integer = '0' | ['1'-'9'] digit*
 let space = ' ' | '\t'
-let specialChar
 
 
 rule next_tokens = parse

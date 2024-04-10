@@ -29,6 +29,7 @@ type token =
   | GT
   | FOR
   | EXCHANGE
+  | ERROR
   | EQUAL
   | EOF
   | END

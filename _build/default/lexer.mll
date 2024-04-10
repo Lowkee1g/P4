@@ -37,6 +37,7 @@ let kwd_tbl = [
   "rows", ROWS;
   "return", RETURN;
   "Random", RANDOM;
+  "error", ERROR;
 ]
 
 let id_or_kwd = 
