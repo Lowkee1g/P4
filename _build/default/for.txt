@@ -1,2 +1,2 @@
 Daller(A, B, C)
-    A = Random(1,10)
+    exchange A[i] with A[q]

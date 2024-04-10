@@ -73,9 +73,9 @@ simple_stmt:
   | SWAP expr WITH expr {
 	  Sswap($2, $4)
 	}
-  (*| EXCHANGE expr WITH expr {
+  | EXCHANGE expr WITH expr {
 	  Sexchange($2, $4)
-	}*)
+	}
   | expr DOT LENGTH {
 	  Slength($1)
 	}
