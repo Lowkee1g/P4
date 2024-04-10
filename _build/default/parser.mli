@@ -23,6 +23,7 @@ type token =
   | LET
   | LENGTH
   | LBRACKET
+  | INFINITY
   | IF
   | IDENT of (string)
   | GT

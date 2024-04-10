@@ -1,2 +1,3 @@
 Daller(A, B, C)
     A = Random(A,C)
+    B = ∞

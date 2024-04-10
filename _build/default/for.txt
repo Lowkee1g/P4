@@ -1,2 +1,3 @@
 Daller(A, B, C)
-    exchange A[i] with A[q]
+    A = Random(A,C)
+    ∞

@@ -33,11 +33,12 @@ module MenhirBasics = struct
     | LET
     | LENGTH
     | LBRACKET
+    | INFINITY
     | IF
     | IDENT of (
 # 16 "parser.mly"
        (string)
-# 41 "parser.ml"
+# 42 "parser.ml"
   )
     | GT
     | FOR
@@ -52,7 +53,7 @@ module MenhirBasics = struct
     | CST of (
 # 5 "parser.mly"
        (Ast.constant)
-# 56 "parser.ml"
+# 57 "parser.ml"
   )
     | CROSS
     | COMMA
@@ -68,7 +69,7 @@ include MenhirBasics
   
   open Ast
 
-# 72 "parser.ml"
+# 73 "parser.ml"
 
 type ('s, 'r) _menhir_state = 
   | MenhirState000 : ('s, _menhir_box_file) _menhir_state
@@ -518,7 +519,7 @@ let _menhir_action_01 =
     (
 # 35 "parser.mly"
   ( Ecst c )
-# 522 "parser.ml"
+# 523 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_02 =
@@ -526,7 +527,7 @@ let _menhir_action_02 =
     (
 # 37 "parser.mly"
  ( Eident id )
-# 530 "parser.ml"
+# 531 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_03 =
@@ -534,7 +535,7 @@ let _menhir_action_03 =
     (
 # 39 "parser.mly"
  ( Ecst (Cstring s) )
-# 538 "parser.ml"
+# 539 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_04 =
@@ -542,7 +543,7 @@ let _menhir_action_04 =
     (
 # 41 "parser.mly"
  ( Ebinop(Bgt, _1, _3) )
-# 546 "parser.ml"
+# 547 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_05 =
@@ -550,7 +551,7 @@ let _menhir_action_05 =
     (
 # 43 "parser.mly"
  ( Ebinop(Blt, _1, _3) )
-# 554 "parser.ml"
+# 555 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_06 =
@@ -558,7 +559,7 @@ let _menhir_action_06 =
     (
 # 45 "parser.mly"
  ( Ebinop(Bsub, _1, _3) )
-# 562 "parser.ml"
+# 563 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_07 =
@@ -566,7 +567,7 @@ let _menhir_action_07 =
     (
 # 47 "parser.mly"
  ( Ebinop(Badd, _1, _3) )
-# 570 "parser.ml"
+# 571 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_08 =
@@ -574,7 +575,7 @@ let _menhir_action_08 =
     (
 # 49 "parser.mly"
  ( Ebinop(Bmul, _1, _3) )
-# 578 "parser.ml"
+# 579 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_09 =
@@ -582,7 +583,7 @@ let _menhir_action_09 =
     (
 # 51 "parser.mly"
  ( Ebinop(Beq, _1, _4) )
-# 586 "parser.ml"
+# 587 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_10 =
@@ -590,7 +591,7 @@ let _menhir_action_10 =
     (
 # 53 "parser.mly"
  ( Earray(_1, _3) )
-# 594 "parser.ml"
+# 595 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_11 =
@@ -598,7 +599,7 @@ let _menhir_action_11 =
     (
 # 55 "parser.mly"
  ( Ematrix(_1, _3, _6) )
-# 602 "parser.ml"
+# 603 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_12 =
@@ -606,7 +607,7 @@ let _menhir_action_12 =
     (
 # 57 "parser.mly"
  ( Elength(_1) )
-# 610 "parser.ml"
+# 611 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_13 =
@@ -614,7 +615,7 @@ let _menhir_action_13 =
     (
 # 59 "parser.mly"
  ( Ecolumns(_1) )
-# 618 "parser.ml"
+# 619 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_14 =
@@ -622,7 +623,7 @@ let _menhir_action_14 =
     (
 # 61 "parser.mly"
  ( Erows(_1) )
-# 626 "parser.ml"
+# 627 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_15 =
@@ -630,7 +631,7 @@ let _menhir_action_15 =
     (
 # 63 "parser.mly"
   ( Erandom(_3, _5) )
-# 634 "parser.ml"
+# 635 "parser.ml"
      : (Ast.expr))
 
 let _menhir_action_16 =
@@ -638,7 +639,7 @@ let _menhir_action_16 =
     (
 # 23 "parser.mly"
     ( Sblock b )
-# 642 "parser.ml"
+# 643 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_17 =
@@ -648,7 +649,7 @@ let _menhir_action_17 =
     (
 # 134 "parser.mly"
                ( { loc = (_startpos, _endpos); id } )
-# 652 "parser.ml"
+# 653 "parser.ml"
      : (Ast.ident))
 
 let _menhir_action_18 =
@@ -656,7 +657,7 @@ let _menhir_action_18 =
     (
 # 138 "parser.mly"
                ( [id] )
-# 660 "parser.ml"
+# 661 "parser.ml"
      : (Ast.ident list))
 
 let _menhir_action_19 =
@@ -664,7 +665,7 @@ let _menhir_action_19 =
     (
 # 139 "parser.mly"
                                       ( id :: ids )
-# 668 "parser.ml"
+# 669 "parser.ml"
      : (Ast.ident list))
 
 let _menhir_action_20 =
@@ -672,7 +673,7 @@ let _menhir_action_20 =
     (
 # 228 "<standard.mly>"
     ( [ x ] )
-# 676 "parser.ml"
+# 677 "parser.ml"
      : (Ast.stmt list))
 
 let _menhir_action_21 =
@@ -680,7 +681,7 @@ let _menhir_action_21 =
     (
 # 231 "<standard.mly>"
     ( x :: xs )
-# 684 "parser.ml"
+# 685 "parser.ml"
      : (Ast.stmt list))
 
 let _menhir_action_22 =
@@ -688,7 +689,7 @@ let _menhir_action_22 =
     (
 # 111 "<standard.mly>"
     ( None )
-# 692 "parser.ml"
+# 693 "parser.ml"
      : (unit option))
 
 let _menhir_action_23 =
@@ -696,7 +697,7 @@ let _menhir_action_23 =
     (
 # 114 "<standard.mly>"
     ( Some x )
-# 700 "parser.ml"
+# 701 "parser.ml"
      : (unit option))
 
 let _menhir_action_24 =
@@ -704,7 +705,7 @@ let _menhir_action_24 =
     (
 # 69 "parser.mly"
     ( Sprint e )
-# 708 "parser.ml"
+# 709 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_25 =
@@ -714,7 +715,7 @@ let _menhir_action_25 =
                                  (
   Sarray(_1, _3)
 	)
-# 718 "parser.ml"
+# 719 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_26 =
@@ -724,7 +725,7 @@ let _menhir_action_26 =
                         (
 	  Sswap(_2, _4)
 	)
-# 728 "parser.ml"
+# 729 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_27 =
@@ -734,7 +735,7 @@ let _menhir_action_27 =
                             (
 	  Sexchange(_2, _4)
 	)
-# 738 "parser.ml"
+# 739 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_28 =
@@ -744,7 +745,7 @@ let _menhir_action_28 =
                     (
 	  Slength(_1)
 	)
-# 748 "parser.ml"
+# 749 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_29 =
@@ -754,7 +755,7 @@ let _menhir_action_29 =
                      (
 	  Scolumns(_1)
 	)
-# 758 "parser.ml"
+# 759 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_30 =
@@ -764,7 +765,7 @@ let _menhir_action_30 =
                   (
 	  Srows(_1)
 	)
-# 768 "parser.ml"
+# 769 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_31 =
@@ -774,7 +775,7 @@ let _menhir_action_31 =
                                                         (
 	  Smatrix(_1, _3, _6)
 	)
-# 778 "parser.ml"
+# 779 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_32 =
@@ -784,7 +785,7 @@ let _menhir_action_32 =
                     (
 	  Sassign(_1, _3)
 	)
-# 788 "parser.ml"
+# 789 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_33 =
@@ -794,7 +795,7 @@ let _menhir_action_33 =
                 (
 	  Sreturn(_2)
 	)
-# 798 "parser.ml"
+# 799 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_34 =
@@ -802,7 +803,7 @@ let _menhir_action_34 =
     (
 # 101 "parser.mly"
     ( s )
-# 806 "parser.ml"
+# 807 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_35 =
@@ -812,7 +813,7 @@ let _menhir_action_35 =
                                                       (
     Sfunc (id, l, s)
   )
-# 816 "parser.ml"
+# 817 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_36 =
@@ -822,7 +823,7 @@ let _menhir_action_36 =
                                                 (
 	  Sfor(id, _4, _6, s)
 	)
-# 826 "parser.ml"
+# 827 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_37 =
@@ -832,7 +833,7 @@ let _menhir_action_37 =
                                                     (
 	  Sford(id, _4, _6, s)
 	)
-# 836 "parser.ml"
+# 837 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_38 =
@@ -840,7 +841,7 @@ let _menhir_action_38 =
     (
 # 118 "parser.mly"
     ( Sif(_2, s, _4) )
-# 844 "parser.ml"
+# 845 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_39 =
@@ -848,7 +849,7 @@ let _menhir_action_39 =
     (
 # 120 "parser.mly"
     ( Selseif(_2, s, _4) )
-# 852 "parser.ml"
+# 853 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_40 =
@@ -856,7 +857,7 @@ let _menhir_action_40 =
     (
 # 122 "parser.mly"
     ( Selse(s) )
-# 860 "parser.ml"
+# 861 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_41 =
@@ -866,7 +867,7 @@ let _menhir_action_41 =
                          (
 	  Swhile(_2, s)
 	)
-# 870 "parser.ml"
+# 871 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_42 =
@@ -876,7 +877,7 @@ let _menhir_action_42 =
                                               (
 	  Sinitmatrix(_2, _4, _6)
 	)
-# 880 "parser.ml"
+# 881 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_43 =
@@ -884,7 +885,7 @@ let _menhir_action_43 =
     (
 # 28 "parser.mly"
     ( s )
-# 888 "parser.ml"
+# 889 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_44 =
@@ -892,7 +893,7 @@ let _menhir_action_44 =
     (
 # 30 "parser.mly"
     ( Sblock l )
-# 896 "parser.ml"
+# 897 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_print_token : token -> string =
@@ -934,6 +935,8 @@ let _menhir_print_token : token -> string =
         "IDENT"
     | IF ->
         "IF"
+    | INFINITY ->
+        "INFINITY"
     | LBRACKET ->
         "LBRACKET"
     | LENGTH ->

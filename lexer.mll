@@ -68,6 +68,7 @@ let digit = ['0'-'9']
 let ident = (letter | '_') (letter | digit | '_')*
 let integer = '0' | ['1'-'9'] digit*
 let space = ' ' | '\t'
+let specialChar
 
 
 rule next_tokens = parse
@@ -86,6 +87,7 @@ rule next_tokens = parse
   | '-'                     { print_endline "Minus"; [MINUS] }
   | '+'                     { print_endline "Plus"; [PLUS] }
   | '*'                     { print_endline "Times"; [TIMES] }
+  | "∞"                     { print_endline "Infinity"; [INFINITY] }
   | '"'                     { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
   | integer as s            { [CST (Cint(int_of_string s))] }
   | eof                     { print_endline "eof"; NEWLINE :: unindent 0 @ [EOF] }
