@@ -23,6 +23,7 @@ let rec string_of_expr expr =
 	| Elength expr -> Printf.sprintf "len(%s)" (string_of_expr expr)
 	| Ecolumns expr -> Printf.sprintf "len(%s[0])" (string_of_expr expr)
 	| Erows expr -> Printf.sprintf "len(%s)" (string_of_expr expr)
+	| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
 	(* Add cases for other types of expressions as needed *)
 	
 	and string_of_constant = function
@@ -124,6 +125,10 @@ let rec interpret ast indent_level : string =
 		let expr2_str = string_of_expr expr2 in
 		Printf.sprintf "%s%s, %s = %s, %s" indent_str expr1_str expr2_str expr2_str expr1_str
 		
+	| Sexchange (expr1, expr2) ->
+		let expr1_str = string_of_expr expr1 in
+		let expr2_str = string_of_expr expr2 in
+		Printf.sprintf "%s%s, %s = %s, %s" indent_str expr1_str expr2_str expr2_str expr1_str
 
 	| Sinitmatrix (id, size1, size2) ->
 		let size1_str = string_of_expr size1 in

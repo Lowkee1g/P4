@@ -33,6 +33,7 @@ type expr =
   | Ematrix of ident * expr * expr
   | Erows of expr
   | Ecolumns of expr
+  | Erandom of expr * expr
   
 
 type stmt =
@@ -45,6 +46,7 @@ type stmt =
   | Sprint of expr
   | Sarray of ident * expr
   | Sswap of expr * expr
+  | Sexchange of expr * expr
   | Slength of expr
   | Srows of expr
   | Scolumns of expr
@@ -55,7 +57,6 @@ type stmt =
   | Sreturn of expr
   | Sfunc of ident * ident list * stmt 
   | Sblock of stmt list
-
   
 
 type file = stmt

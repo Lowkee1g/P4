@@ -1,11 +1,2 @@
 Daller(A, B, C)
-    for i = 10 to 20
-        print "hej"
-        if i == 1
-            print "diller"
-        elseif i < 2
-            print "daller"
-        elseif i < 3
-            print "wow"
-        else
-            print "woooo"
+    A = Random(1,10)

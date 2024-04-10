@@ -12,6 +12,7 @@ type token =
   | ROWS
   | RETURN
   | RBRACKET
+  | RANDOM
   | PRINT
   | PLUS
   | NEWLINE
@@ -26,6 +27,7 @@ type token =
   | IDENT of (string)
   | GT
   | FOR
+  | EXCHANGE
   | EQUAL
   | EOF
   | END

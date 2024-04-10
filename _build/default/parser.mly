@@ -7,10 +7,11 @@
 %token IF ELSE ELSEIF
 %token PRINT RETURN
 %token WHILE FOR TO DOWNTO
-%token SWAP WITH LENGTH 
+%token SWAP WITH LENGTH EXCHANGE
 %token GT LT MINUS PLUS EQUAL TIMES
 %token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS
 %token LBRACKET RBRACKET DOT COMMA LPAREN RPAREN
+%token RANDOM 
 %token <string> STRING
 %token <string> IDENT
 %start file
@@ -58,6 +59,8 @@ expr:
 	{ Ecolumns($1) }
   | expr DOT ROWS
 	{ Erows($1) }
+  | RANDOM LPAREN expr COMMA expr RPAREN
+  { Erandom($3, $5) }
   ;
 
 
@@ -70,6 +73,9 @@ simple_stmt:
   | SWAP expr WITH expr {
 	  Sswap($2, $4)
 	}
+  (*| EXCHANGE expr WITH expr {
+	  Sexchange($2, $4)
+	}*)
   | expr DOT LENGTH {
 	  Slength($1)
 	}

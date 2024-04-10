@@ -22,6 +22,7 @@ let kwd_tbl = [
   "to", TO;
   "downto", DOWNTO;
   "swap", SWAP;
+  "exchange", EXCHANGE;
   "length", LENGTH;
   "with", WITH;
   "if", IF;
@@ -35,6 +36,7 @@ let kwd_tbl = [
   "columns", COLUMNS;
   "rows", ROWS;
   "return", RETURN;
+  "Random", RANDOM;
 ]
 
 let id_or_kwd = 
