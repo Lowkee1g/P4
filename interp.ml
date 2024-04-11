@@ -4,6 +4,7 @@ open Format
 exception Error of string
 let error s = raise (Error s)
 
+
 let rec string_of_idents idents =
 	match idents with
 	| [] -> ""
@@ -19,6 +20,7 @@ let rec string_of_expr expr =
 	| Ecst c -> string_of_constant c
 	| Eident id -> id.id
 	| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (string_of_expr index)
+	| Erange (e1, e2) -> Printf.sprintf "range(%s, %s)" (string_of_expr e1) (string_of_expr e2)
 	| Ematrix (id, ident1, ident2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr ident1) (string_of_expr ident2)
 	| Elength expr -> Printf.sprintf "len(%s)" (string_of_expr expr)
 	| Ecolumns expr -> Printf.sprintf "len(%s[0])" (string_of_expr expr)
@@ -31,7 +33,8 @@ let rec string_of_expr expr =
 	| Cint i -> Printf.sprintf "%d" i
 	| Cstring s -> Printf.sprintf "%s" s  (* For string constants, you might want to adjust this to match your output preference *)
 	| Cbool b -> if b then "true" else "false"
-	| Cnone -> "None"
+	| Cnil -> "None"
+	| Cinfinity -> "math.inf"
 
 	and string_of_binop = function
 	| Badd -> "+"
@@ -105,9 +108,16 @@ let rec interpret ast indent_level : string =
 		let cond_str = string_of_expr cond in
 		Printf.sprintf "%swhile %s:\n%s" indent_str cond_str (interpret body (indent_level + 1))
 
+
+	(* ARRAY *)
+	| Sinitarray (id, range) ->
+		let range_str = string_of_expr range in
+		Printf.sprintf "%s%s = [None] * %s\n" indent_str id.id range_str
+
 	| Sarray (id, size) ->
 		let size_int = string_of_expr size in
 		Printf.sprintf "%s%s = [None] * %s\n" indent_str id.id size_int
+
 
 	| Slength (expr) ->
 		let expr_str = string_of_expr expr in
@@ -157,6 +167,46 @@ let rec interpret ast indent_level : string =
 	| Serror(expr) ->
 		let expr_str = string_of_expr expr in
 		Printf.sprintf "%sraise Exception('%s')\n" indent_str expr_str
+
+	(* Sort *)
+	| SsortA(expr, expr2) ->
+		let expr_str = string_of_expr expr in
+		let expr2_str = string_of_expr expr2 in
+		Printf.sprintf "%s%s.sort(reverse=False, key=%s)\n" indent_str expr_str expr2_str
+	| SsortD(expr, expr2) ->
+		let expr_str = string_of_expr expr in
+		let expr2_str = string_of_expr expr2 in
+		Printf.sprintf "%s%s.sort(reverse=True, key=%s)\n" indent_str expr_str expr2_str
+
+	(* Insert *)
+	(*insert x into H's root list
+    insert A[i] into H's root list
+    insert all-items-in T.table into new-table
+    insert x into T.table
+
+    insert expr into expr
+    insert all-items-in expr into expr
+    insert expr into expr root list *)
+
+	| Sinsert(expr, expr2) ->
+		let insertValue = string_of_expr expr in
+		let expr_list = string_of_expr expr2 in
+		Printf.sprintf "%s%s.insert(0, %s)\n" indent_str expr_list insertValue
+		
+	| SinsertRoot(expr, expr2) ->
+		let insertValue = string_of_expr expr in
+		let expr_list = string_of_expr expr2 in
+		let loop_code = Printf.sprintf "%sfor i in range(0, len(%s)):\n" indent_str expr_list in
+		let insert_code = Printf.sprintf "%s%s.insert(0, %s)\n" (indent_str ^ (String.make (indent_level * 4) ' ')) expr_list insertValue in
+		loop_code ^ insert_code
+	
+		
+	| SinsertAll(expr, expr2) ->
+		let insertValue = string_of_expr expr in
+		let expr_list = string_of_expr expr2 in
+		Printf.sprintf "%s%s.extend(%s)\n" indent_str expr_list insertValue
+
+	
 
 	| Sblock(stmts) ->
 		let stmt_strs = List.map (fun s -> interpret s indent_level) stmts in

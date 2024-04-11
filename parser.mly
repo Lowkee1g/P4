@@ -2,17 +2,20 @@
   open Ast
 %}
 
-%token <Ast.constant> CST
+%token <Ast.constant> CST 
 %token EOF END BEGIN NEWLINE 
 %token IF ELSE ELSEIF
 %token PRINT RETURN
 %token WHILE FOR TO DOWNTO
 %token SWAP WITH LENGTH EXCHANGE
 %token GT LT MINUS PLUS EQUAL TIMES INFINITY
-%token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS
-%token LBRACKET RBRACKET DOT COMMA LPAREN RPAREN
+%token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS ARRAY
+%token LBRACKET RBRACKET DOT DOTDOT COMMA LPAREN RPAREN
 %token RANDOM ERROR
-%token <string> STRING
+%token SORT MONOTONICALLY ASCENDING DECREASING ORDER BY WEIGHT
+%token NIL                                                          (* NULL   *)
+%token INSERT INTO ALL ITEMS IN ROOTLIST                              (* INSERT *)
+%token <string> STRING 
 %token <string> IDENT
 %start file
 %type <Ast.file> file
@@ -31,42 +34,81 @@ file:
 ;
 
 expr:
+  | NIL 
+  { Ecst Cnil }
+
+  | INFINITY 
+  { Ecst Cinfinity }
+
   | c = CST 
   { Ecst c }
+
   | id = ident
 	{ Eident id }
+
   | s = STRING 
-	{ Ecst (Cstring s) }
+	{ 
+    print_endline ("#String: " ^ s);
+    Ecst (Cstring s) 
+  }
+
   | expr GT expr 
 	{ Ebinop(Bgt, $1, $3) }
-  |  expr LT expr 
+
+  | expr LT expr 
 	{ Ebinop(Blt, $1, $3) }
+
   | expr MINUS expr 
 	{ Ebinop(Bsub, $1, $3) }
+
   | expr PLUS expr 
 	{ Ebinop(Badd, $1, $3) }
+
   | expr TIMES expr 
 	{ Ebinop(Bmul, $1, $3) }
+
   | expr EQUAL EQUAL expr 
 	{ Ebinop(Beq, $1, $4) }
+
   | ident LBRACKET expr RBRACKET
 	{ Earray($1, $3) }
+
   | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET
 	{ Ematrix($1, $3, $6) }
+
   | expr DOT LENGTH
 	{ Elength($1) }
+
   | expr DOT COLUMNS
 	{ Ecolumns($1) }
+
+  | expr DOTDOT expr
+  { Erange($1, $3) }  
+
   | expr DOT ROWS
 	{ Erows($1) }
+
   | RANDOM LPAREN expr COMMA expr RPAREN
   { Erandom($3, $5) }
+
   | ident LPAREN l = ident_list RPAREN
   { EfunctionCall($1, l) }
+
   ;
 
 
 simple_stmt:
+  (* Init array *)
+  | LET id = ident LBRACKET e1 = expr RBRACKET BE_A_NEW ARRAY {
+    print_string "#Init array\n";
+	  Sinitarray(id, e1)
+  }
+  (* Init statments *)
+  | LET ident BE_A_NEW expr CROSS expr MATRIX {
+    print_string "#Init matrix";
+	  Sinitmatrix($2, $4, $6)
+	}
+
   | PRINT e = expr
     { Sprint e }
   | ident LBRACKET expr RBRACKET {
@@ -99,11 +141,27 @@ simple_stmt:
   | ERROR expr {
     Serror($2)
   }
+  | SORT e1 = expr MONOTONICALLY ASCENDING ORDER BY WEIGHT e2 = expr{
+    SsortA(e1, e2)
+  }
+  | SORT e1 = expr MONOTONICALLY DECREASING ORDER BY WEIGHT e2 = expr {
+    SsortD(e1, e2)
+  }
+  | INSERT e1 = expr INTO e2 = expr {
+    Sinsert(e1, e2)
+  }
+  | INSERT ALL ITEMS IN e1 = expr INTO e2 = expr {
+    SinsertAll(e1, e2)
+  }
+  | INSERT e1 = expr INTO e2 = expr ROOTLIST {
+    SinsertRoot(e1, e2)
+  }
 ;
 
 stmt:
   | s = simple_stmt NEWLINE
     { s }
+  
 
   // FUNCTION DEFINITIONS
   | id = ident LPAREN l = ident_list RPAREN s = suite {
@@ -128,15 +186,17 @@ stmt:
 
   
   | WHILE expr s = suite {
+    print_endline "#While";
 	  Swhile($2, s)
 	}
-  | LET ident BE_A_NEW expr CROSS expr MATRIX {
-	  Sinitmatrix($2, $4, $6)
-	}
+  
   ;
 
 ident:
-  | id = IDENT { { loc = ($startpos, $endpos); id } }
+  | id = IDENT {
+    print_endline ("#Id: " ^ id);
+    { loc = ($startpos, $endpos); id } 
+  }
 ;
 
 ident_list:

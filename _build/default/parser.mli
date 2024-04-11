@@ -4,18 +4,24 @@
 type token = 
   | WITH
   | WHILE
+  | WEIGHT
   | TO
   | TIMES
   | SWAP
   | STRING of (string)
+  | SORT
   | RPAREN
   | ROWS
+  | ROOTLIST
   | RETURN
   | RBRACKET
   | RANDOM
   | PRINT
   | PLUS
+  | ORDER
+  | NIL
   | NEWLINE
+  | MONOTONICALLY
   | MINUS
   | MATRIX
   | LT
@@ -23,7 +29,11 @@ type token =
   | LET
   | LENGTH
   | LBRACKET
+  | ITEMS
+  | INTO
+  | INSERT
   | INFINITY
+  | IN
   | IF
   | IDENT of (string)
   | GT
@@ -36,13 +46,19 @@ type token =
   | ELSEIF
   | ELSE
   | DOWNTO
+  | DOTDOT
   | DOT
+  | DECREASING
   | CST of (Ast.constant)
   | CROSS
   | COMMA
   | COLUMNS
+  | BY
   | BE_A_NEW
   | BEGIN
+  | ASCENDING
+  | ARRAY
+  | ALL
 
 (* This exception is raised by the monolithic API functions. *)
 

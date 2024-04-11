@@ -1,5 +1,4 @@
-def Daller(A, B, C):
-    A = random.randint(A, C)
-    raise Exception('peepeepoopoo diller daller')
-    return Daller(A, C)
+A = [None] * range(1, 5)
+B = [None] * range(6, 10)
+B.insert(0, A)
 

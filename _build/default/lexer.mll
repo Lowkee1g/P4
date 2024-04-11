@@ -23,29 +23,65 @@ let kwd_tbl = [
   "downto", DOWNTO;
   "swap", SWAP;
   "exchange", EXCHANGE;
-  "length", LENGTH;
   "with", WITH;
+
+  (*If Statements*)
   "if", IF;
   "else", ELSE;
   "elseif", ELSEIF;
+
+  (*Simple Stmt*)
   "print", PRINT;
+  "return", RETURN;
+  "error", ERROR;
+  "length", LENGTH;
+  "Random", RANDOM;
+
+  (* While *)
   "while", WHILE;
+
+  (* Matrix & array *)
   "let", LET;
+  "be_a_new", BE_A_NEW;
   "cross", CROSS; (* Produktet af to matrixer *)
   "matrix", MATRIX;
+  "array", ARRAY;
   "columns", COLUMNS;
   "rows", ROWS;
-  "return", RETURN;
-  "Random", RANDOM;
-  "error", ERROR;
+
+
+  (* Sort *)
+  "sort", SORT;
+  "ascending", ASCENDING;
+  "decreasing", DECREASING;
+  "monotonically", MONOTONICALLY;
+  "order", ORDER;
+  "by", BY;
+  "weight", WEIGHT;
+
+  (* Insert *)
+  "insert", INSERT;
+  "into", INTO;
+  "all", ALL;
+  "items", ITEMS;
+  "in", IN;
+  "root-list", ROOTLIST;
 ]
 
 let id_or_kwd = 
-  let h = Hashtbl.create 17 in
+  let h = Hashtbl.create 50 in
   List.iter (fun (s, t) -> Hashtbl.add h s t) kwd_tbl;
   fun s ->
     (*let s = String.lowercase_ascii s in*)
-    try Hashtbl.find h s with Not_found -> IDENT s
+    try 
+      let found = Hashtbl.find h s in
+      print_endline ("Found keyword: " ^ s);  (* This prints if the input was a keyword *)
+      found
+    with Not_found ->
+      print_endline ("Not a keyword: " ^ s);  (* This prints if the input was not a keyword *)
+      IDENT s
+
+
 
 
 let stack = ref [0]  (* indentation stack *)
@@ -74,23 +110,25 @@ let space = ' ' | '\t'
 rule next_tokens = parse
   | '\n'    { new_line lexbuf; update_stack (indentation lexbuf) }
   | (space)+ { next_tokens lexbuf }
-  | ident as id             { print_endline ("Identifier: " ^ id); [id_or_kwd id] }
-  | '='                     { print_endline "Equal"; [EQUAL] }
-  | '>'                     { print_endline "GreaterThan"; [GT] }
-  | '<'                     { print_endline "LessThan"; [LT] }
-  | '['                     { print_endline "LBracket"; [LBRACKET] }
-  | ']'                     { print_endline "RBracket"; [RBRACKET] }
-  | '('                     { print_endline "LParen"; [LPAREN] }
-  | ')'                     { print_endline "RParen"; [RPAREN] }
-  | '.'                     { print_endline "Dot"; [DOT] }
-  | ','                     { print_endline "Comma"; [COMMA] }
-  | '-'                     { print_endline "Minus"; [MINUS] }
-  | '+'                     { print_endline "Plus"; [PLUS] }
-  | '*'                     { print_endline "Times"; [TIMES] }
-  | "∞"                     { print_endline "Infinity"; [INFINITY] }
+  | "nil"                   { print_string "NIL"; [NIL] }
+  | "∞"                     { print_string "Infinity "; [INFINITY] }
+  | '='                     { print_string "Equal "; [EQUAL] }
+  | '>'                     { print_string "GreaterThan "; [GT] }
+  | '<'                     { print_string "LessThan "; [LT] }
+  | '['                     { print_string "LBracket "; [LBRACKET] }
+  | ']'                     { print_string "RBracket "; [RBRACKET] }
+  | '('                     { print_string "LParen "; [LPAREN] }
+  | ')'                     { print_string "RParen "; [RPAREN] }
+  | '.'                     { print_string "Dot "; [DOT] }
+  | ".."                    { print_string "DOTDOT "; [DOTDOT] }
+  | ','                     { print_string "Comma "; [COMMA] }
+  | '-'                     { print_string "Minus "; [MINUS] }
+  | '+'                     { print_string "Plus "; [PLUS] }
+  | '*'                     { print_string "Times "; [TIMES] }
   | '"'                     { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
+  | ident as id             { [id_or_kwd id] }
   | integer as s            { [CST (Cint(int_of_string s))] }
-  | eof                     { print_endline "eof"; NEWLINE :: unindent 0 @ [EOF] }
+  | eof                     { print_endline "eof\n\n"; NEWLINE :: unindent 0 @ [EOF] }
   | _ as c                  { raise (Lexing_error ("illegal character: " ^ String.make 1 c)) }
 
 and indentation = parse

@@ -1,4 +1,4 @@
-Daller(A, B, C)
-    A = Random(A,C)
-    error "peepeepoopoo diller daller"
-    return Daller(A,C)
+let A[1..5] be_a_new array
+let B[6..10] be_a_new array¨
+
+insert A into B

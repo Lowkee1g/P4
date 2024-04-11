@@ -1,3 +1,4 @@
+open List
 
 open Format
 open Lexing
@@ -49,7 +50,7 @@ with
     printf "Lexer error: %s\n" msg
 | Parser.Error ->
   report (lexeme_start_p lexbuf, lexeme_end_p lexbuf);
-  eprintf "syntax error@.";
+  eprintf "(parser) - syntax error@.";
   exit 1
 | End_of_file ->
     printf "End of file\n"

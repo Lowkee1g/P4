@@ -19,10 +19,11 @@ type binop =
 
 
 type constant =
-  | Cnone
   | Cstring of string
   | Cint of int
   | Cbool of bool
+  | Cnil
+  | Cinfinity
 
 type expr =
   | Ebinop of binop * expr * expr
@@ -35,6 +36,7 @@ type expr =
   | Ecolumns of expr
   | Erandom of expr * expr
   | EfunctionCall of ident * ident list
+  | Erange of expr * expr
   
 
 type stmt =
@@ -46,6 +48,7 @@ type stmt =
   | Sendif
   | Sprint of expr
   | Sarray of ident * expr
+  | Sinitarray of ident * expr
   | Sswap of expr * expr
   | Sexchange of expr * expr
   | Slength of expr
@@ -59,6 +62,11 @@ type stmt =
   | Sfunc of ident * ident list * stmt 
   | Serror of expr
   | Sblock of stmt list
+  | SsortA of expr * expr
+  | SsortD of expr * expr
+  | Sinsert of expr * expr
+  | SinsertAll of expr * expr
+  | SinsertRoot of expr * expr 
   
 
 type file = stmt
