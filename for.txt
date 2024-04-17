@@ -2,3 +2,7 @@ let A[1..5] be_a_new array
 let B[6..10] be_a_new array
 
 insert A into B
+a = ∞
+a = - ∞
+
+b = 5 - 8

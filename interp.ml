@@ -34,7 +34,8 @@ let rec string_of_expr expr =
 	| Cstring s -> Printf.sprintf "%s" s  (* For string constants, you might want to adjust this to match your output preference *)
 	| Cbool b -> if b then "true" else "false"
 	| Cnil -> "None"
-	| Cinfinity -> "math.inf"
+	| Cinfinity -> "float('inf')"
+	| CminusInfinity -> "float('-inf')"
 
 	and string_of_binop = function
 	| Badd -> "+"

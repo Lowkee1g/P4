@@ -31,6 +31,7 @@ type token =
   | LBRACKET
   | ITEMS
   | INTO
+  | INTEGER of (int)
   | INSERT
   | INFINITY
   | IN

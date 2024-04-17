@@ -17,6 +17,7 @@
 %token INSERT INTO ALL ITEMS IN ROOTLIST                              (* INSERT *)
 %token <string> STRING 
 %token <string> IDENT
+%token <int> INTEGER 
 %start file
 %type <Ast.file> file
 %%
@@ -40,8 +41,17 @@ expr:
   | INFINITY 
   { Ecst Cinfinity }
 
+  | MINUS INFINITY
+  { Ecst CminusInfinity }
+
   | c = CST 
   { Ecst c }
+
+  | MINUS i = CST
+  {
+    match i with
+    | Cint n -> Ecst (Cint (-n))
+    | _ -> failwith "Expected an integer constant" }
 
   | id = ident
 	{ Eident id }

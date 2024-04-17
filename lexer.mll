@@ -103,7 +103,7 @@ let update_stack n =
 let letter = ['a'-'z' 'A'-'Z']
 let digit = ['0'-'9']
 let ident = (letter | '_') (letter | digit | '_')*
-let integer = '0' | ['1'-'9'] digit*
+let integer = '0' | ['1'-'9'] digit* 
 let space = ' ' | '\t'
 
 

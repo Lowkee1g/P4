@@ -24,6 +24,7 @@ type constant =
   | Cbool of bool
   | Cnil
   | Cinfinity
+  | CminusInfinity
 
 type expr =
   | Ebinop of binop * expr * expr
