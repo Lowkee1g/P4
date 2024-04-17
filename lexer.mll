@@ -42,8 +42,6 @@ let kwd_tbl = [
 
   (* Matrix & array *)
   "let", LET;
-  "be_a_new", BE_A_NEW;
-  "cross", CROSS; (* Produktet af to matrixer *)
   "matrix", MATRIX;
   "array", ARRAY;
   "columns", COLUMNS;
@@ -104,32 +102,44 @@ let letter = ['a'-'z' 'A'-'Z']
 let digit = ['0'-'9']
 let ident = (letter | '_') (letter | digit | '_')*
 let integer = '0' | ['1'-'9'] digit* 
+(* let expr = ident | ['1'-'9'] digit* *)
 let space = ' ' | '\t'
 
 
+
+
 rule next_tokens = parse
-  | '\n'    { new_line lexbuf; update_stack (indentation lexbuf) }
-  | (space)+ { next_tokens lexbuf }
-  | "nil"                   { print_string "NIL"; [NIL] }
-  | "∞"                     { print_string "Infinity "; [INFINITY] }
-  | '='                     { print_string "Equal "; [EQUAL] }
-  | '>'                     { print_string "GreaterThan "; [GT] }
-  | '<'                     { print_string "LessThan "; [LT] }
-  | '['                     { print_string "LBracket "; [LBRACKET] }
-  | ']'                     { print_string "RBracket "; [RBRACKET] }
-  | '('                     { print_string "LParen "; [LPAREN] }
-  | ')'                     { print_string "RParen "; [RPAREN] }
-  | '.'                     { print_string "Dot "; [DOT] }
-  | ".."                    { print_string "DOTDOT "; [DOTDOT] }
-  | ','                     { print_string "Comma "; [COMMA] }
-  | '-'                     { print_string "Minus "; [MINUS] }
-  | '+'                     { print_string "Plus "; [PLUS] }
-  | '*'                     { print_string "Times "; [TIMES] }
-  | '"'                     { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
-  | ident as id             { [id_or_kwd id] }
-  | integer as s            { [CST (Cint(int_of_string s))] }
-  | eof                     { print_endline "eof\n\n"; NEWLINE :: unindent 0 @ [EOF] }
-  | _ as c                  { raise (Lexing_error ("illegal character: " ^ String.make 1 c)) }
+  | '\n'                                { new_line lexbuf; update_stack (indentation lexbuf) }
+  | (space)+                            { next_tokens lexbuf }
+
+  (* Special characters start *)
+  | "×"                                 { print_string "CROSS "; [CROSS] }
+  | "cross"                             { print_string "CROSS "; [CROSS] }
+  | "∞"                                 { print_string "Infinity "; [INFINITY] }
+  | "inf"                               { print_string "Infinity "; [INFINITY] }
+  | '⋅'                                 { print_string "Times "; [TIMES] }
+  | "*"                                 { print_string "Times "; [TIMES] }
+  (* Special characters end *)
+
+  | "nil"                               { print_string "NIL"; [NIL] }
+  | "be" (space)+ "a" (space)+ "new"    { print_string "BeANew "; [BE_A_NEW] }
+  | '='                                 { print_string "Equal "; [EQUAL] }
+  | '>'                                 { print_string "GreaterThan "; [GT] }
+  | '<'                                 { print_string "LessThan "; [LT] }
+  | '['                                 { print_string "LBracket "; [LBRACKET] }
+  | ']'                                 { print_string "RBracket "; [RBRACKET] }
+  | '('                                 { print_string "LParen "; [LPAREN] }
+  | ')'                                 { print_string "RParen "; [RPAREN] }
+  | '.'                                 { print_string "Dot "; [DOT] }
+  | ".."                                { print_string "DOTDOT "; [DOTDOT] }
+  | ','                                 { print_string "Comma "; [COMMA] }
+  | '-'                                 { print_string "Minus "; [MINUS] }
+  | '+'                                 { print_string "Plus "; [PLUS] }
+  | '"'                                 { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
+  | ident as id                         { [id_or_kwd id] }
+  | integer as s                        { [CST (Cint(int_of_string s))] }
+  | eof                                 { print_endline "eof\n\n"; NEWLINE :: unindent 0 @ [EOF] }
+  | _ as c                              { raise (Lexing_error ("illegal character: " ^ String.make 1 c)) }
 
 and indentation = parse
   | (space)* '\n'

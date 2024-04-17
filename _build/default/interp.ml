@@ -5,11 +5,18 @@ exception Error of string
 let error s = raise (Error s)
 
 
-let rec string_of_idents idents =
+let rec string_of_idents_params idents =
 	match idents with
 	| [] -> ""
 	| id::[] -> id.id
-	| id::rest -> id.id ^ ", " ^ string_of_idents rest
+	| id::rest -> id.id ^ ", " ^ string_of_idents_params rest
+
+
+let rec string_of_idents_dash idents =
+	match idents with
+	| [] -> ""
+	| id::[] -> id.id
+	| id::rest -> id.id ^ "_" ^ string_of_idents_dash rest
 
 let rec string_of_expr expr =
 	match expr with
@@ -26,7 +33,7 @@ let rec string_of_expr expr =
 	| Ecolumns expr -> Printf.sprintf "len(%s[0])" (string_of_expr expr)
 	| Erows expr -> Printf.sprintf "len(%s)" (string_of_expr expr)
 	| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
-	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents args)
+	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents_params args)
 	(* Add cases for other types of expressions as needed *)
 	
 	and string_of_constant = function
@@ -65,10 +72,11 @@ let rec interpret ast indent_level : string =
 	(* Handle the function definition case *)
 	| Sfunc(id, args, stmt) ->
 		(* Use string_of_idents to turn the list of idents into a comma-separated string *)
-		let args_str = string_of_idents args in
+		let args_str = string_of_idents_params args in
+		let id_str = string_of_idents_dash id in
 
 		(* Use args_str in the formatted string for the function definition *)
-		Printf.sprintf "%sdef %s(%s):\n%s" indent_str id.id args_str (interpret stmt (indent_level + 1))
+		Printf.sprintf "%sdef %s(%s):\n%s" indent_str id_str args_str (interpret stmt (indent_level + 1))
 
 
 	(* FOR LOOPS*)

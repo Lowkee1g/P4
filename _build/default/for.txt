@@ -1,8 +1,10 @@
-let A[1..5] be_a_new array
-let B[6..10] be_a_new array
 
-insert A into B
-a = ∞
-a = - ∞
-
-b = 5 - 8
+SQUARE-MATRIX-MULTIPLY(A,B)
+    n = A.rows
+    let C be a new n × n matrix
+    for i = 1 to n  
+        for j = 1 to n
+            c_ij = 0
+            for k = 1 to n
+                c_ij = c_ij + a_ik * b_kj
+    return C

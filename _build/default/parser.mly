@@ -58,7 +58,7 @@ expr:
 
   | s = STRING 
 	{ 
-    print_endline ("#String: " ^ s);
+    print_string ("#String: " ^ s);
     Ecst (Cstring s) 
   }
 
@@ -115,7 +115,7 @@ simple_stmt:
   }
   (* Init statments *)
   | LET ident BE_A_NEW expr CROSS expr MATRIX {
-    print_string "#Init matrix";
+    print_string "#Init matrix \n\n\n\n";
 	  Sinitmatrix($2, $4, $6)
 	}
 
@@ -174,7 +174,7 @@ stmt:
   
 
   // FUNCTION DEFINITIONS
-  | id = ident LPAREN l = ident_list RPAREN s = suite {
+  | id = ident_list LPAREN l = ident_list RPAREN s = suite {
     Sfunc (id, l, s)
   }
   
@@ -196,7 +196,7 @@ stmt:
 
   
   | WHILE expr s = suite {
-    print_endline "#While";
+    print_string "#While";
 	  Swhile($2, s)
 	}
   
@@ -204,13 +204,14 @@ stmt:
 
 ident:
   | id = IDENT {
-    print_endline ("#Id: " ^ id);
+    print_string ("#Id: " ^ id ^ "\n");
     { loc = ($startpos, $endpos); id } 
   }
 ;
 
 ident_list:
   | id = ident { [id] }  (* Base case: a single identifier *)
+  | id = ident MINUS ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a minus and more identifiers *)
   | id = ident COMMA ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
 ;
 

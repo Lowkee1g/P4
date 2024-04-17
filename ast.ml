@@ -60,7 +60,7 @@ type stmt =
   | Smatrix of ident * expr * expr
   | Sassign of expr * expr
   | Sreturn of expr
-  | Sfunc of ident * ident list * stmt 
+  | Sfunc of ident list * ident list * stmt 
   | Serror of expr
   | Sblock of stmt list
   | SsortA of expr * expr
