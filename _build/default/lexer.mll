@@ -111,12 +111,14 @@ let space = ' ' | '\t'
 rule next_tokens = parse
   | '\n'                                { new_line lexbuf; update_stack (indentation lexbuf) }
   | (space)+                            { next_tokens lexbuf }
-  
+
   (* Special characters start *)
   | "×"                                 { print_string "CROSS "; [CROSS] }
   | "cross"                             { print_string "CROSS "; [CROSS] }
   | "∞"                                 { print_string "Infinity "; [INFINITY] }
   | "inf"                               { print_string "Infinity "; [INFINITY] }
+  | "⋅"                                 { print_string "Times "; [TIMES] }
+  | "*"                                 { print_string "Times "; [TIMES] }
   (* Special characters end *)
 
   | "nil"                               { print_string "NIL"; [NIL] }
@@ -133,7 +135,6 @@ rule next_tokens = parse
   | ','                                 { print_string "Comma "; [COMMA] }
   | '-'                                 { print_string "Minus "; [MINUS] }
   | '+'                                 { print_string "Plus "; [PLUS] }
-  | '*'                                 { print_string "Times "; [TIMES] }
   | '"'                                 { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
   | ident as id                         { [id_or_kwd id] }
   | integer as s                        { [CST (Cint(int_of_string s))] }

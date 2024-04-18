@@ -117,7 +117,7 @@ rule next_tokens = parse
   | "cross"                             { print_string "CROSS "; [CROSS] }
   | "∞"                                 { print_string "Infinity "; [INFINITY] }
   | "inf"                               { print_string "Infinity "; [INFINITY] }
-  | '⋅'                                 { print_string "Times "; [TIMES] }
+  | "⋅"                                 { print_string "Times "; [TIMES] }
   | "*"                                 { print_string "Times "; [TIMES] }
   (* Special characters end *)
 

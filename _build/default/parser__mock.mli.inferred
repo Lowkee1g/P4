@@ -67,4 +67,5 @@ val xv_ident_list : Ast.ident list
 val xv_ident : Ast.ident
 val xv_file : Ast.stmt
 val xv_expr : Ast.expr
+val xv_eDotnotation : Ast.expr
 val menhir_end_marker : int

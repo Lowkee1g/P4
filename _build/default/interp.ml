@@ -29,11 +29,12 @@ let rec string_of_expr expr =
 	| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (string_of_expr index)
 	| Erange (e1, e2) -> Printf.sprintf "range(%s, %s)" (string_of_expr e1) (string_of_expr e2)
 	| Ematrix (id, ident1, ident2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr ident1) (string_of_expr ident2)
-	| Elength expr -> Printf.sprintf "len(%s)" (string_of_expr expr)
-	| Ecolumns expr -> Printf.sprintf "len(%s[0])" (string_of_expr expr)
-	| Erows expr -> Printf.sprintf "len(%s)" (string_of_expr expr)
+	| Elength id -> Printf.sprintf "len(%s)" id.id
+	| Ecolumns id -> Printf.sprintf "len(%s[0])" id.id
+	| Erows id -> Printf.sprintf "len(%s)"  id.id
 	| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
 	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents_params args)
+	| Eobject (id1, id2) -> Printf.sprintf "%s.%s" id1.id id2.id
 	(* Add cases for other types of expressions as needed *)
 	
 	and string_of_constant = function
@@ -186,6 +187,8 @@ let rec interpret ast indent_level : string =
 		let expr_str = string_of_expr expr in
 		let expr2_str = string_of_expr expr2 in
 		Printf.sprintf "%s%s.sort(reverse=True, key=%s)\n" indent_str expr_str expr2_str
+
+	(* Get *)
 
 	(* Insert *)
 	(*insert x into H's root list

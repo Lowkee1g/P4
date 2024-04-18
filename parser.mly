@@ -34,6 +34,21 @@ file:
     { Sblock l }
 ;
 
+eDotnotation:
+  | ident DOT ident
+  { Eobject($1, $3) }
+
+  | ident DOT ROWS
+  { Erows($1) }
+
+  | ident DOT COLUMNS
+  { Ecolumns($1) }
+
+  | ident DOT LENGTH
+  { Elength($1) }
+;
+  
+
 expr:
   | NIL 
   { Ecst Cnil }
@@ -46,6 +61,9 @@ expr:
 
   | c = CST 
   { Ecst c }
+
+  | dot = eDotnotation 
+  { dot }
 
   | MINUS i = CST
   {
@@ -86,17 +104,8 @@ expr:
   | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET
 	{ Ematrix($1, $3, $6) }
 
-  | expr DOT LENGTH
-	{ Elength($1) }
-
-  | expr DOT COLUMNS
-	{ Ecolumns($1) }
-
   | expr DOTDOT expr
   { Erange($1, $3) }  
-
-  | expr DOT ROWS
-	{ Erows($1) }
 
   | RANDOM LPAREN expr COMMA expr RPAREN
   { Erandom($3, $5) }
@@ -129,15 +138,6 @@ simple_stmt:
 	}
   | EXCHANGE expr WITH expr {
 	  Sexchange($2, $4)
-	}
-  | expr DOT LENGTH {
-	  Slength($1)
-	}
-  | expr DOT COLUMNS {
-	  Scolumns($1)
-	}
-  | expr DOT ROWS {
-	  Srows($1)
 	}
   | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET {
 	  Smatrix($1, $3, $6)

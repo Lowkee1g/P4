@@ -31,13 +31,14 @@ type expr =
   | Ecst of constant
   | Eident of ident
   | Earray of ident * expr
-  | Elength of expr
+  | Elength of ident
   | Ematrix of ident * expr * expr
-  | Erows of expr
-  | Ecolumns of expr
+  | Erows of ident
+  | Ecolumns of ident
   | Erandom of expr * expr
   | EfunctionCall of ident * ident list
   | Erange of expr * expr
+  | Eobject of ident * ident
   
 
 type stmt =

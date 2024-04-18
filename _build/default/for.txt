@@ -1,10 +1,11 @@
 
 SQUARE-MATRIX-MULTIPLY(A,B)
     n = A.rows
+    m = A.daller
     let C be a new n × n matrix
     for i = 1 to n  
         for j = 1 to n
-            c_ij = 0
+            C_ji = 0
             for k = 1 to n
                 c_ij = c_ij + a_ik * b_kj
     return C
