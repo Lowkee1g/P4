@@ -1,0 +1,11 @@
+Random-Sample(m,n)
+    if m == 0
+        return ∅
+    else S = Random-Sample(m-1,n-1)
+        i = Random(1,n)
+        if i ∈ S 
+            S = S ⋃ {n}
+        else S = S ⋃ {i}
+        return S
+        
+    

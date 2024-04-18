@@ -1,0 +1,4 @@
+Randomize-In-Place(A)
+    n = A.length
+    for i = 1 to needed
+        swap A[i] with A[RANDOM(i,n)]
