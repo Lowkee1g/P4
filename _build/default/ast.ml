@@ -48,7 +48,7 @@ type stmt =
   | Selseif  of expr * stmt * stmt
   | Selse of stmt
   | Sendif
-  | Sprint of expr
+  | Sprint of string list
   | Sarray of ident * expr
   | Sinitarray of ident * expr
   | Sswap of expr * expr

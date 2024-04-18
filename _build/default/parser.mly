@@ -128,10 +128,11 @@ simple_stmt:
 	  Sinitmatrix($2, $4, $6)
 	}
 
-  | PRINT e = expr
-    { Sprint e }
+  | PRINT s = string_list { 
+    Sprint(s) 
+    }
   | ident LBRACKET expr RBRACKET {
-  Sarray($1, $3)
+    Sarray($1, $3)
 	}
   | SWAP expr WITH expr {
 	  Sswap($2, $4)
@@ -215,3 +216,13 @@ ident_list:
   | id = ident COMMA ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
 ;
 
+string_list:
+  | s = STRING { [s] }
+  | s = STRING sl = string_list { s :: sl }
+
+(* string_expr:
+  | s = STRING { [s] }
+  | id = ident { [id] }
+  | s = STRING elist = string_expr { s :: elist }
+  | id = ident elist = string_expr { id :: elist }
+; *)

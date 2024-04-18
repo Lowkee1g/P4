@@ -18,6 +18,8 @@ let rec string_of_idents_dash idents =
 	| id::[] -> id.id
 	| id::rest -> id.id ^ "_" ^ string_of_idents_dash rest
 
+
+
 let rec string_of_expr expr =
 	match expr with
 	| Ebinop(op, e1, e2) ->
@@ -62,7 +64,8 @@ let rec string_of_expr expr =
 
 let rec print_value expr = 
 	match expr with
-	| Ecst (Cstring s) -> Printf.sprintf "print('%s')" s
+	| [s] -> Printf.sprintf "print('%s')" s
+	| s :: rest -> Printf.sprintf "print('%s')" s
 	| _ -> failwith "Cannot print expression"
 
 let rec interpret ast indent_level : string =
@@ -170,8 +173,8 @@ let rec interpret ast indent_level : string =
 		let expr_str = string_of_expr expr in
 		Printf.sprintf "%sreturn %s\n" indent_str expr_str
 			
-	| Sprint(expr) ->
-		let expr_str = print_value expr in
+	| Sprint(str) ->
+		let expr_str = print_value str in
 		Printf.sprintf "%s%s\n" indent_str expr_str
 
 	| Serror(expr) ->

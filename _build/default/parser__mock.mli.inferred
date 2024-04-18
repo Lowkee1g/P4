@@ -59,6 +59,7 @@ type token =
   | ALL
 val menhir_begin_marker : int
 val xv_suite : Ast.stmt
+val xv_string_list : string list
 val xv_stmt : Ast.stmt
 val xv_simple_stmt : Ast.stmt
 val xv_option_NEWLINE_ : unit option
