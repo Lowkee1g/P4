@@ -2,17 +2,22 @@
   open Ast
 %}
 
+%token DOTPRODUCT TIMES FORALL EXISTS EMPTYSET NOTINRIGHT NOTINLEFT 
+%token NOTSUBSETEQLEFT NOTSUPSETEQRIGHT TOP TURNSTILE INTERSECTION UNION GEQ LEQ NEQ
+%token SUBSETEQRIGHT SUPSETEQLEFT SUBSETRIGHT SUBSETLEFT INRIGHT INLEFT
+
 %token <Ast.constant> CST 
 %token EOF END BEGIN NEWLINE 
 %token IF ELSE ELSEIF
 %token PRINT RETURN
 %token WHILE FOR TO DOWNTO
 %token SWAP WITH LENGTH EXCHANGE
-%token GT LT MINUS PLUS EQUAL TIMES INFINITY
+%token GT LT MINUS PLUS EQUAL INFINITY
 %token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS ARRAY
 %token LBRACKET RBRACKET DOT DOTDOT COMMA LPAREN RPAREN
 %token RANDOM ERROR
-%token SORT MONOTONICALLY ASCENDING DECREASING ORDER BY WEIGHT
+%token MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT SORT
+%token MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT
 %token NIL                                                          (* NULL   *)
 %token INSERT INTO ALL ITEMS IN ROOTLIST                              (* INSERT *)
 %token <string> STRING 
@@ -27,11 +32,32 @@ file:
     { Sblock b }
 ;
 
-  suite:
-| s = simple_stmt NEWLINE
-    { s }
-| NEWLINE BEGIN l = nonempty_list(stmt) END
-    { Sblock l }
+(* indentation *)
+suite:
+  | s = simple_stmt NEWLINE
+      { s }
+  | NEWLINE BEGIN l = nonempty_list(stmt) END
+      { Sblock l }
+;
+
+math_op:
+  | TIMES
+  { Bmul }
+
+  | PLUS
+  { Badd }
+  
+  | MINUS
+  { Bsub }
+  
+  | GT
+  { Bgt }
+  
+  | LT
+  { Blt }
+
+  | EMPTYSET
+  { Memptyset }
 ;
 
 eDotnotation:
@@ -80,20 +106,8 @@ expr:
     Ecst (Cstring s) 
   }
 
-  | expr GT expr 
-	{ Ebinop(Bgt, $1, $3) }
-
-  | expr LT expr 
-	{ Ebinop(Blt, $1, $3) }
-
-  | expr MINUS expr 
-	{ Ebinop(Bsub, $1, $3) }
-
-  | expr PLUS expr 
-	{ Ebinop(Badd, $1, $3) }
-
-  | expr TIMES expr 
-	{ Ebinop(Bmul, $1, $3) }
+  | expr m = math_op expr 
+	{ Ebinop(m, $1, $3) }
 
   | expr EQUAL EQUAL expr 
 	{ Ebinop(Beq, $1, $4) }
@@ -151,10 +165,10 @@ simple_stmt:
   | ERROR expr {
     Serror($2)
   }
-  | SORT e1 = expr MONOTONICALLY ASCENDING ORDER BY WEIGHT e2 = expr{
+  | SORT e1 = expr MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT e2 = expr{
     SsortA(e1, e2)
   }
-  | SORT e1 = expr MONOTONICALLY DECREASING ORDER BY WEIGHT e2 = expr {
+  | SORT e1 = expr MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT e2 = expr {
     SsortD(e1, e2)
   }
   | INSERT e1 = expr INTO e2 = expr {

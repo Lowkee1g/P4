@@ -1,10 +1,16 @@
 type token =
     WITH
   | WHILE
-  | WEIGHT
+  | UNION
+  | TURNSTILE
+  | TOP
   | TO
   | TIMES
   | SWAP
+  | SUPSETEQLEFT
+  | SUBSETRIGHT
+  | SUBSETLEFT
+  | SUBSETEQRIGHT
   | STRING of string
   | SORT
   | RPAREN
@@ -15,46 +21,57 @@ type token =
   | RANDOM
   | PRINT
   | PLUS
-  | ORDER
+  | NOTSUPSETEQRIGHT
+  | NOTSUBSETEQLEFT
+  | NOTINRIGHT
+  | NOTINLEFT
   | NIL
   | NEWLINE
-  | MONOTONICALLY
+  | NEQ
+  | MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT
+  | MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT
   | MINUS
   | MATRIX
   | LT
   | LPAREN
   | LET
+  | LEQ
   | LENGTH
   | LBRACKET
   | ITEMS
   | INTO
+  | INTERSECTION
   | INTEGER of int
   | INSERT
+  | INRIGHT
+  | INLEFT
   | INFINITY
   | IN
   | IF
   | IDENT of string
   | GT
+  | GEQ
+  | FORALL
   | FOR
+  | EXISTS
   | EXCHANGE
   | ERROR
   | EQUAL
   | EOF
   | END
+  | EMPTYSET
   | ELSEIF
   | ELSE
   | DOWNTO
+  | DOTPRODUCT
   | DOTDOT
   | DOT
-  | DECREASING
   | CST of Ast.constant
   | CROSS
   | COMMA
   | COLUMNS
-  | BY
   | BE_A_NEW
   | BEGIN
-  | ASCENDING
   | ARRAY
   | ALL
 val menhir_begin_marker : int
@@ -63,6 +80,7 @@ val xv_stmt : Ast.stmt
 val xv_simple_stmt : Ast.stmt
 val xv_option_NEWLINE_ : unit option
 val xv_nonempty_list_stmt_ : Ast.stmt list
+val xv_math_op : Ast.binop
 val xv_ident_list : Ast.ident list
 val xv_ident : Ast.ident
 val xv_file : Ast.stmt

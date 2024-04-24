@@ -16,7 +16,7 @@ type binop =
   | Bge
   | Band
   | Bor
-
+  | Memptyset
 
 type constant =
   | Cstring of string

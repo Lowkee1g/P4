@@ -60,11 +60,15 @@ let rec string_of_expr expr =
 	| Bge -> ">="
 	| Band -> "&&"
 	| Bor -> "||"
+	| Memptyset -> "{}"
 
 
 let rec print_value expr = 
 	match expr with
 	| Ecst (Cstring s) -> Printf.sprintf "print('%s')" s
+	| Eident id -> Printf.sprintf "print(%s)" id.id
+	| Earray (id, index) -> Printf.sprintf "print(%s[%s])" id.id (string_of_expr index)
+	| Ematrix (id, ident1, ident2) -> Printf.sprintf "print(%s[%s][%s])" id.id (string_of_expr ident1) (string_of_expr ident2)
 	| _ -> failwith "Cannot print expression"
 
 let rec interpret ast indent_level : string =
