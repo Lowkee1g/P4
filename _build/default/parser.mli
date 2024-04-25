@@ -5,15 +5,9 @@ type token =
   | WITH
   | WHILE
   | UNION
-  | TURNSTILE
-  | TOP
   | TO
   | TIMES
   | SWAP
-  | SUPSETEQLEFT
-  | SUBSETRIGHT
-  | SUBSETLEFT
-  | SUBSETEQRIGHT
   | STRING of (string)
   | SORT
   | RPAREN
@@ -24,39 +18,33 @@ type token =
   | RANDOM
   | PRINT
   | PLUS
-  | NOTSUPSETEQRIGHT
-  | NOTSUBSETEQLEFT
-  | NOTINRIGHT
-  | NOTINLEFT
+  | PI
   | NIL
   | NEWLINE
   | NEQ
   | MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT
   | MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT
+  | MOD
   | MINUS
   | MATRIX
+  | LTE
   | LT
   | LPAREN
   | LET
-  | LEQ
   | LENGTH
   | LBRACKET
   | ITEMS
   | INTO
-  | INTERSECTION
+  | INTERSECT
   | INTEGER of (int)
   | INSERT
-  | INRIGHT
-  | INLEFT
   | INFINITY
   | IN
   | IF
   | IDENT of (string)
+  | GTE
   | GT
-  | GEQ
-  | FORALL
   | FOR
-  | EXISTS
   | EXCHANGE
   | ERROR
   | EQUAL
@@ -66,9 +54,9 @@ type token =
   | ELSEIF
   | ELSE
   | DOWNTO
-  | DOTPRODUCT
   | DOTDOT
   | DOT
+  | DIVIDE
   | CST of (Ast.constant)
   | CROSS
   | COMMA

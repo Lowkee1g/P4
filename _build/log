@@ -19,12 +19,4 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_725169_output
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamllex -q -o lexer.ml lexer.mll)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl lexer.ml) > _build/default/.main.eobjs/lexer.impl.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -o .main.eobjs/byte/lexer.cmo -c -impl lexer.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -o .main.eobjs/byte/main.cmo -c -impl main.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/lexer.cmx -c -impl lexer.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/main.cmx -c -impl main.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -o main.exe .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
-# Promoting "_build/default/main.exe" to "main.exe"
+$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_352fbe_output

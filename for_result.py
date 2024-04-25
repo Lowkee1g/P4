@@ -1,2 +1,2 @@
-A = 1 {} 2
+A.sort(reverse=True, key=A.key)
 

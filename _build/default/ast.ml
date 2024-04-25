@@ -17,6 +17,12 @@ type binop =
   | Band
   | Bor
   | Memptyset
+  | Blte
+  | Bgte
+  | Bmod
+  | Bin
+  | Bun
+  | Binter
 
 type constant =
   | Cstring of string
@@ -24,6 +30,7 @@ type constant =
   | Cbool of bool
   | Cnil
   | Cinfinity
+  | Cpi
   | CminusInfinity
 
 type expr =

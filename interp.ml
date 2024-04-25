@@ -46,6 +46,7 @@ let rec string_of_expr expr =
 	| Cnil -> "None"
 	| Cinfinity -> "float('inf')"
 	| CminusInfinity -> "float('-inf')"
+	| Cpi -> "tærte"
 
 	and string_of_binop = function
 	| Badd -> "+"
@@ -61,6 +62,13 @@ let rec string_of_expr expr =
 	| Band -> "&&"
 	| Bor -> "||"
 	| Memptyset -> "{}"
+	| Blte -> "test"
+  | Bgte -> "test"
+  | Bmod -> "test"
+  | Bin -> "test"
+  | Bun -> "test"
+  | Binter -> "test"
+
 
 
 let rec print_value expr = 

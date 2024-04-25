@@ -1,1 +1,1 @@
-A = 1 ∅ 2
+sort A into monotonically decreasing order by weight A.key

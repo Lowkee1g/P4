@@ -2,9 +2,7 @@
   open Ast
 %}
 
-%token DOTPRODUCT TIMES FORALL EXISTS EMPTYSET NOTINRIGHT NOTINLEFT 
-%token NOTSUBSETEQLEFT NOTSUPSETEQRIGHT TOP TURNSTILE INTERSECTION UNION GEQ LEQ NEQ
-%token SUBSETEQRIGHT SUPSETEQLEFT SUBSETRIGHT SUBSETLEFT INRIGHT INLEFT
+%token EMPTYSET LTE GTE NEQ UNION INTERSECT PI MOD TIMES DIVIDE
 
 %token <Ast.constant> CST 
 %token EOF END BEGIN NEWLINE 
@@ -17,7 +15,7 @@
 %token LBRACKET RBRACKET DOT DOTDOT COMMA LPAREN RPAREN
 %token RANDOM ERROR
 %token MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT SORT
-%token MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT
+%token MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT 
 %token NIL                                                          (* NULL   *)
 %token INSERT INTO ALL ITEMS IN ROOTLIST                              (* INSERT *)
 %token <string> STRING 
@@ -56,8 +54,33 @@ math_op:
   | LT
   { Blt }
 
+  | MOD
+  { Bmod }
+
+  | DIVIDE
+  { Bdiv }
+
   | EMPTYSET
   { Memptyset }
+
+  | LTE
+  { Blte }
+
+  | GTE
+  { Bgte }
+
+  | NEQ
+  { Bneq }
+
+  | IN
+  { Bin }
+
+  | UNION
+  { Bun }
+
+  | INTERSECT
+  { Binter }
+
 ;
 
 eDotnotation:
@@ -81,6 +104,9 @@ expr:
 
   | INFINITY 
   { Ecst Cinfinity }
+
+  | PI
+  { Ecst Cpi }
 
   | MINUS INFINITY
   { Ecst CminusInfinity }
