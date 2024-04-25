@@ -58,6 +58,12 @@ math_op:
 
   | EMPTYSET
   { Memptyset }
+
+  | GTEQUAL
+  { Mgreaterthanequal }
+
+  | LTEQUAL
+  { Mlessthanequal }
 ;
 
 eDotnotation:

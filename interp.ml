@@ -61,6 +61,8 @@ let rec string_of_expr expr =
 	| Band -> "&&"
 	| Bor -> "||"
 	| Memptyset -> "{}"
+	| Mgreaterthanequal -> ">="
+	| Mlessthanequal -> "<="
 
 
 let rec print_value expr = 

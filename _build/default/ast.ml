@@ -17,6 +17,8 @@ type binop =
   | Band
   | Bor
   | Memptyset
+  | Mgreaterthanequal
+  | Mlessthanequal
 
 type constant =
   | Cstring of string

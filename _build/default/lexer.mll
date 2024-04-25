@@ -50,6 +50,12 @@ let kwd_tbl = [
 
   (* Sort *)
   "sort", SORT;
+  "ascending", ASCENDING;
+  "decreasing", DECREASING;
+  "monotonically", MONOTONICALLY;
+  "order", ORDER;
+  "by", BY;
+  "weight", WEIGHT;
 
   (* Insert *)
   "insert", INSERT;
@@ -113,13 +119,13 @@ rule next_tokens = parse
   | "inf"                               { print_string "Infinity "; [INFINITY] }
   | "⋅"                                 { print_string "Times "; [TIMES] }
   | "*"                                 { print_string "Times "; [TIMES] }
-  | "∅"                                 { print_string "Empty_set "; [EMPTYSET] }
+  | "ø"                                 { print_string "EmptySet "; [EMPTYSET] }
+  | "≥"                                 { print_string "GreaterThanEqual "; [GTEQUAL] }
+  | "≤"                                 { print_string "LessThanEqual "; [LTEQUAL] }
   (* Special characters end *)
 
   | "nil"                               { print_string "NIL"; [NIL] }
   | "be" (space)+ "a" (space)+ "new"    { print_string "BeANew "; [BE_A_NEW] }
-  | "monotonically" (space)+ "ascending" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT] }
-  | "monotonically" (space)+ "decreasing" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_DESCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT] }
   | '='                                 { print_string "Equal "; [EQUAL] }
   | '>'                                 { print_string "GreaterThan "; [GT] }
   | '<'                                 { print_string "LessThan "; [LT] }
