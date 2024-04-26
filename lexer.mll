@@ -124,20 +124,20 @@ rule next_tokens = parse
   | '/'                                 { print_string "Divide "; [DIVIDE] }
   | '%'                                 { print_string "Mod "; [MOD] }
   | "∅"                                 { print_string "Empty_set "; [EMPTYSET] }
-  | "≤"                                { print_string "LessThanEqual "; [LTE] }
-  | "≥"                                { print_string "GreaterThanEqual "; [GTE] }
-  | "≠"                                { print_string "NotEqual "; [NEQ] }
-  | "∈"                                { print_string "In "; [IN] }
-  | "⋃"                                { print_string "Union "; [UNION] }
-  | "⋂"                                { print_string "Intersection "; [INTERSECT] }
-  | "π"                                { print_string "Pi "; [PI] }
+  | "≤"                                 { print_string "LessThanEqual "; [LTE] }
+  | "≥"                                 { print_string "GreaterThanEqual "; [GTE] }
+  | "≠"                                 { print_string "NotEqual "; [NEQ] }
+  | "∈"                                 { print_string "In "; [IN] }
+  | "⋃"                                 { print_string "Union "; [UNION] }
+  | "⋂"                                 { print_string "Intersection "; [INTERSECT] }
+  | "π"                                 { print_string "Pi "; [PI] }
 
 
 
   (* Logical *)
 
   (* Everything else *)
-  | "nil"                               { print_string "NIL"; [NIL] }
+  | "NIL"                               { print_string "NIL"; [NIL] }
   | "be" (space)+ "a" (space)+ "new"    { print_string "BeANew "; [BE_A_NEW] }
   | "monotonically" (space)+ "ascending" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT] }
   | "monotonically" (space)+ "decreasing" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_DESCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT] }

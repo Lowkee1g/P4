@@ -1,1 +1,6 @@
-sort A into monotonically decreasing order by weight A.key
+if v.π == NIL 
+    print "hej"
+else print "2"
+if 1 == 1
+    print"goddag"
+print"hej"

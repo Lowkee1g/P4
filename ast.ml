@@ -45,14 +45,16 @@ type expr =
   | Erandom of expr * expr
   | EfunctionCall of ident * ident list
   | Erange of expr * expr
-  | Eobject of ident * ident
+  | Eobject of ident * expr
   
 
 type stmt =
   | Sfor of ident * expr * expr * stmt
   | Sford of ident * expr * expr * stmt
-  | Sif of expr * stmt * stmt
-  | Selseif  of expr * stmt * stmt
+  | Sifnest of expr * stmt * stmt
+  | Sif of expr * stmt
+  | Selseifnest of expr * stmt * stmt
+  | Selseif of expr * stmt
   | Selse of stmt
   | Sendif
   | Sprint of expr
@@ -68,7 +70,7 @@ type stmt =
   | Smatrix of ident * expr * expr
   | Sassign of expr * expr
   | Sreturn of expr
-  | Sfunc of ident list * ident list * stmt 
+  | Sfunc of ident * ident list * stmt 
   | Serror of expr
   | Sblock of stmt list
   | SsortA of expr * expr

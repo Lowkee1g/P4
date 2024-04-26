@@ -23,9 +23,13 @@ let rec string_of_idents_dash idents =
 let rec string_of_expr expr =
 	match expr with
 	| Ebinop(op, e1, e2) ->
+		let op_str = string_of_binop op in
 		let e1_str = string_of_expr e1 in
 		let e2_str = string_of_expr e2 in
-		Printf.sprintf "%s %s %s" e1_str (string_of_binop op) e2_str (* This will handle expressions like '1 == 1' *)
+		if op_str = ".union" then
+			Printf.sprintf "%s.union(%s)" e1_str e2_str
+		else
+			Printf.sprintf "%s %s %s" e1_str op_str e2_str
 	| Ecst c -> string_of_constant c
 	| Eident id -> id.id
 	| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (string_of_expr index)
@@ -36,7 +40,7 @@ let rec string_of_expr expr =
 	| Erows id -> Printf.sprintf "len(%s)"  id.id
 	| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
 	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents_params args)
-	| Eobject (id1, id2) -> Printf.sprintf "%s.%s" id1.id id2.id
+	| Eobject (id1, expr) -> Printf.sprintf "%s.%s" id1.id (string_of_expr expr)
 	(* Add cases for other types of expressions as needed *)
 	
 	and string_of_constant = function
@@ -46,7 +50,7 @@ let rec string_of_expr expr =
 	| Cnil -> "None"
 	| Cinfinity -> "float('inf')"
 	| CminusInfinity -> "float('-inf')"
-	| Cpi -> "tærte"
+	| Cpi -> "(math.pi)"
 
 	and string_of_binop = function
 	| Badd -> "+"
@@ -62,13 +66,12 @@ let rec string_of_expr expr =
 	| Band -> "&&"
 	| Bor -> "||"
 	| Memptyset -> "{}"
-	| Blte -> "test"
-  | Bgte -> "test"
-  | Bmod -> "test"
-  | Bin -> "test"
-  | Bun -> "test"
+	| Blte -> "<="
+  | Bgte -> ">="
+  | Bmod -> "%"
+  | Bin -> "in"
+  | Bun -> ".union"
   | Binter -> "test"
-
 
 
 let rec print_value expr = 
@@ -88,10 +91,9 @@ let rec interpret ast indent_level : string =
 	| Sfunc(id, args, stmt) ->
 		(* Use string_of_idents to turn the list of idents into a comma-separated string *)
 		let args_str = string_of_idents_params args in
-		let id_str = string_of_idents_dash id in
 
 		(* Use args_str in the formatted string for the function definition *)
-		Printf.sprintf "%sdef %s(%s):\n%s" indent_str id_str args_str (interpret stmt (indent_level + 1))
+		Printf.sprintf "%sdef %s(%s):\n%s" indent_str id.id args_str (interpret stmt (indent_level + 1))
 
 
 	(* FOR LOOPS*)
@@ -104,21 +106,33 @@ let rec interpret ast indent_level : string =
 	| Sford(ident, start_val, end_val, stmt) ->
 		let start_val_int = string_of_expr start_val in
 		let end_val_int = string_of_expr end_val in
-		Printf.sprintf "%sfor %s in range(%s, %s, -1):%s" 
+		Printf.sprintf "%sfor %s in range(%s, %s, -1):\n%s" 
 			indent_str ident.id start_val_int end_val_int (interpret stmt (indent_level + 1))
 
 	(* IF STATEMENTS*)
-	| Sif(cond, body, body2) ->
+	| Sifnest(cond, body, body2) ->
 		let cond_str = string_of_expr cond in
 		let body_str = interpret body (indent_level + 1) in
 		let body2_str = interpret body2 (indent_level) in
 		Printf.sprintf "%sif %s:\n%s%s" 
 			indent_str cond_str body_str body2_str
+	
+	| Sif(cond, body) ->
+		let cond_str = string_of_expr cond in
+		let body_str = interpret body (indent_level + 1) in
+		Printf.sprintf "%sif %s:\n%s" 
+			indent_str cond_str body_str 
+		
 
-	| Selseif(cond, body1, nextIfStmt) ->
+	| Selseifnest(cond, body1, nextIfStmt) ->
 		let cond_str = string_of_expr cond in
 		Printf.sprintf "%selif (%s):\n%s%s" 
 			indent_str cond_str (interpret body1 (indent_level + 1)) (interpret nextIfStmt (indent_level))
+	| Selseif(cond, body) ->
+		let cond_str = string_of_expr cond in
+		Printf.sprintf "%selif (%s):\n%s" 
+			indent_str cond_str (interpret body (indent_level + 1))
+	
 	
 	| Selse(body) ->
 		Printf.sprintf "%selse:\n%s" indent_str (interpret body (indent_level + 1))

@@ -60,9 +60,6 @@ math_op:
   | DIVIDE
   { Bdiv }
 
-  | EMPTYSET
-  { Memptyset }
-
   | LTE
   { Blte }
 
@@ -81,12 +78,13 @@ math_op:
   | INTERSECT
   { Binter }
 
+  | EMPTYSET
+  { Memptyset }
 ;
 
-eDotnotation:
-  | ident DOT ident
-  { Eobject($1, $3) }
 
+
+eDotnotation:
   | ident DOT ROWS
   { Erows($1) }
 
@@ -95,8 +93,11 @@ eDotnotation:
 
   | ident DOT LENGTH
   { Elength($1) }
+
+  | ident DOT expr
+  { Eobject($1, $3)}
 ;
-  
+
 
 expr:
   | NIL 
@@ -117,11 +118,6 @@ expr:
   | dot = eDotnotation 
   { dot }
 
-  | MINUS i = CST
-  {
-    match i with
-    | Cint n -> Ecst (Cint (-n))
-    | _ -> failwith "Expected an integer constant" }
 
   | id = ident
 	{ Eident id }
@@ -134,6 +130,12 @@ expr:
 
   | expr m = math_op expr 
 	{ Ebinop(m, $1, $3) }
+
+  /* | MINUS i = CST
+  {
+    match i with
+    | Cint n -> Ecst (Cint (-n))
+    | _ -> failwith "Expected an integer constant" } */
 
   | expr EQUAL EQUAL expr 
 	{ Ebinop(Beq, $1, $4) }
@@ -214,7 +216,7 @@ stmt:
   
 
   // FUNCTION DEFINITIONS
-  | id = ident_list LPAREN l = ident_list RPAREN s = suite {
+  | id = ident LPAREN l = ident_list RPAREN s = suite {
     Sfunc (id, l, s)
   }
   
@@ -228,9 +230,13 @@ stmt:
 
   // IF STATEMENTS
   | IF expr s = suite stmt
-    { Sif($2, s, $4) }
+    { Sifnest($2, s, $4) }
+  | IF expr s = suite 
+    { Sif($2, s) }
   | ELSEIF expr s = suite stmt
-    { Selseif($2, s, $4) }
+    { Selseifnest($2, s, $4) }
+  | ELSEIF expr s = suite 
+    { Selseif($2, s) }
   | ELSE s = suite 
     { Selse(s) }
 
