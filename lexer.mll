@@ -135,6 +135,8 @@ rule next_tokens = parse
 
 
   (* Logical *)
+  | "and"                               { print_string "And "; [AND] }
+  | "or"                                { print_string "Or "; [OR] }
 
   (* Everything else *)
   | "NIL"                               { print_string "NIL"; [NIL] }

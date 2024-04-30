@@ -16,6 +16,7 @@ type token =
   | PRINT
   | PLUS
   | PI
+  | OR
   | NIL
   | NEWLINE
   | NEQ
@@ -61,6 +62,7 @@ type token =
   | BE_A_NEW
   | BEGIN
   | ARRAY
+  | AND
   | ALL
 val menhir_begin_marker : int
 val xv_suite : Ast.stmt
@@ -69,9 +71,12 @@ val xv_simple_stmt : Ast.stmt
 val xv_option_NEWLINE_ : unit option
 val xv_nonempty_list_stmt_ : Ast.stmt list
 val xv_math_op : Ast.binop
+val xv_init_array : Ast.expr
 val xv_ident_list : Ast.ident list
 val xv_ident : Ast.ident
+val xv_functionName : Ast.ident
 val xv_file : Ast.stmt
 val xv_expr : Ast.expr
 val xv_eDotnotation : Ast.expr
+val xv_array_list : Ast.expr list
 val menhir_end_marker : int

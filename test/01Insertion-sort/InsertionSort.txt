@@ -1,4 +1,4 @@
-INSERTION-SORT(A)
+INSERTION_SORT(A)
     for j = 2 to A.length
         key = A[j]
 

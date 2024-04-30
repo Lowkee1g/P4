@@ -1,6 +1,9 @@
 type location = Lexing.position * Lexing.position
 
-type ident = { loc: location; id: string; }
+type ident = {
+  loc: location;
+  id: string;
+}
 
 
 type binop = 
@@ -46,7 +49,7 @@ type expr =
   | EfunctionCall of ident * ident list
   | Erange of expr * expr
   | Eobject of ident * expr
-  
+  | Einitarray of ident * expr  
 
 type stmt =
   | Sfor of ident * expr * expr * stmt
@@ -58,8 +61,7 @@ type stmt =
   | Selse of stmt
   | Sendif
   | Sprint of expr
-  | Sarray of ident * expr
-  | Sinitarray of ident * expr
+  | SinitArrayList of expr list
   | Sswap of expr * expr
   | Sexchange of expr * expr
   | Slength of expr

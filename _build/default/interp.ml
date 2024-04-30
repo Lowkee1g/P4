@@ -11,14 +11,11 @@ let rec string_of_idents_params idents =
 	| id::[] -> id.id
 	| id::rest -> id.id ^ ", " ^ string_of_idents_params rest
 
-
 let rec string_of_idents_dash idents =
 	match idents with
 	| [] -> ""
 	| id::[] -> id.id
 	| id::rest -> id.id ^ "_" ^ string_of_idents_dash rest
-
-
 
 let rec string_of_expr expr =
 	match expr with
@@ -30,50 +27,56 @@ let rec string_of_expr expr =
 			Printf.sprintf "%s.union(%s)" e1_str e2_str
 		else
 			Printf.sprintf "%s %s %s" e1_str op_str e2_str
-	| Ecst c -> string_of_constant c
-	| Eident id -> id.id
-	| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (string_of_expr index)
-	| Erange (e1, e2) -> Printf.sprintf "range(%s, %s)" (string_of_expr e1) (string_of_expr e2)
-	| Ematrix (id, ident1, ident2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr ident1) (string_of_expr ident2)
-	| Elength id -> Printf.sprintf "len(%s)" id.id
-	| Ecolumns id -> Printf.sprintf "len(%s[0])" id.id
-	| Erows id -> Printf.sprintf "len(%s)"  id.id
-	| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
-	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents_params args)
-	| Eobject (id1, expr) -> Printf.sprintf "%s.%s" id1.id (string_of_expr expr)
-	(* Add cases for other types of expressions as needed *)
-	
-	and string_of_constant = function
-	| Cint i -> Printf.sprintf "%d" i
-	| Cstring s -> Printf.sprintf "%s" s  (* For string constants, you might want to adjust this to match your output preference *)
-	| Cbool b -> if b then "true" else "false"
-	| Cnil -> "None"
-	| Cinfinity -> "float('inf')"
-	| CminusInfinity -> "float('-inf')"
-	| Cpi -> "(math.pi)"
-
-	and string_of_binop = function
-	| Badd -> "+"
-	| Bsub -> "-"
-	| Bmul -> "*"
-	| Bdiv -> "/"
-	| Beq -> "=="
-	| Bneq -> "!="
-	| Blt -> "<"
-	| Ble -> "<="
-	| Bgt -> ">"
-	| Bge -> ">="
-	| Band -> "&&"
-	| Bor -> "||"
-	| Memptyset -> "{}"
-	| Blte -> "<="
-  | Bgte -> ">="
-  | Bmod -> "%"
-  | Bin -> "in"
-  | Bun -> ".union"
-  | Binter -> "test"
-
-
+		| Ecst c -> string_of_constant c
+		| Eident id -> id.id
+		| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (string_of_expr index)
+		| Einitarray (id, size) -> Printf.sprintf "%s[%s]" id.id (string_of_expr size)
+		| Erange (e1, e2) -> Printf.sprintf "range(%s, %s)" (string_of_expr e1) (string_of_expr e2)
+		| Ematrix (id, ident1, ident2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr ident1) (string_of_expr ident2)
+		| Elength id -> Printf.sprintf "len(%s)" id.id
+		| Ecolumns id -> Printf.sprintf "len(%s[0])" id.id
+		| Erows id -> Printf.sprintf "len(%s)"  id.id
+		| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
+		| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents_params args)
+		| Eobject (id1, expr) -> Printf.sprintf "%s.%s" id1.id (string_of_expr expr)
+		(* Add cases for other types of expressions as needed *)
+		
+		and string_of_constant = function
+		| Cint i -> Printf.sprintf "%d" i
+		| Cstring s -> Printf.sprintf "%s" s  (* For string constants, you might want to adjust this to match your output preference *)
+		| Cbool b -> if b then "true" else "false"
+		| Cnil -> "None"
+		| Cinfinity -> "float('inf')"
+		| CminusInfinity -> "float('-inf')"
+		| Cpi -> "(math.pi)"
+		
+		and string_of_binop = function
+		| Badd -> "+"
+		| Bsub -> "-"
+		| Bmul -> "*"
+		| Bdiv -> "/"
+		| Beq -> "=="
+		| Bneq -> "!="
+		| Blt -> "<"
+		| Ble -> "<="
+		| Bgt -> ">"
+		| Bge -> ">="
+		| Band -> "and"
+		| Bor -> "or"
+		| Memptyset -> "{}"
+		| Blte -> "<="
+		| Bgte -> ">="
+		| Bmod -> "%"
+		| Bin -> "in"
+		| Bun -> ".union"
+		| Binter -> "test"
+				
+let rec string_of_arrays (arraylist: expr list) : string =
+	match arraylist with
+	| [] -> ""
+	| head::[] -> string_of_expr head  (* Use string_of_expr for conversion *)
+	| head::rest -> string_of_expr head ^ ", " ^ string_of_arrays rest  (* Recursively handle rest *)
+				
 let rec print_value expr = 
 	match expr with
 	| Ecst (Cstring s) -> Printf.sprintf "print('%s')" s
@@ -81,10 +84,10 @@ let rec print_value expr =
 	| Earray (id, index) -> Printf.sprintf "print(%s[%s])" id.id (string_of_expr index)
 	| Ematrix (id, ident1, ident2) -> Printf.sprintf "print(%s[%s][%s])" id.id (string_of_expr ident1) (string_of_expr ident2)
 	| _ -> failwith "Cannot print expression"
-
-let rec interpret ast indent_level : string =
-	(* Generate a string for indentation: *)
-	let indent_str = if indent_level = 0 then "" else String.make (indent_level * 4) ' ' in
+	
+	let rec interpret ast indent_level : string =
+		(* Generate a string for indentation: *)
+		let indent_str = if indent_level = 0 then "" else String.make (indent_level * 4) ' ' in
 	match ast with
 	(* Function *)
 	(* Handle the function definition case *)
@@ -148,13 +151,9 @@ let rec interpret ast indent_level : string =
 
 
 	(* ARRAY *)
-	| Sinitarray (id, range) ->
-		let range_str = string_of_expr range in
-		Printf.sprintf "%s%s = [None] * %s\n" indent_str id.id range_str
-
-	| Sarray (id, size) ->
-		let size_int = string_of_expr size in
-		Printf.sprintf "%s%s = [None] * %s\n" indent_str id.id size_int
+	| SinitArrayList (arrays) ->
+		let arrays_str = string_of_arrays arrays in
+		Printf.sprintf "%s%s = []\n" indent_str arrays_str
 
 
 	| Slength (expr) ->

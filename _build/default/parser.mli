@@ -19,6 +19,7 @@ type token =
   | PRINT
   | PLUS
   | PI
+  | OR
   | NIL
   | NEWLINE
   | NEQ
@@ -64,6 +65,7 @@ type token =
   | BE_A_NEW
   | BEGIN
   | ARRAY
+  | AND
   | ALL
 
 (* This exception is raised by the monolithic API functions. *)

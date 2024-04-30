@@ -17,13 +17,17 @@
 %token MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT SORT
 %token MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT 
 %token NIL                                                          (* NULL   *)
-%token INSERT INTO ALL ITEMS IN ROOTLIST                              (* INSERT *)
+%token INSERT INTO ALL ITEMS IN ROOTLIST                             (* INSERT *)
+%token AND OR
 %token <string> STRING 
 %token <string> IDENT
 %token <int> INTEGER 
 %start file
 %type <Ast.file> file
 %%
+
+
+
 
 file:
   | NEWLINE? b = nonempty_list(stmt) NEWLINE? EOF
@@ -123,10 +127,7 @@ expr:
 	{ Eident id }
 
   | s = STRING 
-	{ 
-    print_string ("#String: " ^ s);
-    Ecst (Cstring s) 
-  }
+	{ Ecst (Cstring s) }
 
   | expr m = math_op expr 
 	{ Ebinop(m, $1, $3) }
@@ -140,41 +141,52 @@ expr:
   | expr EQUAL EQUAL expr 
 	{ Ebinop(Beq, $1, $4) }
 
+  | expr AND expr
+  { Ebinop(Band, $1, $3) }
+
+  | expr OR expr
+  { Ebinop(Bor, $1, $3) }
+
   | ident LBRACKET expr RBRACKET
 	{ Earray($1, $3) }
 
   | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET
 	{ Ematrix($1, $3, $6) }
 
-  | expr DOTDOT expr
-  { Erange($1, $3) }  
 
   | RANDOM LPAREN expr COMMA expr RPAREN
   { Erandom($3, $5) }
 
-  | ident LPAREN l = ident_list RPAREN
+  | functionName LPAREN l = ident_list RPAREN
   { EfunctionCall($1, l) }
 
+
+  | expr DOTDOT expr
+  { Erange($1, $3) }  
   ;
 
+init_array:
+  (* Array *)
+  | id = ident LBRACKET e1 = expr RBRACKET
+  { 
+    print_string ("#Array: " ^ id.id);
+    Einitarray(id, e1) 
+  }
+  ;
 
 simple_stmt:
   (* Init array *)
-  | LET id = ident LBRACKET e1 = expr RBRACKET BE_A_NEW ARRAY {
-    print_string "#Init array\n";
-	  Sinitarray(id, e1)
+  | LET array = array_list BE_A_NEW ARRAY {
+    SinitArrayList(array)
   }
   (* Init statments *)
   | LET ident BE_A_NEW expr CROSS expr MATRIX {
-    print_string "#Init matrix \n\n\n\n";
 	  Sinitmatrix($2, $4, $6)
 	}
 
   | PRINT e = expr
     { Sprint e }
-  | ident LBRACKET expr RBRACKET {
-  Sarray($1, $3)
-	}
+
   | SWAP expr WITH expr {
 	  Sswap($2, $4)
 	}
@@ -216,7 +228,7 @@ stmt:
   
 
   // FUNCTION DEFINITIONS
-  | id = ident LPAREN l = ident_list RPAREN s = suite {
+  | id = functionName LPAREN l = ident_list RPAREN s = suite {
     Sfunc (id, l, s)
   }
   
@@ -241,6 +253,7 @@ stmt:
     { Selse(s) }
 
   
+  // WHILE LOOPS
   | WHILE expr s = suite {
     print_string "#While";
 	  Swhile($2, s)
@@ -255,9 +268,24 @@ ident:
   }
 ;
 
+
+
+array_list:
+  | e = init_array { [e] }
+  | e = init_array AND e1 = init_array { [e; e1] }
+  | e = init_array COMMA AND e1 = init_array { [e; e1] } 
+  | e = init_array COMMA es = array_list { e :: es }
+;
+
 ident_list:
   | id = ident { [id] }  (* Base case: a single identifier *)
   | id = ident MINUS ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a minus and more identifiers *)
   | id = ident COMMA ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
 ;
 
+functionName:
+  | id1 = ident
+    { { loc = ($startpos, $endpos); id = id1.id } }
+  | id1 = ident MINUS ids = functionName
+    { { loc = ($startpos, $endpos); id = id1.id ^ "-" ^ ids.id } }
+;
