@@ -5,5 +5,5 @@ SQUARE-MATRIX-MULTIPLY (A, B)
         for j = 1 to n 
             C[i][j] = 0
             for k = 1 to n
-                C[i][j] = C[i][j] + a[i][k] ⋅ b[k][j]
+                C[i][j] = C[i][j] + A[i][k] ⋅ B[k][j]
     return C 

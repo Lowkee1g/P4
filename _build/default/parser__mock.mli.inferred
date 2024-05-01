@@ -74,7 +74,6 @@ val xv_math_op : Ast.binop
 val xv_init_array : Ast.expr
 val xv_ident_list : Ast.ident list
 val xv_ident : Ast.ident
-val xv_functionName : Ast.ident
 val xv_file : Ast.stmt
 val xv_expr : Ast.expr
 val xv_eDotnotation : Ast.expr

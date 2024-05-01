@@ -67,14 +67,14 @@ let id_or_kwd =
     (*let s = String.lowercase_ascii s in*)
     try 
       let found = Hashtbl.find h s in
-      print_endline ("Found keyword: " ^ s);  (* This prints if the input was a keyword *)
+      print_string ("keyword: " ^ s);  (* This prints if the input was a keyword *)
       found
     with Not_found ->
-      print_endline ("Not a keyword: " ^ s);  (* This prints if the input was not a keyword *)
+      print_string ("Ident: " ^ s);  (* This prints if the input was not a keyword *)
       IDENT s
 
 
-
+let debugLines = ref 2;;
 
 let stack = ref [0]  (* indentation stack *)
 
@@ -103,53 +103,53 @@ let space = ' ' | '\t'
 
 
 rule next_tokens = parse
-  | '\n'                                { new_line lexbuf; update_stack (indentation lexbuf) }
+  | '\n'                                { print_string "\nLine: "; print_int !debugLines; print_string "  "; debugLines := !debugLines + 1; new_line lexbuf; update_stack (indentation lexbuf) }
   | (space)+                            { next_tokens lexbuf }
 
   (* Special characters start *)
-  | "×"                                 { print_string "CROSS "; [CROSS] }
-  | "cross"                             { print_string "CROSS "; [CROSS] }
-  | "∞"                                 { print_string "Infinity "; [INFINITY] }
-  | "inf"                               { print_string "Infinity "; [INFINITY] }
-  | "⋅"                                 { print_string "Times "; [TIMES] }
-  | "*"                                 { print_string "Times "; [TIMES] }
+  | "×"                                 { print_string " CROSS "; [CROSS] }
+  | "cross"                             { print_string " CROSS "; [CROSS] }
+  | "∞"                                 { print_string " Infinity "; [INFINITY] }
+  | "inf"                               { print_string " Infinity "; [INFINITY] }
+  | "⋅"                                 { print_string " Times "; [TIMES] }
+  | "*"                                 { print_string " Times "; [TIMES] }
   (* Special characters end *)
 
   (* Math *)
-  | '='                                 { print_string "Equal "; [EQUAL] }
-  | '>'                                 { print_string "GreaterThan "; [GT] }
-  | '<'                                 { print_string "LessThan "; [LT] }
-  | '-'                                 { print_string "Minus "; [MINUS] }
-  | '+'                                 { print_string "Plus "; [PLUS] }
-  | '/'                                 { print_string "Divide "; [DIVIDE] }
-  | '%'                                 { print_string "Mod "; [MOD] }
-  | "∅"                                 { print_string "Empty_set "; [EMPTYSET] }
-  | "≤"                                 { print_string "LessThanEqual "; [LTE] }
-  | "≥"                                 { print_string "GreaterThanEqual "; [GTE] }
-  | "≠"                                 { print_string "NotEqual "; [NEQ] }
-  | "∈"                                 { print_string "In "; [IN] }
-  | "⋃"                                 { print_string "Union "; [UNION] }
-  | "⋂"                                 { print_string "Intersection "; [INTERSECT] }
-  | "π"                                 { print_string "Pi "; [PI] }
+  | '='                                 { print_string " Equal "; [EQUAL] }
+  | '>'                                 { print_string " GreaterThan "; [GT] }
+  | '<'                                 { print_string " LessThan "; [LT] }
+  | '-'                                 { print_string " Minus "; [MINUS] }
+  | '+'                                 { print_string " Plus "; [PLUS] }
+  | '/'                                 { print_string " Divide "; [DIVIDE] }
+  | '%'                                 { print_string " Mod "; [MOD] }
+  | "∅"                                 { print_string " Empty_set "; [EMPTYSET] }
+  | "≤"                                 { print_string " LessThanEqual "; [LTE] }
+  | "≥"                                 { print_string " GreaterThanEqual "; [GTE] }
+  | "≠"                                 { print_string " NotEqual "; [NEQ] }
+  | "∈"                                 { print_string " In "; [IN] }
+  | "⋃"                                 { print_string " Union "; [UNION] }
+  | "⋂"                                 { print_string " Intersection "; [INTERSECT] }
+  | "π"                                 { print_string " Pi "; [PI] }
 
 
 
   (* Logical *)
-  | "and"                               { print_string "And "; [AND] }
-  | "or"                                { print_string "Or "; [OR] }
+  | "and"                               { print_string " And "; [AND] }
+  | "or"                                { print_string " Or "; [OR] }
 
   (* Everything else *)
-  | "NIL"                               { print_string "NIL"; [NIL] }
-  | "be" (space)+ "a" (space)+ "new"    { print_string "BeANew "; [BE_A_NEW] }
+  | "NIL"                               { print_string " NIL"; [NIL] }
+  | "be" (space)+ "a" (space)+ "new"    { print_string " BeANew "; [BE_A_NEW] }
   | "monotonically" (space)+ "ascending" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT] }
   | "monotonically" (space)+ "decreasing" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_DESCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT] }
-  | '['                                 { print_string "LBracket "; [LBRACKET] }
-  | ']'                                 { print_string "RBracket "; [RBRACKET] }
-  | '('                                 { print_string "LParen "; [LPAREN] }
-  | ')'                                 { print_string "RParen "; [RPAREN] }
-  | '.'                                 { print_string "Dot "; [DOT] }
-  | ".."                                { print_string "DOTDOT "; [DOTDOT] }
-  | ','                                 { print_string "Comma "; [COMMA] }
+  | '['                                 { print_string " LBracket "; [LBRACKET] }
+  | ']'                                 { print_string " RBracket "; [RBRACKET] }
+  | '('                                 { print_string " LParen "; [LPAREN] }
+  | ')'                                 { print_string " RParen "; [RPAREN] }
+  | '.'                                 { print_string " Dot "; [DOT] }
+  | ".."                                { print_string " DOTDOT "; [DOTDOT] }
+  | ','                                 { print_string " Comma "; [COMMA] }
   | '"'                                 { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
   | ident as id                         { [id_or_kwd id] }
   | integer as s                        { [CST (Cint(int_of_string s))] }

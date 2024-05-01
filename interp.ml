@@ -1,5 +1,6 @@
 open Ast
 open Format
+open Str
 
 exception Error of string
 let error s = raise (Error s)
@@ -27,18 +28,18 @@ let rec string_of_expr expr =
 			Printf.sprintf "%s.union(%s)" e1_str e2_str
 		else
 			Printf.sprintf "%s %s %s" e1_str op_str e2_str
-		| Ecst c -> string_of_constant c
-		| Eident id -> id.id
-		| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (string_of_expr index)
-		| Einitarray (id, size) -> Printf.sprintf "%s[%s]" id.id (string_of_expr size)
-		| Erange (e1, e2) -> Printf.sprintf "range(%s, %s)" (string_of_expr e1) (string_of_expr e2)
-		| Ematrix (id, ident1, ident2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr ident1) (string_of_expr ident2)
-		| Elength id -> Printf.sprintf "len(%s)" id.id
-		| Ecolumns id -> Printf.sprintf "len(%s[0])" id.id
-		| Erows id -> Printf.sprintf "len(%s)"  id.id
-		| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
-		| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents_params args)
-		| Eobject (id1, expr) -> Printf.sprintf "%s.%s" id1.id (string_of_expr expr)
+	| Ecst c -> string_of_constant c
+	| Eident id -> id.id
+	| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (string_of_expr index)
+	| Einitarray (id, size) -> Printf.sprintf "%s[%s]" id.id (string_of_expr size)
+	| Erange (e1, e2) -> Printf.sprintf "range(%s, %s)" (string_of_expr e1) (string_of_expr e2)
+	| Ematrix (id, ident1, ident2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr ident1) (string_of_expr ident2)
+	| Elength id -> Printf.sprintf "len(%s)" id.id
+	| Ecolumns id -> Printf.sprintf "len(%s[0])" id.id
+	| Erows id -> Printf.sprintf "len(%s)"  id.id
+	| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
+	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents_params args)
+	| Eobject (id1, expr) -> Printf.sprintf "%s.%s" id1.id (string_of_expr expr)
 		(* Add cases for other types of expressions as needed *)
 		
 		and string_of_constant = function
@@ -94,16 +95,15 @@ let rec print_value expr =
 	| Sfunc(id, args, stmt) ->
 		(* Use string_of_idents to turn the list of idents into a comma-separated string *)
 		let args_str = string_of_idents_params args in
-
+		let id_str = Str.global_replace (Str.regexp "-") "_" id.id in
 		(* Use args_str in the formatted string for the function definition *)
-		Printf.sprintf "%sdef %s(%s):\n%s" indent_str id.id args_str (interpret stmt (indent_level + 1))
-
+		Printf.sprintf "%sdef %s(%s):\n%s" indent_str id_str args_str (interpret stmt (indent_level + 1))
 
 	(* FOR LOOPS*)
 	| Sfor(ident, start_val, end_val, stmt) ->
 		let start_val_str = string_of_expr start_val in
 		let end_val_str = string_of_expr end_val in
-		Printf.sprintf "%sfor %s in range(%s, %s):\n%s" 
+		Printf.sprintf "%sfor %s in range(%s, %s + 1):\n%s" (* + 1 to compensate for pythons range function not including last number *)
 			indent_str ident.id start_val_str end_val_str (interpret stmt (indent_level + 1))
 
 	| Sford(ident, start_val, end_val, stmt) ->
@@ -153,7 +153,7 @@ let rec print_value expr =
 	(* ARRAY *)
 	| SinitArrayList (arrays) ->
 		let arrays_str = string_of_arrays arrays in
-		Printf.sprintf "%s%s = []\n" indent_str arrays_str
+		Printf.sprintf "%s%s = Array([])\n" indent_str arrays_str
 
 
 	| Slength (expr) ->
@@ -181,7 +181,7 @@ let rec print_value expr =
 	| Sinitmatrix (id, size1, size2) ->
 		let size1_str = string_of_expr size1 in
 		let size2_str = string_of_expr size2 in
-		Printf.sprintf "%s%s = [[0 for _ in range(%s)] for _ in range(%s)]\n" indent_str id.id size2_str size1_str
+		Printf.sprintf "%s%s = Array([Array([0 for _ in range(%s)]) for _ in range(%s)])\n" indent_str id.id size2_str size1_str
 
 	| Smatrix (id, size1, size2) ->
 		let size1_str = string_of_expr size1 in

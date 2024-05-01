@@ -157,7 +157,7 @@ expr:
   | RANDOM LPAREN expr COMMA expr RPAREN
   { Erandom($3, $5) }
 
-  | functionName LPAREN l = ident_list RPAREN
+  | ident LPAREN l = ident_list RPAREN
   { EfunctionCall($1, l) }
 
 
@@ -169,7 +169,6 @@ init_array:
   (* Array *)
   | id = ident LBRACKET e1 = expr RBRACKET
   { 
-    print_string ("#Array: " ^ id.id);
     Einitarray(id, e1) 
   }
   ;
@@ -197,7 +196,8 @@ simple_stmt:
 	  Smatrix($1, $3, $6)
 	}
   | expr EQUAL expr {
-	  Sassign($1, $3)
+    print_string "Sassign ";
+	  Sassign($1, $3);
 	}
   | RETURN expr {
 	  Sreturn($2)
@@ -228,7 +228,7 @@ stmt:
   
 
   // FUNCTION DEFINITIONS
-  | id = functionName LPAREN l = ident_list RPAREN s = suite {
+  | id = ident LPAREN l = ident_list RPAREN s = suite {
     Sfunc (id, l, s)
   }
   
@@ -255,7 +255,6 @@ stmt:
   
   // WHILE LOOPS
   | WHILE expr s = suite {
-    print_string "#While";
 	  Swhile($2, s)
 	}
   
@@ -263,7 +262,6 @@ stmt:
 
 ident:
   | id = IDENT {
-    print_string ("#Id: " ^ id ^ "\n");
     { loc = ($startpos, $endpos); id } 
   }
 ;

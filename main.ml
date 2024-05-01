@@ -30,20 +30,29 @@ let () =
       let result_string = interpret ast_list 0 in
       close_in channel;
       let out_channel = open_out (Filename.remove_extension filename ^ "_result.py") in
+      if filename = "for.txt" then
+        Printf.fprintf out_channel "from Array import Array"
+      else if filename = "fortest.txt" then
+        Printf.fprintf out_channel "from Array import Array"
+      else 
+        Printf.fprintf out_channel "import sys\n";
+        Printf.fprintf out_channel "sys.path.append('../../')\n";
+        Printf.fprintf out_channel "from Array import Array\n\n";
+        
       Printf.fprintf out_channel "%s\n" result_string;
       close_out out_channel;
       printf "Successfully interpreted and wrote the result to %s_result.txt\n" (Filename.remove_extension filename)
     with
-    | Sys_error msg ->
-        printf "Error: %s\n" msg
-    | Lexer.Lexing_error msg ->
-        printf "Lexer error: %s\n" msg
+    | Sys_error message ->
+        printf "Error: %s\n" message
+    | Lexer.Lexing_error message ->
+        printf "Lexer error: %s\n" message
     | Parser.Error ->
-        let (b, e) = (lexeme_start_p lexbuf, lexeme_end_p lexbuf) in
-        let l = b.pos_lnum in
-        let fc = b.pos_cnum - b.pos_bol + 1 in
-        let lc = e.pos_cnum - b.pos_bol + 1 in
-        eprintf "File \"%s\", line %d, characters %d-%d:\n" filename l fc lc;
+        let (beginError, endError) = (lexeme_start_p lexbuf, lexeme_end_p lexbuf) in
+        let line = beginError.pos_lnum in
+        let firstChar = beginError.pos_cnum - beginError.pos_bol + 1 in
+        let lastChar = endError.pos_cnum - beginError.pos_bol + 1 in
+        eprintf "File \"%s\", line %d, characters %d-%d:\n" filename line firstChar lastChar;
         eprintf "(parser) - syntax error@.";
         exit 1
     | End_of_file ->

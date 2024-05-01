@@ -68,14 +68,14 @@ let id_or_kwd =
     (*let s = String.lowercase_ascii s in*)
     try 
       let found = Hashtbl.find h s in
-      print_endline ("Found keyword: " ^ s);  (* This prints if the input was a keyword *)
+      print_string ("keyword: " ^ s);  (* This prints if the input was a keyword *)
       found
     with Not_found ->
-      print_endline ("Not a keyword: " ^ s);  (* This prints if the input was not a keyword *)
+      print_string ("Ident: " ^ s);  (* This prints if the input was not a keyword *)
       IDENT s
 
 
-
+let debugLines = ref 2;;
 
 let stack = ref [0]  (* indentation stack *)
 
@@ -903,7 +903,7 @@ and __ocaml_lex_next_tokens_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
 # 106 "lexer.mll"
-                                        ( new_line lexbuf; update_stack (indentation lexbuf) )
+                                        ( print_string "\nLine: "; print_int !debugLines; print_string "  "; debugLines := !debugLines + 1; new_line lexbuf; update_stack (indentation lexbuf) )
 # 908 "lexer.ml"
 
   | 1 ->
@@ -913,127 +913,127 @@ and __ocaml_lex_next_tokens_rec lexbuf __ocaml_lex_state =
 
   | 2 ->
 # 110 "lexer.mll"
-                                         ( print_string "CROSS "; [CROSS] )
+                                         ( print_string " CROSS "; [CROSS] )
 # 918 "lexer.ml"
 
   | 3 ->
 # 111 "lexer.mll"
-                                        ( print_string "CROSS "; [CROSS] )
+                                        ( print_string " CROSS "; [CROSS] )
 # 923 "lexer.ml"
 
   | 4 ->
 # 112 "lexer.mll"
-                                          ( print_string "Infinity "; [INFINITY] )
+                                          ( print_string " Infinity "; [INFINITY] )
 # 928 "lexer.ml"
 
   | 5 ->
 # 113 "lexer.mll"
-                                        ( print_string "Infinity "; [INFINITY] )
+                                        ( print_string " Infinity "; [INFINITY] )
 # 933 "lexer.ml"
 
   | 6 ->
 # 114 "lexer.mll"
-                                          ( print_string "Times "; [TIMES] )
+                                          ( print_string " Times "; [TIMES] )
 # 938 "lexer.ml"
 
   | 7 ->
 # 115 "lexer.mll"
-                                        ( print_string "Times "; [TIMES] )
+                                        ( print_string " Times "; [TIMES] )
 # 943 "lexer.ml"
 
   | 8 ->
 # 119 "lexer.mll"
-                                        ( print_string "Equal "; [EQUAL] )
+                                        ( print_string " Equal "; [EQUAL] )
 # 948 "lexer.ml"
 
   | 9 ->
 # 120 "lexer.mll"
-                                        ( print_string "GreaterThan "; [GT] )
+                                        ( print_string " GreaterThan "; [GT] )
 # 953 "lexer.ml"
 
   | 10 ->
 # 121 "lexer.mll"
-                                        ( print_string "LessThan "; [LT] )
+                                        ( print_string " LessThan "; [LT] )
 # 958 "lexer.ml"
 
   | 11 ->
 # 122 "lexer.mll"
-                                        ( print_string "Minus "; [MINUS] )
+                                        ( print_string " Minus "; [MINUS] )
 # 963 "lexer.ml"
 
   | 12 ->
 # 123 "lexer.mll"
-                                        ( print_string "Plus "; [PLUS] )
+                                        ( print_string " Plus "; [PLUS] )
 # 968 "lexer.ml"
 
   | 13 ->
 # 124 "lexer.mll"
-                                        ( print_string "Divide "; [DIVIDE] )
+                                        ( print_string " Divide "; [DIVIDE] )
 # 973 "lexer.ml"
 
   | 14 ->
 # 125 "lexer.mll"
-                                        ( print_string "Mod "; [MOD] )
+                                        ( print_string " Mod "; [MOD] )
 # 978 "lexer.ml"
 
   | 15 ->
 # 126 "lexer.mll"
-                                          ( print_string "Empty_set "; [EMPTYSET] )
+                                          ( print_string " Empty_set "; [EMPTYSET] )
 # 983 "lexer.ml"
 
   | 16 ->
 # 127 "lexer.mll"
-                                          ( print_string "LessThanEqual "; [LTE] )
+                                          ( print_string " LessThanEqual "; [LTE] )
 # 988 "lexer.ml"
 
   | 17 ->
 # 128 "lexer.mll"
-                                          ( print_string "GreaterThanEqual "; [GTE] )
+                                          ( print_string " GreaterThanEqual "; [GTE] )
 # 993 "lexer.ml"
 
   | 18 ->
 # 129 "lexer.mll"
-                                          ( print_string "NotEqual "; [NEQ] )
+                                          ( print_string " NotEqual "; [NEQ] )
 # 998 "lexer.ml"
 
   | 19 ->
 # 130 "lexer.mll"
-                                          ( print_string "In "; [IN] )
+                                          ( print_string " In "; [IN] )
 # 1003 "lexer.ml"
 
   | 20 ->
 # 131 "lexer.mll"
-                                          ( print_string "Union "; [UNION] )
+                                          ( print_string " Union "; [UNION] )
 # 1008 "lexer.ml"
 
   | 21 ->
 # 132 "lexer.mll"
-                                          ( print_string "Intersection "; [INTERSECT] )
+                                          ( print_string " Intersection "; [INTERSECT] )
 # 1013 "lexer.ml"
 
   | 22 ->
 # 133 "lexer.mll"
-                                         ( print_string "Pi "; [PI] )
+                                         ( print_string " Pi "; [PI] )
 # 1018 "lexer.ml"
 
   | 23 ->
 # 138 "lexer.mll"
-                                        ( print_string "And "; [AND] )
+                                        ( print_string " And "; [AND] )
 # 1023 "lexer.ml"
 
   | 24 ->
 # 139 "lexer.mll"
-                                        ( print_string "Or "; [OR] )
+                                        ( print_string " Or "; [OR] )
 # 1028 "lexer.ml"
 
   | 25 ->
 # 142 "lexer.mll"
-                                        ( print_string "NIL"; [NIL] )
+                                        ( print_string " NIL"; [NIL] )
 # 1033 "lexer.ml"
 
   | 26 ->
 # 143 "lexer.mll"
-                                        ( print_string "BeANew "; [BE_A_NEW] )
+                                        ( print_string " BeANew "; [BE_A_NEW] )
 # 1038 "lexer.ml"
 
   | 27 ->
@@ -1048,37 +1048,37 @@ and __ocaml_lex_next_tokens_rec lexbuf __ocaml_lex_state =
 
   | 29 ->
 # 146 "lexer.mll"
-                                        ( print_string "LBracket "; [LBRACKET] )
+                                        ( print_string " LBracket "; [LBRACKET] )
 # 1053 "lexer.ml"
 
   | 30 ->
 # 147 "lexer.mll"
-                                        ( print_string "RBracket "; [RBRACKET] )
+                                        ( print_string " RBracket "; [RBRACKET] )
 # 1058 "lexer.ml"
 
   | 31 ->
 # 148 "lexer.mll"
-                                        ( print_string "LParen "; [LPAREN] )
+                                        ( print_string " LParen "; [LPAREN] )
 # 1063 "lexer.ml"
 
   | 32 ->
 # 149 "lexer.mll"
-                                        ( print_string "RParen "; [RPAREN] )
+                                        ( print_string " RParen "; [RPAREN] )
 # 1068 "lexer.ml"
 
   | 33 ->
 # 150 "lexer.mll"
-                                        ( print_string "Dot "; [DOT] )
+                                        ( print_string " Dot "; [DOT] )
 # 1073 "lexer.ml"
 
   | 34 ->
 # 151 "lexer.mll"
-                                        ( print_string "DOTDOT "; [DOTDOT] )
+                                        ( print_string " DOTDOT "; [DOTDOT] )
 # 1078 "lexer.ml"
 
   | 35 ->
 # 152 "lexer.mll"
-                                        ( print_string "Comma "; [COMMA] )
+                                        ( print_string " Comma "; [COMMA] )
 # 1083 "lexer.ml"
 
   | 36 ->
