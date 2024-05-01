@@ -1,6 +1,9 @@
 type location = Lexing.position * Lexing.position
 
-type ident = { loc: location; id: string; }
+type ident = {
+  loc: location;
+  id: string;
+}
 
 
 type binop = 

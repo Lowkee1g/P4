@@ -19,22 +19,9 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -config > /var/folders/fz/s5csb_w941vcyvdp808cgc0c0000gn/T/dune_4d43cc_output
-$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamldep.opt -modules -impl main.ml) > _build/default/.main.eobjs/main.impl.d
-$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -o .main.eobjs/byte/main.cmo -c -impl main.ml)
-> File "main.ml", lines 24-59, characters 2-30:
-> 24 | ..match !file with
-> 25 |   | Some filename -> 
-> 26 |     let channel = open_in filename in
-> 27 |     let lexbuf = Lexing.from_channel channel in
-> 28 |     try
-> ...
-> 56 |         eprintf "(parser) - syntax error@.";
-> 57 |         exit 1
-> 58 |     | End_of_file ->
-> 59 |         printf "End of file\n"
-> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
-> Here is an example of a case that is not matched:
-> None
+$ /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -config > /var/folders/fz/s5csb_w941vcyvdp808cgc0c0000gn/T/dune_7deda2_output
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamldep.opt -modules -impl interp.ml) > _build/default/.main.eobjs/interp.impl.d
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -o .main.eobjs/byte/interp.cmo -c -impl interp.ml)
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/interp.cmx -c -impl interp.ml)
 $ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlopt.opt -g -o main.exe /Users/davidfraenkel/.opam/ocaml-base-compiler/lib/ocaml/str.cmxa -I /Users/davidfraenkel/.opam/ocaml-base-compiler/lib/ocaml .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
 # Promoting "_build/default/main.exe" to "main.exe"

@@ -31,13 +31,13 @@ let () =
       close_in channel;
       let out_channel = open_out (Filename.remove_extension filename ^ "_result.py") in
       if filename = "for.txt" then
-        Printf.fprintf out_channel "from Array import Array"
+        Printf.fprintf out_channel "from Array import Array\n\n"
       else if filename = "fortest.txt" then
-        Printf.fprintf out_channel "from Array import Array"
+        Printf.fprintf out_channel "from Array import Array\n\n"
       else 
-        Printf.fprintf out_channel "import sys\n";
-        Printf.fprintf out_channel "sys.path.append('../../')\n";
-        Printf.fprintf out_channel "from Array import Array\n\n";
+        Printf.fprintf out_channel "import sys\n
+                                    sys.path.append('../../')\n
+                                    from Array import Array\n\n";
         
       Printf.fprintf out_channel "%s\n" result_string;
       close_out out_channel;

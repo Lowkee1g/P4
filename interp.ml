@@ -153,8 +153,10 @@ let rec print_value expr =
 	(* ARRAY *)
 	| SinitArrayList (arrays) ->
 		let arrays_str = string_of_arrays arrays in
-		Printf.sprintf "%s%s = Array([])\n" indent_str arrays_str
-
+		let arrays_list = String.split_on_char '[' arrays_str in
+		let id_str = List.nth arrays_list 0 in
+		let contents_str = "[" ^ List.nth arrays_list 1 in
+		Printf.sprintf "%s%s = Array(%s)\n" indent_str id_str contents_str
 
 	| Slength (expr) ->
 		let expr_str = string_of_expr expr in
