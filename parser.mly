@@ -29,6 +29,7 @@
 
 
 
+
 file:
   | NEWLINE? b = nonempty_list(stmt) NEWLINE? EOF
     { Sblock b }
@@ -196,9 +197,10 @@ simple_stmt:
 	  Smatrix($1, $3, $6)
 	}
   | expr EQUAL expr {
-    print_string "Sassign ";
-	  Sassign($1, $3);
-	}
+    print_string_green "Sassign -> ";
+    Sassign($1, $3);  (* Capture the result of Sassign *)
+  }
+
   | RETURN expr {
 	  Sreturn($2)
 	}

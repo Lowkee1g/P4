@@ -1,9 +1,9 @@
 # dune build
 # OCAMLPARAM: unset
 # Shared cache: disabled
-# Shared cache location: /Users/davidfraenkel/.cache/dune/db
-# Workspace root: /Users/davidfraenkel/p4
-# Auto-detected concurrency: 8
+# Shared cache location: /home/opam/.cache/dune/db
+# Workspace root: /workspaces/P4
+# Auto-detected concurrency: 24
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -13,28 +13,10 @@
 #  ; build_dir = In_build_dir "default"
 #  ; installed_env =
 #      map
-#        { "INSIDE_DUNE" : "/Users/davidfraenkel/p4/_build/default"
+#        { "INSIDE_DUNE" : "/workspaces/P4/_build/default"
 #        ; "OCAML_COLOR" : "always"
 #        ; "OPAMCOLOR" : "always"
 #        }
 #  ; instrument_with = []
 #  }
-$ /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -config > /var/folders/fz/s5csb_w941vcyvdp808cgc0c0000gn/T/dune_4d43cc_output
-$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamldep.opt -modules -impl main.ml) > _build/default/.main.eobjs/main.impl.d
-$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -o .main.eobjs/byte/main.cmo -c -impl main.ml)
-> File "main.ml", lines 24-59, characters 2-30:
-> 24 | ..match !file with
-> 25 |   | Some filename -> 
-> 26 |     let channel = open_in filename in
-> 27 |     let lexbuf = Lexing.from_channel channel in
-> 28 |     try
-> ...
-> 56 |         eprintf "(parser) - syntax error@.";
-> 57 |         exit 1
-> 58 |     | End_of_file ->
-> 59 |         printf "End of file\n"
-> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
-> Here is an example of a case that is not matched:
-> None
-$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlopt.opt -g -o main.exe /Users/davidfraenkel/.opam/ocaml-base-compiler/lib/ocaml/str.cmxa -I /Users/davidfraenkel/.opam/ocaml-base-compiler/lib/ocaml .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
-# Promoting "_build/default/main.exe" to "main.exe"
+$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_177fa2_output
