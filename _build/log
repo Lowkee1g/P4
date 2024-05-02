@@ -19,4 +19,18 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_177fa2_output
+$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_c910ec_output
+$ (cd _build/default && /home/opam/.opam/5.1/bin/menhir parser.mly --base parser --infer-write-query parser__mock.ml.mock)
+> File "parser.mly", line 24, characters 13-20:
+> Warning: the token INTEGER is unused.
+> File "parser.mly", line 300, characters 0-12:
+> Warning: symbol functionName is unreachable from any of the start symbol(s).
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl parser__mock.ml.mock) > _build/default/.main.eobjs/parser__mock.impl.d
+$ (cd _build/.sandbox/0e571eef1ed50e2153cf2e2a41ec4adc/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -short-paths -i -impl parser__mock.ml.mock) > _build/.sandbox/0e571eef1ed50e2153cf2e2a41ec4adc/default/parser__mock.mli.inferred
+$ (cd _build/default && /home/opam/.opam/5.1/bin/menhir parser.mly --base parser --infer-read-reply parser__mock.mli.inferred)
+> Warning: 10 states have shift/reduce conflicts.
+> Warning: 152 shift/reduce conflicts were arbitrarily resolved.
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl parser.ml) > _build/default/.main.eobjs/parser.impl.d
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /home/opam/.opam/5.1/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/parser.cmx -c -impl parser.ml)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -o main.exe /home/opam/.opam/5.1/lib/ocaml/str/str.cmxa .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
+# Promoting "_build/default/main.exe" to "main.exe"

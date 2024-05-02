@@ -685,7 +685,7 @@ and _menhir_box_file =
 let _menhir_action_01 =
   fun e ->
     (
-# 274 "parser.mly"
+# 288 "parser.mly"
                    ( [e] )
 # 691 "parser.ml"
      : (Ast.expr list))
@@ -693,7 +693,7 @@ let _menhir_action_01 =
 let _menhir_action_02 =
   fun e e1 ->
     (
-# 275 "parser.mly"
+# 289 "parser.mly"
                                        ( [e; e1] )
 # 699 "parser.ml"
      : (Ast.expr list))
@@ -701,7 +701,7 @@ let _menhir_action_02 =
 let _menhir_action_03 =
   fun e e1 ->
     (
-# 276 "parser.mly"
+# 290 "parser.mly"
                                              ( [e; e1] )
 # 707 "parser.ml"
      : (Ast.expr list))
@@ -709,7 +709,7 @@ let _menhir_action_03 =
 let _menhir_action_04 =
   fun e es ->
     (
-# 277 "parser.mly"
+# 291 "parser.mly"
                                          ( e :: es )
 # 715 "parser.ml"
      : (Ast.expr list))
@@ -895,7 +895,7 @@ let _menhir_action_27 =
     let _endpos = _endpos_id_ in
     let _startpos = _startpos_id_ in
     (
-# 266 "parser.mly"
+# 280 "parser.mly"
                (
     { loc = (_startpos, _endpos); id } 
   )
@@ -905,7 +905,7 @@ let _menhir_action_27 =
 let _menhir_action_28 =
   fun id ->
     (
-# 281 "parser.mly"
+# 295 "parser.mly"
                ( [id] )
 # 911 "parser.ml"
      : (Ast.ident list))
@@ -913,7 +913,7 @@ let _menhir_action_28 =
 let _menhir_action_29 =
   fun id ids ->
     (
-# 282 "parser.mly"
+# 296 "parser.mly"
                                       ( id :: ids )
 # 919 "parser.ml"
      : (Ast.ident list))
@@ -921,7 +921,7 @@ let _menhir_action_29 =
 let _menhir_action_30 =
   fun id ids ->
     (
-# 283 "parser.mly"
+# 297 "parser.mly"
                                       ( id :: ids )
 # 927 "parser.ml"
      : (Ast.ident list))
@@ -1085,226 +1085,241 @@ let _menhir_action_50 =
     (
 # 179 "parser.mly"
                                           (
+    print_string_green "SinitArrayList -> ";
     SinitArrayList(array)
   )
-# 1091 "parser.ml"
+# 1092 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_51 =
   fun _2 _4 _6 ->
     (
-# 183 "parser.mly"
+# 184 "parser.mly"
                                               (
+    print_string_green "Sinitmatrix -> ";
 	  Sinitmatrix(_2, _4, _6)
 	)
-# 1101 "parser.ml"
+# 1103 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_52 =
   fun e ->
     (
-# 188 "parser.mly"
-    ( Sprint e )
-# 1109 "parser.ml"
+# 189 "parser.mly"
+                   ( 
+    print_string_green "Sprint -> ";
+    Sprint e 
+  )
+# 1114 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_53 =
   fun _2 _4 ->
     (
-# 190 "parser.mly"
+# 194 "parser.mly"
                         (
+    print_string_green "Sswap -> ";
 	  Sswap(_2, _4)
 	)
-# 1119 "parser.ml"
+# 1125 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_54 =
   fun _2 _4 ->
     (
-# 193 "parser.mly"
+# 198 "parser.mly"
                             (
+    print_string_green "Sexchange -> ";
 	  Sexchange(_2, _4)
 	)
-# 1129 "parser.ml"
+# 1136 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_55 =
   fun _1 _3 _6 ->
     (
-# 196 "parser.mly"
+# 202 "parser.mly"
                                                         (
+    print_string_green "SassignMatrix -> ";
 	  Smatrix(_1, _3, _6)
 	)
-# 1139 "parser.ml"
+# 1147 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_56 =
   fun _1 _3 ->
     (
-# 199 "parser.mly"
+# 206 "parser.mly"
                     (
     print_string_green "Sassign -> ";
     Sassign(_1, _3);  (* Capture the result of Sassign *)
   )
-# 1150 "parser.ml"
+# 1158 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_57 =
   fun _2 ->
     (
-# 204 "parser.mly"
+# 211 "parser.mly"
                 (
+    print_string_green "Sreturn -> ";
 	  Sreturn(_2)
 	)
-# 1160 "parser.ml"
+# 1169 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_58 =
   fun _2 ->
     (
-# 207 "parser.mly"
+# 215 "parser.mly"
                (
+    print_string_green "Serror -> ";
     Serror(_2)
   )
-# 1170 "parser.ml"
+# 1180 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_59 =
   fun e1 e2 ->
     (
-# 210 "parser.mly"
+# 219 "parser.mly"
                                                                     (
+    print_string_green "SsortA -> ";
     SsortA(e1, e2)
   )
-# 1180 "parser.ml"
+# 1191 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_60 =
   fun e1 e2 ->
     (
-# 213 "parser.mly"
+# 223 "parser.mly"
                                                                       (
+    print_string_green "SsortD -> ";
     SsortD(e1, e2)
   )
-# 1190 "parser.ml"
+# 1202 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_61 =
   fun e1 e2 ->
     (
-# 216 "parser.mly"
+# 227 "parser.mly"
                                     (
+    print_string_green "Sinsert -> ";
     Sinsert(e1, e2)
   )
-# 1200 "parser.ml"
+# 1213 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_62 =
   fun e1 e2 ->
     (
-# 219 "parser.mly"
+# 231 "parser.mly"
                                                  (
+    print_string_green "SinsertAll -> ";
     SinsertAll(e1, e2)
   )
-# 1210 "parser.ml"
+# 1224 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_63 =
   fun e1 e2 ->
     (
-# 222 "parser.mly"
+# 235 "parser.mly"
                                              (
+    print_string_green "SinsertRoot -> ";
     SinsertRoot(e1, e2)
   )
-# 1220 "parser.ml"
+# 1235 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_64 =
   fun s ->
     (
-# 229 "parser.mly"
+# 243 "parser.mly"
     ( s )
-# 1228 "parser.ml"
+# 1243 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_65 =
   fun id l s ->
     (
-# 233 "parser.mly"
+# 247 "parser.mly"
                                                       (
     Sfunc (id, l, s)
   )
-# 1238 "parser.ml"
+# 1253 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_66 =
   fun _4 _6 id s ->
     (
-# 238 "parser.mly"
+# 252 "parser.mly"
                                                 (
 	  Sfor(id, _4, _6, s)
 	)
-# 1248 "parser.ml"
+# 1263 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_67 =
   fun _4 _6 id s ->
     (
-# 241 "parser.mly"
+# 255 "parser.mly"
                                                     (
 	  Sford(id, _4, _6, s)
 	)
-# 1258 "parser.ml"
+# 1273 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_68 =
   fun _2 _4 s ->
     (
-# 247 "parser.mly"
-    ( Sifnest(_2, s, _4) )
-# 1266 "parser.ml"
+# 261 "parser.mly"
+    (Sifnest(_2, s, _4) )
+# 1281 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_69 =
   fun _2 s ->
     (
-# 249 "parser.mly"
+# 263 "parser.mly"
     ( Sif(_2, s) )
-# 1274 "parser.ml"
+# 1289 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_70 =
   fun _2 _4 s ->
     (
-# 251 "parser.mly"
+# 265 "parser.mly"
     ( Selseifnest(_2, s, _4) )
-# 1282 "parser.ml"
+# 1297 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_71 =
   fun _2 s ->
     (
-# 253 "parser.mly"
+# 267 "parser.mly"
     ( Selseif(_2, s) )
-# 1290 "parser.ml"
+# 1305 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_72 =
   fun s ->
     (
-# 255 "parser.mly"
+# 269 "parser.mly"
     ( Selse(s) )
-# 1298 "parser.ml"
+# 1313 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_73 =
   fun _2 s ->
     (
-# 259 "parser.mly"
+# 273 "parser.mly"
                          (
 	  Swhile(_2, s)
 	)
-# 1308 "parser.ml"
+# 1323 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_74 =
@@ -1312,7 +1327,7 @@ let _menhir_action_74 =
     (
 # 41 "parser.mly"
       ( s )
-# 1316 "parser.ml"
+# 1331 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_action_75 =
@@ -1320,7 +1335,7 @@ let _menhir_action_75 =
     (
 # 43 "parser.mly"
       ( Sblock l )
-# 1324 "parser.ml"
+# 1339 "parser.ml"
      : (Ast.stmt))
 
 let _menhir_print_token : token -> string =

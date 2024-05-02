@@ -1,4 +1,4 @@
-MERGE(A,p,q,r)
+MERGE_SECOUND(A,p,q,r)
     n1 = q - p + 1
     n2 = r - q
     let L[1..n_1 + 1], L[1..n_1 + 1] be a new array

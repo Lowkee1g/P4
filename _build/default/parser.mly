@@ -177,23 +177,30 @@ init_array:
 simple_stmt:
   (* Init array *)
   | LET array = array_list BE_A_NEW ARRAY {
+    print_string_green "SinitArrayList -> ";
     SinitArrayList(array)
   }
   (* Init statments *)
   | LET ident BE_A_NEW expr CROSS expr MATRIX {
+    print_string_green "Sinitmatrix -> ";
 	  Sinitmatrix($2, $4, $6)
 	}
 
-  | PRINT e = expr
-    { Sprint e }
+  | PRINT e = expr { 
+    print_string_green "Sprint -> ";
+    Sprint e 
+  }
 
   | SWAP expr WITH expr {
+    print_string_green "Sswap -> ";
 	  Sswap($2, $4)
 	}
   | EXCHANGE expr WITH expr {
+    print_string_green "Sexchange -> ";
 	  Sexchange($2, $4)
 	}
   | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET {
+    print_string_green "SassignMatrix -> ";
 	  Smatrix($1, $3, $6)
 	}
   | expr EQUAL expr {
@@ -202,24 +209,31 @@ simple_stmt:
   }
 
   | RETURN expr {
+    print_string_green "Sreturn -> ";
 	  Sreturn($2)
 	}
   | ERROR expr {
+    print_string_green "Serror -> ";
     Serror($2)
   }
   | SORT e1 = expr MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT e2 = expr{
+    print_string_green "SsortA -> ";
     SsortA(e1, e2)
   }
   | SORT e1 = expr MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT e2 = expr {
+    print_string_green "SsortD -> ";
     SsortD(e1, e2)
   }
   | INSERT e1 = expr INTO e2 = expr {
+    print_string_green "Sinsert -> ";
     Sinsert(e1, e2)
   }
   | INSERT ALL ITEMS IN e1 = expr INTO e2 = expr {
+    print_string_green "SinsertAll -> ";
     SinsertAll(e1, e2)
   }
   | INSERT e1 = expr INTO e2 = expr ROOTLIST {
+    print_string_green "SinsertRoot -> ";
     SinsertRoot(e1, e2)
   }
 ;
@@ -243,8 +257,8 @@ stmt:
 	}
 
   // IF STATEMENTS
-  | IF expr s = suite stmt
-    { Sifnest($2, s, $4) }
+  | IF expr s = suite stmt 
+    {Sifnest($2, s, $4) }
   | IF expr s = suite 
     { Sif($2, s) }
   | ELSEIF expr s = suite stmt
@@ -285,7 +299,8 @@ ident_list:
 
 functionName:
   | id1 = ident
-    { { loc = ($startpos, $endpos); id = id1.id } }
+    { print_string_green "func"; { loc = ($startpos, $endpos); id = id1.id } }
   | id1 = ident MINUS ids = functionName
-    { { loc = ($startpos, $endpos); id = id1.id ^ "-" ^ ids.id } }
+  
+    { print_string_green "functionName -> "; { loc = ($startpos, $endpos); id = id1.id ^ "-" ^ ids.id } }
 ;

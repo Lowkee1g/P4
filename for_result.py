@@ -1,7 +1,7 @@
 from Array import Arraysys.path.append('../../')
 from Array import Array
 
-def MERGE(A, p, q, r):
+def MERGE_SECOUND(A, p, q, r):
     n1 = q - p + 1
     n2 = r - q
     L[range(1, n_1 + 1)], L[range(1, n_1 + 1)] = Array([])
