@@ -1,4 +1,4 @@
-Greedy-Activity-Selector(s,f)
+Greedy_ctivity_Selector(s,f)
     n = s.length 
     A = {a[1]}
     k = 1

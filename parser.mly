@@ -12,13 +12,13 @@
 %token SWAP WITH LENGTH EXCHANGE
 %token GT LT MINUS PLUS EQUAL INFINITY
 %token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS ARRAY
-%token LBRACKET RBRACKET DOT DOTDOT COMMA LPAREN RPAREN
-%token RANDOM ERROR
+%token LBRACKET RBRACKET DOT DOTDOT COMMA LPAREN RPAREN LBRACE RBRACE
+%token RANDOM ERROR LOW HIGH
 %token MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT SORT
 %token MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT 
 %token NIL                                                          (* NULL   *)
 %token INSERT INTO ALL ITEMS IN ROOTLIST                             (* INSERT *)
-%token AND OR
+%token AND OR POWER
 %token <string> STRING 
 %token <string> IDENT
 %token <int> INTEGER 
@@ -55,6 +55,9 @@ math_op:
   
   | GT
   { Bgt }
+
+  | POWER
+  { Bpow }
   
   | LT
   { Blt }
@@ -83,8 +86,6 @@ math_op:
   | INTERSECT
   { Binter }
 
-  | EMPTYSET
-  { Memptyset }
 ;
 
 
@@ -99,12 +100,18 @@ eDotnotation:
   | ident DOT LENGTH
   { Elength($1) }
 
-  | ident DOT expr
-  { Eobject($1, $3)}
+  | ident DOT ident
+  { Eobject($1, Eident $3) }
+
+  | ident DOT PI
+  { EobjectPI($1) }
 ;
 
 
 expr:
+  | EMPTYSET
+  { Memptyset }
+
   | NIL 
   { Ecst Cnil }
 
@@ -138,9 +145,20 @@ expr:
     match i with
     | Cint n -> Ecst (Cint (-n))
     | _ -> failwith "Expected an integer constant" } */
+  | LBRACE expr_list RBRACE 
+  { Eset($2) }
+
+  | LOW LBRACKET expr RBRACKET
+  { Elow($3) }
+
+  | HIGH LBRACKET expr RBRACKET
+  { Ehigh($3) }
 
   | expr EQUAL EQUAL expr 
 	{ Ebinop(Beq, $1, $4) }
+
+  | expr COMMA expr
+  { Ebinop(Bcomma, $1, $3) }
 
   | expr AND expr
   { Ebinop(Band, $1, $3) }
@@ -158,7 +176,7 @@ expr:
   | RANDOM LPAREN expr COMMA expr RPAREN
   { Erandom($3, $5) }
 
-  | ident LPAREN l = ident_list RPAREN
+  | ident LPAREN l = expr_list RPAREN
   { EfunctionCall($1, l) }
 
 
@@ -186,9 +204,9 @@ simple_stmt:
 	  Sinitmatrix($2, $4, $6)
 	}
 
-  | PRINT e = expr { 
+  | PRINT e = expr_list { 
     print_string_green "Sprint -> ";
-    Sprint e 
+    Sprint(e) 
   }
 
   | SWAP expr WITH expr {
@@ -212,15 +230,21 @@ simple_stmt:
     print_string_green "Sreturn -> ";
 	  Sreturn($2)
 	}
+
+  | RETURN LPAREN expr RPAREN {
+    print_string_green "Sreturn -> ";
+    Sreturn($3)
+  }
+
   | ERROR expr {
     print_string_green "Serror -> ";
     Serror($2)
   }
-  | SORT e1 = expr MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT e2 = expr{
+  | SORT e1 = expr INTO MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT e2 = expr{
     print_string_green "SsortA -> ";
     SsortA(e1, e2)
   }
-  | SORT e1 = expr MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT e2 = expr {
+  | SORT e1 = expr INTO MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT e2 = expr {
     print_string_green "SsortD -> ";
     SsortD(e1, e2)
   }
@@ -244,9 +268,13 @@ stmt:
   
 
   // FUNCTION DEFINITIONS
-  | id = ident LPAREN l = ident_list RPAREN s = suite {
+  | id = ident LPAREN l = expr_list RPAREN NEWLINE {
+    SfuncCall (id, l)
+  }
+  | id = ident LPAREN l = expr_list RPAREN s = suite {
     Sfunc (id, l, s)
   }
+
   
   // FOR LOOPS
   | FOR id = ident EQUAL expr TO expr s = suite {
@@ -291,16 +319,9 @@ array_list:
   | e = init_array COMMA es = array_list { e :: es }
 ;
 
-ident_list:
-  | id = ident { [id] }  (* Base case: a single identifier *)
-  | id = ident MINUS ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a minus and more identifiers *)
-  | id = ident COMMA ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
-;
-
-functionName:
-  | id1 = ident
-    { print_string_green "func"; { loc = ($startpos, $endpos); id = id1.id } }
-  | id1 = ident MINUS ids = functionName
-  
-    { print_string_green "functionName -> "; { loc = ($startpos, $endpos); id = id1.id ^ "-" ^ ids.id } }
+expr_list:
+  | id = expr { [id] }  (* Base case: a single identifier *)
+  | id = expr MINUS ids = expr_list { id :: ids }  (* Recursive case: an identifier followed by a minus and more identifiers *)
+  | id = expr COMMA ids = expr_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
+  | id = expr ids = expr_list { id :: ids }  (* Recursive case: an identifier followed by more identifiers *)
 ;

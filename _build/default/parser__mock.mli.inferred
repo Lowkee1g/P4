@@ -12,8 +12,10 @@ type token =
   | ROOTLIST
   | RETURN
   | RBRACKET
+  | RBRACE
   | RANDOM
   | PRINT
+  | POWER
   | PLUS
   | PI
   | OR
@@ -28,9 +30,11 @@ type token =
   | LTE
   | LT
   | LPAREN
+  | LOW
   | LET
   | LENGTH
   | LBRACKET
+  | LBRACE
   | ITEMS
   | INTO
   | INTERSECT
@@ -40,6 +44,7 @@ type token =
   | IN
   | IF
   | IDENT of string
+  | HIGH
   | GTE
   | GT
   | FOR
@@ -72,9 +77,9 @@ val xv_option_NEWLINE_ : unit option
 val xv_nonempty_list_stmt_ : Ast.stmt list
 val xv_math_op : Ast.binop
 val xv_init_array : Ast.expr
-val xv_ident_list : Ast.ident list
 val xv_ident : Ast.ident
 val xv_file : Ast.stmt
+val xv_expr_list : Ast.expr list
 val xv_expr : Ast.expr
 val xv_eDotnotation : Ast.expr
 val xv_array_list : Ast.expr list

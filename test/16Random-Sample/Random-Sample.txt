@@ -1,7 +1,8 @@
-Random-Sample(m,n)
+Random_-Sample(m,n)
     if m == 0
         return ∅
-    else S = Random-Sample(m-1,n-1)
+    else 
+        S = Random_Sample(m-1,n-1)
         i = Random(1,n)
         if i ∈ S 
             S = S ⋃ {n}

@@ -1,4 +1,4 @@
-Matrix-Chain-Order(p)
+Matrix_Chain_Order(p)
     let m[1..n,1..n] and s[1..n-1, 2..n] be a new tables
     for i = 1 to n
         m[i,i] = 0

@@ -12,14 +12,31 @@ let rec string_of_idents_params idents =
 	| id::[] -> id.id
 	| id::rest -> id.id ^ ", " ^ string_of_idents_params rest
 
+	
 let rec string_of_idents_dash idents =
 	match idents with
 	| [] -> ""
 	| id::[] -> id.id
 	| id::rest -> id.id ^ "_" ^ string_of_idents_dash rest
+		
+let rec string_of_expr_params exprs =
+	match exprs with
+	| [] -> ""
+	| expr::[] -> string_of_expr expr
+	| expr::rest -> string_of_expr expr ^ ", " ^ string_of_expr_params rest
+	
 
-let rec string_of_expr expr =
+		
+ 	and string_of_expr expr =
 	match expr with
+	| Ebinop(Bpow, e1, e2) ->
+		let left_expr = string_of_expr e1 in
+		let right_expr = string_of_expr e2 in
+		Printf.sprintf "pow(%s, %s)" left_expr right_expr
+	| Ebinop(Band, e1, e2) ->  (* Detecting the AND operator *)
+      let left_expr = string_of_expr e1 in
+      let right_expr = string_of_expr e2 in
+      Printf.sprintf "%s, %s" left_expr right_expr  (* Customize as needed *)
 	| Ebinop(op, e1, e2) ->
 		let op_str = string_of_binop op in
 		let e1_str = string_of_expr e1 in
@@ -38,15 +55,22 @@ let rec string_of_expr expr =
 	| Ecolumns id -> Printf.sprintf "len(%s[0])" id.id
 	| Erows id -> Printf.sprintf "len(%s)"  id.id
 	| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
-	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents_params args)
+	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_expr_params args)
 	| Eobject (id1, expr) -> Printf.sprintf "%s.%s" id1.id (string_of_expr expr)
-		(* Add cases for other types of expressions as needed *)
-		
-		and string_of_constant = function
-		| Cint i -> Printf.sprintf "%d" i
-		| Cstring s -> Printf.sprintf "%s" s  (* For string constants, you might want to adjust this to match your output preference *)
+	| EobjectPI (id1) -> Printf.sprintf "%s.%s" id1.id ("(math.pi)")
+	| Eset (expr) -> Printf.sprintf "{%s}" (string_of_expr_params expr)
+	| Memptyset -> Printf.sprintf "{}"
+	| Elow (expr) -> Printf.sprintf "math.floor(%s)" (string_of_expr expr)
+	| Ehigh (expr) -> Printf.sprintf "math.ceil(%s)" (string_of_expr expr)
+	| _ -> failwith "Cannot print expression"
+	(* Add cases for other types of expressions as needed *)
+
+	
+	and string_of_constant = function
+	| Cint i -> Printf.sprintf "%d" i
+	| Cstring s -> Printf.sprintf "%s" s  (* For string constants, you might want to adjust this to match your output preference *)
 		| Cbool b -> if b then "true" else "false"
-		| Cnil -> "None"
+		| Cnil -> Printf.sprintf "None"
 		| Cinfinity -> "float('inf')"
 		| CminusInfinity -> "float('-inf')"
 		| Cpi -> "(math.pi)"
@@ -64,27 +88,37 @@ let rec string_of_expr expr =
 		| Bge -> ">="
 		| Band -> "and"
 		| Bor -> "or"
-		| Memptyset -> "{}"
+		| Bcomma -> ","
 		| Blte -> "<="
 		| Bgte -> ">="
 		| Bmod -> "%"
 		| Bin -> "in"
 		| Bun -> ".union"
 		| Binter -> "test"
-				
+		
 let rec string_of_arrays (arraylist: expr list) : string =
 	match arraylist with
 	| [] -> ""
 	| head::[] -> string_of_expr head  (* Use string_of_expr for conversion *)
 	| head::rest -> string_of_expr head ^ ", " ^ string_of_arrays rest  (* Recursively handle rest *)
-				
-let rec print_value expr = 
+	
+
+let rec print_multiple_values exprs =
+	match exprs with
+	| [] -> ""
+	| expr::[] -> string_of_expr expr
+	| expr::rest -> string_of_expr expr ^ ", " ^ print_multiple_values rest
+
+
+
+
+(* let rec print_value expr = 
 	match expr with
 	| Ecst (Cstring s) -> Printf.sprintf "print('%s')" s
 	| Eident id -> Printf.sprintf "print(%s)" id.id
 	| Earray (id, index) -> Printf.sprintf "print(%s[%s])" id.id (string_of_expr index)
 	| Ematrix (id, ident1, ident2) -> Printf.sprintf "print(%s[%s][%s])" id.id (string_of_expr ident1) (string_of_expr ident2)
-	| _ -> failwith "Cannot print expression"
+	| _ -> failwith "Cannot print expression" *)
 	
 	let rec interpret ast indent_level : string =
 		(* Generate a string for indentation: *)
@@ -93,11 +127,16 @@ let rec print_value expr =
 	(* Function *)
 	(* Handle the function definition case *)
 	| Sfunc(id, args, stmt) ->
-		(* Use string_of_idents to turn the list of idents into a comma-separated string *)
-		let args_str = string_of_idents_params args in
-		let id_str = Str.global_replace (Str.regexp "-") "_" id.id in
-		(* Use args_str in the formatted string for the function definition *)
-		Printf.sprintf "%sdef %s(%s):\n%s" indent_str id_str args_str (interpret stmt (indent_level + 1))
+		let args_str = string_of_expr_params args in
+		let stmt_str = interpret stmt (indent_level + 1) in
+		if indent_level = 0 then
+			Printf.sprintf "%sdef %s(%s):\n%s" indent_str id.id args_str stmt_str
+		else
+			Printf.sprintf "%s%s(%s)" indent_str id.id args_str
+	(* Handle the function call case *)
+	| SfuncCall(id, args) ->
+		let args_str = string_of_expr_params args in
+		Printf.sprintf "sut min diller"
 
 	(* FOR LOOPS*)
 	| Sfor(ident, start_val, end_val, stmt) ->
@@ -198,7 +237,7 @@ let rec print_value expr =
 		Printf.sprintf "%sreturn %s\n" indent_str expr_str
 			
 	| Sprint(expr) ->
-		let expr_str = print_value expr in
+		let expr_str = print_multiple_values expr in
 		Printf.sprintf "%s%s\n" indent_str expr_str
 
 	| Serror(expr) ->

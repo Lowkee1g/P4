@@ -23,14 +23,15 @@ type binop =
   | Bge
   | Band
   | Bor
-  | Memptyset
   | Blte
   | Bgte
   | Bmod
   | Bin
   | Bun
   | Binter
-
+  | Bpow
+  | Bcomma
+  
 type constant =
   | Cstring of string
   | Cint of int
@@ -40,19 +41,26 @@ type constant =
   | Cpi
   | CminusInfinity
 
-type expr =
+  
+  type expr =
+  | Memptyset
+  | Elow of expr
+  | Ehigh of expr
   | Ebinop of binop * expr * expr
   | Ecst of constant
   | Eident of ident
   | Earray of ident * expr
+  | Eset of expr list
+  | Einitset of ident * expr list
   | Elength of ident
   | Ematrix of ident * expr * expr
   | Erows of ident
   | Ecolumns of ident
   | Erandom of expr * expr
-  | EfunctionCall of ident * ident list
+  | EfunctionCall of ident * expr list
   | Erange of expr * expr
   | Eobject of ident * expr
+  | EobjectPI of ident
   | Einitarray of ident * expr  
 
 type stmt =
@@ -64,7 +72,7 @@ type stmt =
   | Selseif of expr * stmt
   | Selse of stmt
   | Sendif
-  | Sprint of expr
+  | Sprint of expr list
   | SinitArrayList of expr list
   | Sswap of expr * expr
   | Sexchange of expr * expr
@@ -76,7 +84,8 @@ type stmt =
   | Smatrix of ident * expr * expr
   | Sassign of expr * expr
   | Sreturn of expr
-  | Sfunc of ident * ident list * stmt 
+  | Sfunc of ident * expr list * stmt
+  | SfuncCall of ident * expr list
   | Serror of expr
   | Sblock of stmt list
   | SsortA of expr * expr
