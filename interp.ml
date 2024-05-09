@@ -18,16 +18,8 @@ let rec string_of_idents_dash idents =
 	| [] -> ""
 	| id::[] -> id.id
 	| id::rest -> id.id ^ "_" ^ string_of_idents_dash rest
-		
-let rec string_of_expr_params exprs =
-	match exprs with
-	| [] -> ""
-	| expr::[] -> string_of_expr expr
-	| expr::rest -> string_of_expr expr ^ ", " ^ string_of_expr_params rest
-	
 
-		
- 	and string_of_expr expr =
+	and string_of_expr expr =
 	match expr with
 	| Ebinop(Bpow, e1, e2) ->
 		let left_expr = string_of_expr e1 in
@@ -66,45 +58,45 @@ let rec string_of_expr_params exprs =
 	| _ -> failwith "Cannot print expression"
 	(* Add cases for other types of expressions as needed *)
 		
-		and string_of_constant = function
-		| Cint i -> Printf.sprintf "%d" i
-		| Cstring s -> Printf.sprintf "%s" s  (* For string constants, you might want to adjust this to match your output preference *)
-		| Cbool b -> if b then "true" else "false"
-		| Cnil -> Printf.sprintf "None"
-		| Cinfinity -> "float('inf')"
-		| CminusInfinity -> "float('-inf')"
-		| Cpi -> "(math.pi)"
-		
-		and string_of_binop = function
-		| Badd -> "+"
-		| Bsub -> "-"
-		| Bmul -> "*"
-		| Bdiv -> "/"
-		| Beq -> "=="
-		| Bneq -> "!="
-		| Blt -> "<"
-		| Ble -> "<="
-		| Bgt -> ">"
-		| Bge -> ">="
-		| Band -> "and"
-		| Bor -> "or"
-		| Bcomma -> ","
-		| Blte -> "<="
-		| Bgte -> ">="
-		| Bmod -> "%"
-		| Bin -> "in"
-		| Bun -> ".union"
-		| Binter -> "test"
+	and string_of_constant = function
+	| Cint i -> Printf.sprintf "%d" i
+	| Cstring s -> Printf.sprintf "%s" s  (* For string constants, you might want to adjust this to match your output preference *)
+	| Cbool b -> if b then "true" else "false"
+	| Cnil -> Printf.sprintf "None"
+	| Cinfinity -> "float('inf')"
+	| CminusInfinity -> "float('-inf')"
+	| Cpi -> "(math.pi)"
+	
+	and string_of_binop = function
+	| Badd -> "+"
+	| Bsub -> "-"
+	| Bmul -> "*"
+	| Bdiv -> "/"
+	| Beq -> "=="
+	| Bneq -> "!="
+	| Blt -> "<"
+	| Ble -> "<="
+	| Bgt -> ">"
+	| Bge -> ">="
+	| Band -> "and"
+	| Bor -> "or"
+	| Bcomma -> ","
+	| Blte -> "<="
+	| Bgte -> ">="
+	| Bmod -> "%"
+	| Bin -> "in"
+	| Bun -> ".union"
+	| Binter -> "test"
 
-		and objectConstant = function
-		| Ocst c -> string_of_constant c
-		| Oident id -> id.id
+	and objectConstant = function
+	| Ocst c -> string_of_constant c
+	| Oident id -> id.id
 
-		and string_of_expr_params (expr: expr list) : string =
-			match expr with
-			| [] -> ""
-			| head::[] -> string_of_expr head  (* Use string_of_expr for conversion *)
-			| head::rest -> string_of_expr head ^ ", " ^ string_of_expr_params rest  (* Recursively handle rest *)
+	and string_of_expr_params (expr: expr list) : string =
+		match expr with
+		| [] -> ""
+		| head::[] -> string_of_expr head  (* Use string_of_expr for conversion *)
+		| head::rest -> string_of_expr head ^ ", " ^ string_of_expr_params rest  (* Recursively handle rest *)
 
 				
 let rec string_of_arrays (arraylist: expr list) : string =
