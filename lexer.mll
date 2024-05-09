@@ -28,6 +28,9 @@ let kwd_tbl = [
   "exchange", EXCHANGE;
   "with", WITH;
 
+  "low", LOW;
+  "high", HIGH;
+
   (*If Statements*)
   "if", IF;
   "else", ELSE;
@@ -47,6 +50,9 @@ let kwd_tbl = [
   "let", LET;
   "matrix", MATRIX;
   "array", ARRAY;
+  "arrays", ARRAY;
+  "table", TABLE;
+  "tables", TABLE;
   "columns", COLUMNS;
   "rows", ROWS;
 
@@ -126,6 +132,7 @@ rule next_tokens = parse
   | '+'                                 { print_string_magenta " Plus "; [PLUS] }
   | '/'                                 { print_string_magenta " Divide "; [DIVIDE] }
   | '%'                                 { print_string_magenta " Mod "; [MOD] }
+  | '^'                                 { print_string_magenta " Power "; [POWER] }
   | "∅"                                 { print_string_magenta " Empty_set "; [EMPTYSET] }
   | "≤"                                 { print_string_magenta " LessThanEqual "; [LTE] }
   | "≥"                                 { print_string_magenta " GreaterThanEqual "; [GTE] }
@@ -144,12 +151,15 @@ rule next_tokens = parse
   (* Everything else *)
   | "NIL"                               { print_string_magenta " NIL"; [NIL] }
   | "be" (space)+ "a" (space)+ "new"    { print_string_magenta " BeANew "; [BE_A_NEW] }
+  | "be" (space)+ "new"              { print_string_magenta " BeNew "; [BE_A_NEW] }
   | "monotonically" (space)+ "ascending" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT] }
   | "monotonically" (space)+ "decreasing" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_DESCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT] }
   | '['                                 { print_string_magenta " LBracket "; [LBRACKET] }
   | ']'                                 { print_string_magenta " RBracket "; [RBRACKET] }
   | '('                                 { print_string_magenta " LParen "; [LPAREN] }
   | ')'                                 { print_string_magenta " RParen "; [RPAREN] }
+  | '{'                                 { print_string_magenta " LBrace "; [LBRACE] }
+  | '}'                                 { print_string_magenta " RBrace "; [RBRACE] }
   | '.'                                 { print_string_magenta " Dot "; [DOT] }
   | ".."                                { print_string_magenta " DOTDOT "; [DOTDOT] }
   | ','                                 { print_string_magenta " Comma "; [COMMA] }

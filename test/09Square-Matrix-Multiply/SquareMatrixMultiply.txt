@@ -1,4 +1,4 @@
-SQUARE-MATRIX-MULTIPLY (A, B)
+SQUARE_MATRIX_MULTIPLY (A, B)
     n = A.rows
     let C be a new n × n matrix
     for i = 1 to n

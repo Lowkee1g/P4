@@ -9,7 +9,7 @@ Consolidate(H)
             y = A[d]
             if x.key > y.key 
                 exchange x with y
-            Fib-Heap-Link(H,y,x)
+            Fib_Heap_Link(H,y,x)
             A[d] = NIL 
             d = d + 1
         A[d] = x

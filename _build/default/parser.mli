@@ -7,6 +7,7 @@ type token =
   | UNION
   | TO
   | TIMES
+  | TABLE
   | SWAP
   | STRING of (string)
   | SORT
@@ -15,8 +16,10 @@ type token =
   | ROOTLIST
   | RETURN
   | RBRACKET
+  | RBRACE
   | RANDOM
   | PRINT
+  | POWER
   | PLUS
   | PI
   | OR
@@ -31,9 +34,11 @@ type token =
   | LTE
   | LT
   | LPAREN
+  | LOW
   | LET
   | LENGTH
   | LBRACKET
+  | LBRACE
   | ITEMS
   | INTO
   | INTERSECT
@@ -43,6 +48,7 @@ type token =
   | IN
   | IF
   | IDENT of (string)
+  | HIGH
   | GTE
   | GT
   | FOR

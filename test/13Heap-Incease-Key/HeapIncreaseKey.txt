@@ -1,4 +1,4 @@
-HEAP-INCREASE-KEY(A,i,key)
+HEAP_INCREASE_KEY(A,i,key)
     if key < A[i]
         error "new key is smaller than current key"
     A[i] = key

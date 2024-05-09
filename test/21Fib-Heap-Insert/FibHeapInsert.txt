@@ -1,4 +1,4 @@
-Fib-Heap-Insert(H,x)
+Fib_Heap_Insert(H,x)
     x.degree = 0
     x.p = NIL
     x.child = NIL
