@@ -11,7 +11,7 @@
 %token WHILE FOR TO DOWNTO
 %token SWAP WITH LENGTH EXCHANGE
 %token GT LT MINUS PLUS EQUAL INFINITY
-%token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS ARRAY
+%token LET BE_A_NEW CROSS MATRIX COLUMNS ROWS ARRAY TABLE
 %token LBRACKET RBRACKET DOT DOTDOT COMMA LPAREN RPAREN LBRACE RBRACE
 %token RANDOM ERROR LOW HIGH
 %token MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT SORT
@@ -157,8 +157,8 @@ expr:
   | expr EQUAL EQUAL expr 
 	{ Ebinop(Beq, $1, $4) }
 
-  | expr COMMA expr
-  { Ebinop(Bcomma, $1, $3) }
+  /* | expr COMMA expr
+  { Ebinop(Bcomma, $1, $3) } */
 
   | expr AND expr
   { Ebinop(Band, $1, $3) }
@@ -168,6 +168,9 @@ expr:
 
   | ident LBRACKET expr RBRACKET
 	{ Earray($1, $3) }
+
+  | ident LBRACKET expr COMMA expr RBRACKET
+  { Etable($1, $3, $5) }
 
   | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET
 	{ Ematrix($1, $3, $6) }
@@ -192,12 +195,26 @@ init_array:
   }
   ;
 
+init_table:
+  | id = ident LBRACKET e1 = expr COMMA e2 = expr RBRACKET
+  { 
+    print_string_red "Einittable -> ";
+    Einittable(id, e1, e2);
+  }
+  ;
+
 simple_stmt:
   (* Init array *)
   | LET array = array_list BE_A_NEW ARRAY {
     print_string_green "SinitArrayList -> ";
     SinitArrayList(array)
   }
+  | LET table = table_list BE_A_NEW TABLE {
+    print_string_green "SinitTable -> ";
+    SinitTableList(table)
+  }
+
+
   (* Init statments *)
   | LET ident BE_A_NEW expr CROSS expr MATRIX {
     print_string_green "Sinitmatrix -> ";
@@ -310,7 +327,11 @@ ident:
   }
 ;
 
-
+table_list:
+  | e = init_table { [e] }
+  | e = init_table AND e1 = init_table { [e; e1] }
+  | e = init_table COMMA AND e1 = init_table { [e; e1] } 
+  | e = init_table COMMA es = table_list { e :: es }
 
 array_list:
   | e = init_array { [e] }

@@ -51,6 +51,8 @@ let kwd_tbl = [
   "matrix", MATRIX;
   "array", ARRAY;
   "arrays", ARRAY;
+  "table", TABLE;
+  "tables", TABLE;
   "columns", COLUMNS;
   "rows", ROWS;
 
@@ -149,6 +151,7 @@ rule next_tokens = parse
   (* Everything else *)
   | "NIL"                               { print_string_magenta " NIL"; [NIL] }
   | "be" (space)+ "a" (space)+ "new"    { print_string_magenta " BeANew "; [BE_A_NEW] }
+  | "be" (space)+ "new"              { print_string_magenta " BeNew "; [BE_A_NEW] }
   | "monotonically" (space)+ "ascending" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT] }
   | "monotonically" (space)+ "decreasing" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_DESCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT] }
   | '['                                 { print_string_magenta " LBracket "; [LBRACKET] }

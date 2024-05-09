@@ -1,7 +1,7 @@
 MERGE(A,p,q,r)
     n_1 = q - p + 1
     n_2 = r - q
-    let L[1..n_1 + 1] and R[1..n_2 + 1] be a new arrays
+    let L[1..n_1 + 1] and R[1..n_2 + 1] be new arrays
     for i = 1 to n_1
         L[i] = A[p + i - 1]
     for j = 1 to n_2

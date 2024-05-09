@@ -50,6 +50,7 @@ type constant =
   | Ecst of constant
   | Eident of ident
   | Earray of ident * expr
+  | Etable of ident * expr * expr
   | Eset of expr list
   | Einitset of ident * expr list
   | Elength of ident
@@ -62,6 +63,7 @@ type constant =
   | Eobject of ident * expr
   | EobjectPI of ident
   | Einitarray of ident * expr  
+  | Einittable of ident * expr * expr
 
 type stmt =
   | Sfor of ident * expr * expr * stmt
@@ -74,6 +76,7 @@ type stmt =
   | Sendif
   | Sprint of expr list
   | SinitArrayList of expr list
+  | SinitTableList of expr list
   | Sswap of expr * expr
   | Sexchange of expr * expr
   | Slength of expr

@@ -49,6 +49,8 @@ let rec string_of_expr_params exprs =
 	| Eident id -> id.id
 	| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (string_of_expr index)
 	| Einitarray (id, size) -> Printf.sprintf "%s[%s]" id.id (string_of_expr size)
+	| Etable (id, expr1, expr2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr expr1) (string_of_expr expr2)
+	| Einittable (id, size1, size2) -> Printf.sprintf "%s = Array([Array([0 for _ in range(%s)]) for _ in range(%s)])" id.id (string_of_expr size1) (string_of_expr size2)
 	| Erange (e1, e2) -> Printf.sprintf "range(%s, %s)" (string_of_expr e1) (string_of_expr e2)
 	| Ematrix (id, ident1, ident2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr ident1) (string_of_expr ident2)
 	| Elength id -> Printf.sprintf "len(%s)" id.id
@@ -101,6 +103,12 @@ let rec string_of_arrays (arraylist: expr list) : string =
 	| [] -> ""
 	| head::[] -> string_of_expr head  (* Use string_of_expr for conversion *)
 	| head::rest -> string_of_expr head ^ ", " ^ string_of_arrays rest  (* Recursively handle rest *)
+
+let rec string_of_tables (tablelist: expr list) : string =
+	match tablelist with
+	| [] -> ""
+	| head::[] -> string_of_expr head  (* Use string_of_expr for conversion *)
+	| head::rest -> string_of_expr head ^ "\n " ^ string_of_tables rest  (* Recursively handle rest *)
 	
 
 let rec print_multiple_values exprs =
@@ -136,7 +144,7 @@ let rec print_multiple_values exprs =
 	(* Handle the function call case *)
 	| SfuncCall(id, args) ->
 		let args_str = string_of_expr_params args in
-		Printf.sprintf "sut min diller"
+		Printf.sprintf "A minor"
 
 	(* FOR LOOPS*)
 	| Sfor(ident, start_val, end_val, stmt) ->
@@ -193,6 +201,10 @@ let rec print_multiple_values exprs =
 	| SinitArrayList (arrays) ->
 		let arrays_str = string_of_arrays arrays in
 		Printf.sprintf "%s%s = Array([])\n" indent_str arrays_str
+	
+	| SinitTableList (tables) ->
+		let tables_str = string_of_tables tables in
+		Printf.sprintf "%s%s = Array([])\n" indent_str tables_str
 
 
 	| Slength (expr) ->

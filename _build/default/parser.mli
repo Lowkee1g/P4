@@ -7,6 +7,7 @@ type token =
   | UNION
   | TO
   | TIMES
+  | TABLE
   | SWAP
   | STRING of (string)
   | SORT
