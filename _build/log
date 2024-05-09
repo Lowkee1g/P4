@@ -19,95 +19,9 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_32229e_output
-$ (cd _build/default && /home/opam/.opam/5.1/bin/menhir parser.mly --base parser --infer-write-query parser__mock.ml.mock)
-> File "parser.mly", line 24, characters 13-20:
-> Warning: the token INTEGER is unused.
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl parser__mock.ml.mock) > _build/default/.main.eobjs/parser__mock.impl.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl interp.ml) > _build/default/.main.eobjs/interp.impl.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -no-alias-deps -opaque -o .main.eobjs/byte/ast.cmo -c -impl ast.ml)
-$ (cd _build/.sandbox/118f5bb5c522017d5032429668f319ac/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -short-paths -i -impl parser__mock.ml.mock) > _build/.sandbox/118f5bb5c522017d5032429668f319ac/default/parser__mock.mli.inferred
-$ (cd _build/default && /home/opam/.opam/5.1/bin/menhir parser.mly --base parser --infer-read-reply parser__mock.mli.inferred)
-> Warning: 10 states have shift/reduce conflicts.
-> Warning: one state has reduce/reduce conflicts.
-> Warning: 154 shift/reduce conflicts were arbitrarily resolved.
-> Warning: 33 reduce/reduce conflicts were arbitrarily resolved.
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -intf parser.mli) > _build/default/.main.eobjs/parser.intf.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl parser.ml) > _build/default/.main.eobjs/parser.impl.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /home/opam/.opam/5.1/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/ast.cmx -c -impl ast.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -no-alias-deps -opaque -o .main.eobjs/byte/parser.cmi -c -intf parser.mli)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -no-alias-deps -opaque -o .main.eobjs/byte/interp.cmo -c -impl interp.ml)
-> File "interp.ml", lines 70-89, characters 23-19:
-> 70 | .......................function
-> 71 | 	| Badd -> "+"
-> 72 | 	| Bsub -> "-"
-> 73 | 	| Bmul -> "*"
-> 74 | 	| Bdiv -> "/"
-> ...
-> 86 | 	| Bmod -> "%"
-> 87 | 	| Bin -> "in"
-> 88 | 	| Bun -> ".union"
-> 89 | 	| Binter -> "test"
-> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
-> Here is an example of a case that is not matched:
-> Bpow
->
-> File "interp.ml", line 147, characters 6-14:
-> 147 | 		let args_str = string_of_expr_params args in
->       		    ^^^^^^^^
-> Warning 26 [unused-var]: unused variable args_str.
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -no-alias-deps -opaque -o .main.eobjs/byte/lexer.cmo -c -impl lexer.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /home/opam/.opam/5.1/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/interp.cmx -c -impl interp.ml)
-> File "interp.ml", lines 70-89, characters 23-19:
-> 70 | .......................function
-> 71 | 	| Badd -> "+"
-> 72 | 	| Bsub -> "-"
-> 73 | 	| Bmul -> "*"
-> 74 | 	| Bdiv -> "/"
-> ...
-> 86 | 	| Bmod -> "%"
-> 87 | 	| Bin -> "in"
-> 88 | 	| Bun -> ".union"
-> 89 | 	| Binter -> "test"
-> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
-> Here is an example of a case that is not matched:
-> Bpow
->
-> File "interp.ml", line 147, characters 6-14:
-> 147 | 		let args_str = string_of_expr_params args in
->       		    ^^^^^^^^
-> Warning 26 [unused-var]: unused variable args_str.
+$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_67d37e_output
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl main.ml) > _build/default/.main.eobjs/main.impl.d
 $ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -no-alias-deps -opaque -o .main.eobjs/byte/main.cmo -c -impl main.ml)
-> File "main.ml", lines 24-59, characters 2-30:
-> 24 | ..match !file with
-> 25 |   | Some filename -> 
-> 26 |     let channel = open_in filename in
-> 27 |     let lexbuf = Lexing.from_channel channel in
-> 28 |     try
-> ...
-> 56 |         eprintf "(parser) - syntax error@.";
-> 57 |         exit 1
-> 58 |     | End_of_file ->
-> 59 |         printf "End of file\n"
-> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
-> Here is an example of a case that is not matched:
-> None
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /home/opam/.opam/5.1/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/lexer.cmx -c -impl lexer.ml)
 $ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /home/opam/.opam/5.1/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/main.cmx -c -impl main.ml)
-> File "main.ml", lines 24-59, characters 2-30:
-> 24 | ..match !file with
-> 25 |   | Some filename -> 
-> 26 |     let channel = open_in filename in
-> 27 |     let lexbuf = Lexing.from_channel channel in
-> 28 |     try
-> ...
-> 56 |         eprintf "(parser) - syntax error@.";
-> 57 |         exit 1
-> 58 |     | End_of_file ->
-> 59 |         printf "End of file\n"
-> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
-> Here is an example of a case that is not matched:
-> None
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /home/opam/.opam/5.1/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/parser.cmx -c -impl parser.ml)
 $ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -o main.exe /home/opam/.opam/5.1/lib/ocaml/str/str.cmxa .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
 # Promoting "_build/default/main.exe" to "main.exe"

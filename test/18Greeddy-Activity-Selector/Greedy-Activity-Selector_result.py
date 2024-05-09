@@ -2,7 +2,8 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-def Greedy_ctivity_Selector(s, f):
+import testRequirements.py
+def Greedy_Activity_Selector(s, f):
     n = len(s)
     A = {a[1]}
     k = 1

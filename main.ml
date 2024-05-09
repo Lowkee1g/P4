@@ -22,6 +22,9 @@ let set_file s =
 let () =
   Arg.parse spec set_file usage;
   match !file with
+  | None ->
+    eprintf "No file provided\n";
+    exit 1
   | Some filename -> 
     let channel = open_in filename in
     let lexbuf = Lexing.from_channel channel in
@@ -38,6 +41,7 @@ let () =
         Printf.fprintf out_channel "import sys\n";
         Printf.fprintf out_channel "sys.path.append('../../')\n";
         Printf.fprintf out_channel "from Array import Array\n\n";
+        Printf.fprintf out_channel "from testRequirements import *\n";
         
       Printf.fprintf out_channel "%s\n" result_string;
       close_out out_channel;

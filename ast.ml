@@ -89,7 +89,7 @@ type stmt =
   | Sinitmatrix of ident * expr * expr
   | Smatrix of ident * expr * expr
   | Sassign of expr * expr
-  | Sreturn of expr
+  | Sreturn of expr list
   | Sfunc of ident * expr list * stmt
   | SfuncCall of ident * expr list
   | Serror of expr

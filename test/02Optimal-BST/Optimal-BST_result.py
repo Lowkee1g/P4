@@ -2,6 +2,7 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
+import testRequirements.py
 def OPTIMAL_BST(p, q, n):
     e = Array([Array([0 for _ in range(range(1, n + 1))]) for _ in range(range(0, n))])
  w = Array([Array([0 for _ in range(range(1, n + 1))]) for _ in range(range(0, n))])

@@ -2,6 +2,7 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
+import testRequirements.py
 def MERGE(A, p, q, r):
     n_1 = q - p + 1
     n_2 = r - q

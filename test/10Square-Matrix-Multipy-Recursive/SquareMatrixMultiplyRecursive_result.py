@@ -2,6 +2,7 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
+import testRequirements.py
 def SQUARE_MATRIX_MULTIPLY_RECURSIVE(A, B):
     n = len(A)
     C = Array([Array([0 for _ in range(n)]) for _ in range(n)])

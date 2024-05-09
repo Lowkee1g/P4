@@ -1,4 +1,4 @@
-Random_-Sample(m,n)
+Random_Sample(m,n)
     if m == 0
         return ∅
     else 
@@ -6,7 +6,6 @@ Random_-Sample(m,n)
         i = Random(1,n)
         if i ∈ S 
             S = S ⋃ {n}
-        else S = S ⋃ {i}
+        else 
+            S = S ⋃ {i}
         return S
-        
-    

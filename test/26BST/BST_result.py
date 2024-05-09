@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../../')
 from Array import Array
+from testRequirements import *
 
 def TREE_SEARCH(x, k):
     if x == None or k == x.key:
@@ -9,7 +10,6 @@ def TREE_SEARCH(x, k):
         return TREE_SEARCH(x.left, k)
     else:
         return TREE_SEARCH(x.right, k)
-
 def TREE_INSERT(T, z):
     y = None
     x = T.root
@@ -26,13 +26,12 @@ def TREE_INSERT(T, z):
         y.left = z
     else:
         y.right = z
-
 def TREE_MAXIMUM(x):
     while x.right != None:
         x = x.right
     return x
-
 def TREE_MINUMUM(x):
     while x.left != None:
         x = x.left
     return x
+

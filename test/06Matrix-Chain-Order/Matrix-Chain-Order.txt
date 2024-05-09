@@ -7,7 +7,7 @@ Matrix_Chain_Order(p)
             j = i + l - 1
             m[i,j] = ∞
             for k = i to j - 1
-                q = m[i,k] + m[k+1,j] + p[i-1] p[k] p[j]
+                q = m[i,k] + m[k+1,j] + p[i-1]*p[k]*p[j]
                 if q < m[i,j]
                     m[i,j] = q 
                     s[i,j] = k

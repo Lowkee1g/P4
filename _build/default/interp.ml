@@ -246,7 +246,7 @@ let rec print_multiple_values exprs =
 		Printf.sprintf "%s%s = %s\n" indent_str expr1_str expr2_str
 
 	| Sreturn (expr) ->
-		let expr_str = string_of_expr expr in
+		let expr_str = string_of_expr_params expr in
 		Printf.sprintf "%sreturn %s\n" indent_str expr_str
 			
 	| Sprint(expr) ->

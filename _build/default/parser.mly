@@ -94,6 +94,9 @@ objectConstant:
 
   | i = ident
   { Oident i }
+
+  | pi = PI
+  { Ocst Cinfinity }
 ;
 eDotnotation:
   | ident DOT ROWS
@@ -245,12 +248,12 @@ simple_stmt:
     Sassign($1, $3);  (* Capture the result of Sassign *)
   }
 
-  | RETURN expr {
+  | RETURN expr_list {
     print_string_green "Sreturn -> ";
 	  Sreturn($2)
 	}
 
-  | RETURN LPAREN expr RPAREN {
+  | RETURN LPAREN expr_list RPAREN {
     print_string_green "Sreturn -> ";
     Sreturn($3)
   }
