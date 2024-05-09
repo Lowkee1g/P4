@@ -87,8 +87,13 @@ math_op:
   { Memptyset }
 ;
 
+objectConstant:
+  | c = CST
+  { Ocst c }
 
-
+  | i = ident
+  { Oident i }
+;
 eDotnotation:
   | ident DOT ROWS
   { Erows($1) }
@@ -99,8 +104,8 @@ eDotnotation:
   | ident DOT LENGTH
   { Elength($1) }
 
-  | ident DOT expr
-  { Eobject($1, $3)}
+  | ident DOT objectConstant
+  { Eobject($1, $3) }
 ;
 
 
@@ -292,9 +297,9 @@ array_list:
 ;
 
 ident_list:
-  | id = ident { [id] }  (* Base case: a single identifier *)
-  | id = ident MINUS ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a minus and more identifiers *)
-  | id = ident COMMA ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
+  | id = expr { [id] }  (* Base case: a single identifier *)
+  | id = expr MINUS ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a minus and more identifiers *)
+  | id = expr COMMA ids = ident_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
 ;
 
 functionName:

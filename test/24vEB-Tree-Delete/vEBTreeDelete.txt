@@ -1,4 +1,4 @@
-vEB-TREE-DELETE (V, x)
+vEB_TREE_DELETE (V, x)
     if V.min == V.max
         V.min = NIL
         V.max = NIL

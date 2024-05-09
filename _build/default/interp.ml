@@ -5,13 +5,6 @@ open Str
 exception Error of string
 let error s = raise (Error s)
 
-
-let rec string_of_idents_params idents =
-	match idents with
-	| [] -> ""
-	| id::[] -> id.id
-	| id::rest -> id.id ^ ", " ^ string_of_idents_params rest
-
 let rec string_of_idents_dash idents =
 	match idents with
 	| [] -> ""
@@ -38,8 +31,8 @@ let rec string_of_expr expr =
 	| Ecolumns id -> Printf.sprintf "len(%s[0])" id.id
 	| Erows id -> Printf.sprintf "len(%s)"  id.id
 	| Erandom (e1, e2) -> Printf.sprintf "random.randint(%s, %s)" (string_of_expr e1) (string_of_expr e2)
-	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_idents_params args)
-	| Eobject (id1, expr) -> Printf.sprintf "%s.%s" id1.id (string_of_expr expr)
+	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_expr_params args)
+	| Eobject (id1, expr) -> Printf.sprintf "%s.%s" id1.id (objectConstant expr)
 		(* Add cases for other types of expressions as needed *)
 		
 		and string_of_constant = function
@@ -71,6 +64,17 @@ let rec string_of_expr expr =
 		| Bin -> "in"
 		| Bun -> ".union"
 		| Binter -> "test"
+
+		and objectConstant = function
+		| Ocst c -> string_of_constant c
+		| Oident id -> id.id
+
+		and string_of_expr_params (expr: expr list) : string =
+			match expr with
+			| [] -> ""
+			| head::[] -> string_of_expr head  (* Use string_of_expr for conversion *)
+			| head::rest -> string_of_expr head ^ ", " ^ string_of_expr_params rest  (* Recursively handle rest *)
+
 				
 let rec string_of_arrays (arraylist: expr list) : string =
 	match arraylist with
@@ -94,7 +98,7 @@ let rec print_value expr =
 	(* Handle the function definition case *)
 	| Sfunc(id, args, stmt) ->
 		(* Use string_of_idents to turn the list of idents into a comma-separated string *)
-		let args_str = string_of_idents_params args in
+		let args_str = string_of_expr_params args in
 		let id_str = Str.global_replace (Str.regexp "-") "_" id.id in
 		(* Use args_str in the formatted string for the function definition *)
 		Printf.sprintf "%sdef %s(%s):\n%s" indent_str id_str args_str (interpret stmt (indent_level + 1))

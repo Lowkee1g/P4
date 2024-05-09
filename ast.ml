@@ -40,6 +40,10 @@ type constant =
   | Cpi
   | CminusInfinity
 
+type objectConstant =
+  | Ocst of constant
+  | Oident of ident
+
 type expr =
   | Ebinop of binop * expr * expr
   | Ecst of constant
@@ -50,9 +54,9 @@ type expr =
   | Erows of ident
   | Ecolumns of ident
   | Erandom of expr * expr
-  | EfunctionCall of ident * ident list
+  | EfunctionCall of ident * expr list
   | Erange of expr * expr
-  | Eobject of ident * expr
+  | Eobject of ident * objectConstant
   | Einitarray of ident * expr  
 
 type stmt =
@@ -76,7 +80,7 @@ type stmt =
   | Smatrix of ident * expr * expr
   | Sassign of expr * expr
   | Sreturn of expr
-  | Sfunc of ident * ident list * stmt 
+  | Sfunc of ident * expr list * stmt 
   | Serror of expr
   | Sblock of stmt list
   | SsortA of expr * expr
