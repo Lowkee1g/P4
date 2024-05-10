@@ -2,7 +2,6 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-from testRequirements import *
 def ON_LINE_MAXIMUM(k, n):
     bestscore = float('-inf')
     for i in range(1, k + 1):

@@ -12,6 +12,10 @@ let rec string_of_idents_params idents =
 	| id::[] -> id.id
 	| id::rest -> id.id ^ ", " ^ string_of_idents_params rest
 
+let is_uppercase_letter (c : char list) : bool =
+	match c with
+	| ch::_ -> Char.code ch >= 65 && Char.code ch <= 90
+		
 	
 let rec string_of_idents_dash idents =
 	match idents with
@@ -40,10 +44,10 @@ let rec string_of_idents_dash idents =
 	| Ecst c -> string_of_constant c
 	| Eident id -> id.id
 	| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (string_of_expr index)
-	| Einitarray (id, size) -> Printf.sprintf "%s[%s]" id.id (string_of_expr size)
+	| Einitarray (id, size) -> Printf.sprintf "%s = Array([0 for _ in %s])" id.id (string_of_expr size)
 	| Etable (id, expr1, expr2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr expr1) (string_of_expr expr2)
-	| Einittable (id, size1, size2) -> Printf.sprintf "%s = Array([Array([0 for _ in range(%s)]) for _ in range(%s)])" id.id (string_of_expr size1) (string_of_expr size2)
-	| Erange (e1, e2) -> Printf.sprintf "range(%s, %s)" (string_of_expr e1) (string_of_expr e2)
+	| Einittable (id, size1, size2) -> Printf.sprintf "%s = Array([Array([0 for _ in %s]) for _ in %s])" id.id (string_of_expr size1) (string_of_expr size2)
+	| Erange (e1, e2) -> Printf.sprintf "range(%s, %s + 1)" (string_of_expr e1) (string_of_expr e2)
 	| Ematrix (id, ident1, ident2) -> Printf.sprintf "%s[%s][%s]" id.id (string_of_expr ident1) (string_of_expr ident2)
 	| Elength id -> Printf.sprintf "len(%s)" id.id
 	| Ecolumns id -> Printf.sprintf "len(%s[0])" id.id
@@ -103,13 +107,13 @@ let rec string_of_arrays (arraylist: expr list) : string =
 	match arraylist with
 	| [] -> ""
 	| head::[] -> string_of_expr head  (* Use string_of_expr for conversion *)
-	| head::rest -> string_of_expr head ^ ", " ^ string_of_arrays rest  (* Recursively handle rest *)
+	| head::rest -> string_of_expr head ^ "å" ^ string_of_arrays rest  (* Recursively handle rest *)
 
 let rec string_of_tables (tablelist: expr list) : string =
 	match tablelist with
 	| [] -> ""
 	| head::[] -> string_of_expr head  (* Use string_of_expr for conversion *)
-	| head::rest -> string_of_expr head ^ "\n " ^ string_of_tables rest  (* Recursively handle rest *)
+	| head::rest -> string_of_expr head ^ "å" ^ string_of_tables rest  (* Recursively handle rest *)
 	
 
 let rec print_multiple_values exprs =
@@ -201,11 +205,15 @@ let rec print_multiple_values exprs =
 	(* ARRAY *)
 	| SinitArrayList (arrays) ->
 		let arrays_str = string_of_arrays arrays in
-		Printf.sprintf "%s%s = Array([])\n" indent_str arrays_str
+		(* Replace each comma with a comma, newline, and indentation *)
+		let formatted_arrays_str = Str.global_replace (Str.regexp_string "å") ("\n" ^ indent_str) arrays_str in
+		Printf.sprintf "%s%s\n" indent_str formatted_arrays_str
 	
 	| SinitTableList (tables) ->
 		let tables_str = string_of_tables tables in
-		Printf.sprintf "%s%s = Array([])\n" indent_str tables_str
+		(* Replace each comma with a comma, newline, and indentation *)
+		let formatted_tables_str = Str.global_replace (Str.regexp_string "å") ("\n" ^ indent_str) tables_str in
+		Printf.sprintf "%s%s\n" indent_str formatted_tables_str
 
 
 	| Slength (expr) ->
@@ -247,7 +255,8 @@ let rec print_multiple_values exprs =
 
 	| Sreturn (expr) ->
 		let expr_str = string_of_expr_params expr in
-		Printf.sprintf "%sreturn %s\n" indent_str expr_str
+		let formatted_expr_str = Str.global_replace (Str.regexp_string "and") (", ") expr_str in
+		Printf.sprintf "%sreturn %s\n" indent_str formatted_expr_str
 			
 	| Sprint(expr) ->
 		let expr_str = print_multiple_values expr in

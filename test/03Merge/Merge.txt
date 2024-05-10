@@ -10,7 +10,7 @@ MERGE(A,p,q,r)
     R[n_2 + 1] = ∞
     i = 1 
     j = 1
-    for k = p to R
+    for k = p to r
         if L[i] ≤ R[j]
             A[k] = L[i]
             i = i + 1

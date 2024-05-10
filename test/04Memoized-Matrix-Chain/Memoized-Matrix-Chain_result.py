@@ -2,10 +2,9 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-from testRequirements import *
 def MEMOIZED_MATRIX_CHAIN(p):
     n = len(p) - 1
-    m = Array([Array([0 for _ in range(range(1, n))]) for _ in range(range(1, n))]) = Array([])
+    m = Array([Array([0 for _ in range(1, n + 1)]) for _ in range(1, n + 1)])
     for i in range(1, n + 1):
         for j in range(i, n + 1):
             m[i][j] = float('inf')

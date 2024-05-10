@@ -41,7 +41,7 @@ let () =
         Printf.fprintf out_channel "import sys\n";
         Printf.fprintf out_channel "sys.path.append('../../')\n";
         Printf.fprintf out_channel "from Array import Array\n\n";
-        Printf.fprintf out_channel "from testRequirements import *\n";
+        
         
       Printf.fprintf out_channel "%s\n" result_string;
       close_out out_channel;

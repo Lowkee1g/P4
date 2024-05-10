@@ -1,8 +1,7 @@
 import sys
 sys.path.append('../../')
-from ..Array import Array
+from Array import Array
 
-from testRequirements import *
 def INSERTION_SORT(A):
     for j in range(2, len(A) + 1):
         key = A[j]

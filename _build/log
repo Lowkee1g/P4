@@ -1,9 +1,9 @@
 # dune build
 # OCAMLPARAM: unset
 # Shared cache: disabled
-# Shared cache location: /home/opam/.cache/dune/db
-# Workspace root: /workspaces/P4
-# Auto-detected concurrency: 24
+# Shared cache location: /Users/davidfraenkel/.cache/dune/db
+# Workspace root: /Users/davidfraenkel/p4
+# Auto-detected concurrency: 8
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -13,55 +13,65 @@
 #  ; build_dir = In_build_dir "default"
 #  ; installed_env =
 #      map
-#        { "INSIDE_DUNE" : "/workspaces/P4/_build/default"
+#        { "INSIDE_DUNE" : "/Users/davidfraenkel/p4/_build/default"
 #        ; "OCAML_COLOR" : "always"
 #        ; "OPAMCOLOR" : "always"
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_6b0dfb_output
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl interp.ml) > _build/default/.main.eobjs/interp.impl.d
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -no-alias-deps -opaque -o .main.eobjs/byte/interp.cmo -c -impl interp.ml)
-> File "interp.ml", lines 70-89, characters 23-19:
-> 70 | .......................function
-> 71 | 	| Badd -> "+"
-> 72 | 	| Bsub -> "-"
-> 73 | 	| Bmul -> "*"
-> 74 | 	| Bdiv -> "/"
+$ /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -config > /var/folders/fz/s5csb_w941vcyvdp808cgc0c0000gn/T/dune_43f544_output
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamldep.opt -modules -impl interp.ml) > _build/default/.main.eobjs/interp.impl.d
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -o .main.eobjs/byte/interp.cmo -c -impl interp.ml)
+> File "interp.ml", lines 16-17, characters 1-52:
+> 16 | .match c with
+> 17 | 	| ch::_ -> Char.code ch >= 65 && Char.code ch <= 90
+> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
+> Here is an example of a case that is not matched:
+> []
+> File "interp.ml", lines 74-93, characters 23-19:
+> 74 | .......................function
+> 75 | 	| Badd -> "+"
+> 76 | 	| Bsub -> "-"
+> 77 | 	| Bmul -> "*"
+> 78 | 	| Bdiv -> "/"
 > ...
-> 86 | 	| Bmod -> "%"
-> 87 | 	| Bin -> "in"
-> 88 | 	| Bun -> ".union"
-> 89 | 	| Binter -> "test"
+> 90 | 	| Bmod -> "%"
+> 91 | 	| Bin -> "in"
+> 92 | 	| Bun -> ".union"
+> 93 | 	| Binter -> "test"
 > Warning 8 [partial-match]: this pattern-matching is not exhaustive.
 > Here is an example of a case that is not matched:
 > Bpow
->
-> File "interp.ml", line 147, characters 6-14:
-> 147 | 		let args_str = string_of_expr_params args in
->       		    ^^^^^^^^
+> File "interp.ml", line 151, characters 6-14:
+> 151 | 		let args_str = string_of_expr_params args in
+>             ^^^^^^^^
 > Warning 26 [unused-var]: unused variable args_str.
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -no-alias-deps -opaque -o .main.eobjs/byte/main.cmo -c -impl main.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /home/opam/.opam/5.1/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/interp.cmx -c -impl interp.ml)
-> File "interp.ml", lines 70-89, characters 23-19:
-> 70 | .......................function
-> 71 | 	| Badd -> "+"
-> 72 | 	| Bsub -> "-"
-> 73 | 	| Bmul -> "*"
-> 74 | 	| Bdiv -> "/"
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -o .main.eobjs/byte/main.cmo -c -impl main.ml)
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/main.cmx -c -impl main.ml)
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/interp.cmx -c -impl interp.ml)
+> File "interp.ml", lines 16-17, characters 1-52:
+> 16 | .match c with
+> 17 | 	| ch::_ -> Char.code ch >= 65 && Char.code ch <= 90
+> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
+> Here is an example of a case that is not matched:
+> []
+> File "interp.ml", lines 74-93, characters 23-19:
+> 74 | .......................function
+> 75 | 	| Badd -> "+"
+> 76 | 	| Bsub -> "-"
+> 77 | 	| Bmul -> "*"
+> 78 | 	| Bdiv -> "/"
 > ...
-> 86 | 	| Bmod -> "%"
-> 87 | 	| Bin -> "in"
-> 88 | 	| Bun -> ".union"
-> 89 | 	| Binter -> "test"
+> 90 | 	| Bmod -> "%"
+> 91 | 	| Bin -> "in"
+> 92 | 	| Bun -> ".union"
+> 93 | 	| Binter -> "test"
 > Warning 8 [partial-match]: this pattern-matching is not exhaustive.
 > Here is an example of a case that is not matched:
 > Bpow
->
-> File "interp.ml", line 147, characters 6-14:
-> 147 | 		let args_str = string_of_expr_params args in
->       		    ^^^^^^^^
+> File "interp.ml", line 151, characters 6-14:
+> 151 | 		let args_str = string_of_expr_params args in
+>             ^^^^^^^^
 > Warning 26 [unused-var]: unused variable args_str.
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /home/opam/.opam/5.1/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/main.cmx -c -impl main.ml)
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -o main.exe /home/opam/.opam/5.1/lib/ocaml/str/str.cmxa .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlopt.opt -g -o main.exe /Users/davidfraenkel/.opam/ocaml-base-compiler/lib/ocaml/str.cmxa -I /Users/davidfraenkel/.opam/ocaml-base-compiler/lib/ocaml .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
 # Promoting "_build/default/main.exe" to "main.exe"

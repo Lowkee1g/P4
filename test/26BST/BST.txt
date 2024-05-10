@@ -8,7 +8,7 @@ TREE_SEARCH(x,k)
 
 TREE_INSERT(T,z)
     y = NIL
-    x = T.root
+    x = T
     while x ≠ NIL 
         y = x
         if z.key < x.key
@@ -17,7 +17,7 @@ TREE_INSERT(T,z)
             x = x.right
     z.p = y
     if y == NIL
-        T.root = z
+        T = z
     elseif z.key < y.key
         y.left = z
     else 

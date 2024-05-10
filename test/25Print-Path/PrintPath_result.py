@@ -2,7 +2,6 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-from testRequirements import *
 def PRINT_PATH(G, s, v):
     if v == S:
         s

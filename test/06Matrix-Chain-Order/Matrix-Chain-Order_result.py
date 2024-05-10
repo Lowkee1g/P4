@@ -2,10 +2,9 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-from testRequirements import *
 def Matrix_Chain_Order(p):
-    m = Array([Array([0 for _ in range(range(1, n))]) for _ in range(range(1, n))])
- s = Array([Array([0 for _ in range(range(1, n - 1))]) for _ in range(range(2, n))]) = Array([])
+    m = Array([Array([0 for _ in range(1, n + 1)]) for _ in range(1, n + 1)])
+    s = Array([Array([0 for _ in range(1, n - 1 + 1)]) for _ in range(2, n + 1)])
     for i in range(1, n + 1):
         m[i][i] = 0
     for l in range(2, n + 1):
