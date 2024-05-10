@@ -2,7 +2,7 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-import testRequirements.py
+from testRequirements import *
 def Randomize_In_Place(A, B):
     n = len(A)
     for i in range(1, n + 1):

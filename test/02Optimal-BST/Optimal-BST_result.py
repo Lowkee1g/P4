@@ -2,7 +2,7 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-import testRequirements.py
+from testRequirements import *
 def OPTIMAL_BST(p, q, n):
     e = Array([Array([0 for _ in range(range(1, n + 1))]) for _ in range(range(0, n))])
  w = Array([Array([0 for _ in range(range(1, n + 1))]) for _ in range(range(0, n))])
@@ -20,5 +20,5 @@ def OPTIMAL_BST(p, q, n):
                 if t < e[i][j]:
                     e[i][j] = t
                     root[i][j] = r
-    return e, root
+    return e and root
 

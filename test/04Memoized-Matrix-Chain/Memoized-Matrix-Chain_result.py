@@ -2,7 +2,7 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-import testRequirements.py
+from testRequirements import *
 def MEMOIZED_MATRIX_CHAIN(p):
     n = len(p) - 1
     m = Array([Array([0 for _ in range(range(1, n))]) for _ in range(range(1, n))]) = Array([])

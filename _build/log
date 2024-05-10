@@ -19,9 +19,49 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_67d37e_output
-$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl main.ml) > _build/default/.main.eobjs/main.impl.d
+$ /home/opam/.opam/5.1/bin/ocamlc.opt -config > /tmp/dune_6b0dfb_output
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamldep.opt -modules -impl interp.ml) > _build/default/.main.eobjs/interp.impl.d
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -no-alias-deps -opaque -o .main.eobjs/byte/interp.cmo -c -impl interp.ml)
+> File "interp.ml", lines 70-89, characters 23-19:
+> 70 | .......................function
+> 71 | 	| Badd -> "+"
+> 72 | 	| Bsub -> "-"
+> 73 | 	| Bmul -> "*"
+> 74 | 	| Bdiv -> "/"
+> ...
+> 86 | 	| Bmod -> "%"
+> 87 | 	| Bin -> "in"
+> 88 | 	| Bun -> ".union"
+> 89 | 	| Binter -> "test"
+> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
+> Here is an example of a case that is not matched:
+> Bpow
+>
+> File "interp.ml", line 147, characters 6-14:
+> 147 | 		let args_str = string_of_expr_params args in
+>       		    ^^^^^^^^
+> Warning 26 [unused-var]: unused variable args_str.
 $ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -I /home/opam/.opam/5.1/lib/ocaml/str -no-alias-deps -opaque -o .main.eobjs/byte/main.cmo -c -impl main.ml)
+$ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /home/opam/.opam/5.1/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/interp.cmx -c -impl interp.ml)
+> File "interp.ml", lines 70-89, characters 23-19:
+> 70 | .......................function
+> 71 | 	| Badd -> "+"
+> 72 | 	| Bsub -> "-"
+> 73 | 	| Bmul -> "*"
+> 74 | 	| Bdiv -> "/"
+> ...
+> 86 | 	| Bmod -> "%"
+> 87 | 	| Bin -> "in"
+> 88 | 	| Bun -> ".union"
+> 89 | 	| Binter -> "test"
+> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
+> Here is an example of a case that is not matched:
+> Bpow
+>
+> File "interp.ml", line 147, characters 6-14:
+> 147 | 		let args_str = string_of_expr_params args in
+>       		    ^^^^^^^^
+> Warning 26 [unused-var]: unused variable args_str.
 $ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /home/opam/.opam/5.1/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/main.cmx -c -impl main.ml)
 $ (cd _build/default && /home/opam/.opam/5.1/bin/ocamlopt.opt -g -o main.exe /home/opam/.opam/5.1/lib/ocaml/str/str.cmxa .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
 # Promoting "_build/default/main.exe" to "main.exe"

@@ -2,7 +2,7 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-import testRequirements.py
+from testRequirements import *
 def EXTENDED_BOTTOM_UP_CUT_ROD(p, n):
     r[range(0, n)], s[range(0, n)] = Array([])
     r[0] = 0
@@ -13,5 +13,5 @@ def EXTENDED_BOTTOM_UP_CUT_ROD(p, n):
             q = p[i] + r[j - i]
             s[j] = i
     r[j] = q
-    return r, s
+    return r and s
 

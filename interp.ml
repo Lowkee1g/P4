@@ -28,7 +28,7 @@ let rec string_of_idents_dash idents =
 	| Ebinop(Band, e1, e2) ->  (* Detecting the AND operator *)
       let left_expr = string_of_expr e1 in
       let right_expr = string_of_expr e2 in
-      Printf.sprintf "%s, %s" left_expr right_expr  (* Customize as needed *)
+      Printf.sprintf "%s and %s" left_expr right_expr  (* Customize as needed *)
 	| Ebinop(op, e1, e2) ->
 		let op_str = string_of_binop op in
 		let e1_str = string_of_expr e1 in

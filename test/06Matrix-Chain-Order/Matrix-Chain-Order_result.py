@@ -2,7 +2,7 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-import testRequirements.py
+from testRequirements import *
 def Matrix_Chain_Order(p):
     m = Array([Array([0 for _ in range(range(1, n))]) for _ in range(range(1, n))])
  s = Array([Array([0 for _ in range(range(1, n - 1))]) for _ in range(range(2, n))]) = Array([])

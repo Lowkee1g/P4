@@ -2,7 +2,7 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-import testRequirements.py
+from testRequirements import *
 def FIND_MAX_CROSSING_SUBARRAY(A, _low, mid, _high):
     left_sum = float('-inf')
     sum = 0

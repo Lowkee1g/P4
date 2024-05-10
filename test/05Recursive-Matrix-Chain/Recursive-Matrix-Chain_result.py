@@ -2,7 +2,7 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-import testRequirements.py
+from testRequirements import *
 def RECURSIVE_MATRIX_CHAIN(p, i, j):
     if i == j:
         return 0

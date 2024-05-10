@@ -21,7 +21,7 @@ OUTPUT_FILES := $(wildcard $(OUTPUT_DIR)/*/*.py)
 
 # Define a target to run the command for each test file
 run_tests:
-	@echo "Running tests..."
+	@echo "Creating python files..."
 	@for file in $(TEST_FILES); do \
 		$(TEST_COMMAND) $$file; \
 		if [ $$? -ne 0 ]; then \
@@ -29,10 +29,10 @@ run_tests:
 			exit 1; \
 		fi; \
 	done
-	@echo "Tests completed successfully."
+	@echo "Cormen Pseudocode successfully interperet."
 
 run_outputs:
-	@echo "Running outputs..."
+	@echo "Running python files..."
 	@success_count=0; \
 	failure_count=0; \
 	for file in $(OUTPUT_FILES); do \
@@ -45,3 +45,5 @@ run_outputs:
 	done; \
 	echo "Successes: $$success_count"; \
 	echo "Failures: $$failure_count"
+
+all: run_tests run_outputs

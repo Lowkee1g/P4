@@ -1,8 +1,8 @@
 import sys
 sys.path.append('../../')
 from Array import Array
-from testRequirements import *
 
+from testRequirements import *
 def TREE_SEARCH(x, k):
     if x == None or k == x.key:
         return x
