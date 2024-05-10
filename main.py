@@ -44,6 +44,7 @@ def main():
     insertionsort()
     optimalBST()
     merge()
+    memoizedMatrixChain()
     binarySearchTree()
 
 def insertionsort():
@@ -89,9 +90,12 @@ def merge():
 
 def memoizedMatrixChain():
     print("-------------Memoized Matrix Chain-------------")
+    p = Array([30, 35, 15, 5, 10, 20, 25])
     # Access and run the MemoizedMatrixChain function dynamically
-    memoized_matrix_chain_module = getattr(test_modules, "MemoizedMatrixChain")
-    memoized_matrix_chain_module.MemoizedMatrixChain()
+    memoized_matrix_chain_module = getattr(test_modules, "Memoized_Matrix_Chain")
+    matrix = memoized_matrix_chain_module.MEMOIZED_MATRIX_CHAIN(p)
+
+    print(matrix)
 
 def recursiveMatrixChain():
     print("-------------Recursive matrix chain-------------")
