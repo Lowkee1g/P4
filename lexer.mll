@@ -5,6 +5,8 @@ open Parser
 
 exception Lexing_error of string
 
+let silent = ref false
+
 let string_buff = Buffer.create 256
 
 let is_printable c = 
@@ -73,13 +75,12 @@ let id_or_kwd =
   let h = Hashtbl.create 50 in
   List.iter (fun (s, t) -> Hashtbl.add h s t) kwd_tbl;
   fun s ->
-    (*let s = String.lowercase_ascii s in*)
     try 
       let found = Hashtbl.find h s in
-      print_string_yellow ("keyword: " ^ s ^ " ");  (* This prints if the input was a keyword *)
+      if not !silent then print_string_yellow ("keyword: " ^ s ^ " ");
       found
     with Not_found ->
-      print_string_blue ("Ident: " ^ s ^ " ");  (* This prints if the input was not a keyword *)
+      if not !silent then print_string_blue ("Ident: " ^ s ^ " ");
       IDENT s
 
 
@@ -112,61 +113,61 @@ let space = ' ' | '\t'
 
 
 rule next_tokens = parse
-  | '\n'                                { print_string_red "\nLine: "; print_int !debugLines; print_string "  "; debugLines := !debugLines + 1; new_line lexbuf; update_stack (indentation lexbuf) }
+  | '\n'                                { if not !silent then (print_string_red "\nLine: "; print_int !debugLines; print_string "  "); debugLines := !debugLines + 1; new_line lexbuf; update_stack (indentation lexbuf) }
   | (space)+                            { next_tokens lexbuf }
 
   (* Special characters start *)
-  | "×"                                 { print_string_magenta " CROSS "; [CROSS] }
-  | "cross"                             { print_string_magenta " CROSS "; [CROSS] }
-  | "∞"                                 { print_string_magenta " Infinity "; [INFINITY] }
-  | "inf"                               { print_string_magenta " Infinity "; [INFINITY] }
-  | "⋅"                                 { print_string_magenta " Times "; [TIMES] }
-  | "*"                                 { print_string_magenta " Times "; [TIMES] }
+  | "×"                                 { if not !silent then print_string_magenta " CROSS "; [CROSS] }
+  | "cross"                             { if not !silent then print_string_magenta " CROSS "; [CROSS] }
+  | "∞"                                 { if not !silent then print_string_magenta " Infinity "; [INFINITY] }
+  | "inf"                               { if not !silent then print_string_magenta " Infinity "; [INFINITY] }
+  | "⋅"                                 { if not !silent then print_string_magenta " Times "; [TIMES] }
+  | "*"                                 { if not !silent then print_string_magenta " Times "; [TIMES] }
   (* Special characters end *)
 
   (* Math *)
-  | '='                                 { print_string_magenta " Equal "; [EQUAL] }
-  | '>'                                 { print_string_magenta " GreaterThan "; [GT] }
-  | '<'                                 { print_string_magenta " LessThan "; [LT] }
-  | '-'                                 { print_string_magenta " Minus "; [MINUS] }
-  | '+'                                 { print_string_magenta " Plus "; [PLUS] }
-  | '/'                                 { print_string_magenta " Divide "; [DIVIDE] }
-  | '%'                                 { print_string_magenta " Mod "; [MOD] }
-  | '^'                                 { print_string_magenta " Power "; [POWER] }
-  | "∅"                                 { print_string_magenta " Empty_set "; [EMPTYSET] }
-  | "≤"                                 { print_string_magenta " LessThanEqual "; [LTE] }
-  | "≥"                                 { print_string_magenta " GreaterThanEqual "; [GTE] }
-  | "≠"                                 { print_string_magenta " NotEqual "; [NEQ] }
-  | "∈"                                 { print_string_magenta " In "; [IN] }
-  | "⋃"                                 { print_string_magenta " Union "; [UNION] }
-  | "⋂"                                 { print_string_magenta " Intersection "; [INTERSECT] }
-  | "π"                                 { print_string_magenta " Pi "; [PI] }
+  | '='                                 { if not !silent then print_string_magenta " Equal "; [EQUAL] }
+  | '>'                                 { if not !silent then print_string_magenta " GreaterThan "; [GT] }
+  | '<'                                 { if not !silent then print_string_magenta " LessThan "; [LT] }
+  | '-'                                 { if not !silent then print_string_magenta " Minus "; [MINUS] }
+  | '+'                                 { if not !silent then print_string_magenta " Plus "; [PLUS] }
+  | '/'                                 { if not !silent then print_string_magenta " Divide "; [DIVIDE] }
+  | '%'                                 { if not !silent then print_string_magenta " Mod "; [MOD] }
+  | '^'                                 { if not !silent then print_string_magenta " Power "; [POWER] }
+  | "∅"                                 { if not !silent then print_string_magenta " Empty_set "; [EMPTYSET] }
+  | "≤"                                 { if not !silent then print_string_magenta " LessThanEqual "; [LTE] }
+  | "≥"                                 { if not !silent then print_string_magenta " GreaterThanEqual "; [GTE] }
+  | "≠"                                 { if not !silent then print_string_magenta " NotEqual "; [NEQ] }
+  | "∈"                                 { if not !silent then print_string_magenta " In "; [IN] }
+  | "⋃"                                 { if not !silent then print_string_magenta " Union "; [UNION] }
+  | "⋂"                                 { if not !silent then print_string_magenta " Intersection "; [INTERSECT] }
+  | "π"                                 { if not !silent then print_string_magenta " Pi "; [PI] }
 
 
 
   (* Logical *)
-  | "and"                               { print_string_magenta " And "; [AND] }
-  | "or"                                { print_string_magenta " Or "; [OR] }
+  | "and"                               { if not !silent then print_string_magenta " And "; [AND] }
+  | "or"                                { if not !silent then print_string_magenta " Or "; [OR] }
 
   (* Everything else *)
-  | "NIL"                               { print_string_magenta " NIL"; [NIL] }
-  | "be" (space)+ "a" (space)+ "new"    { print_string_magenta " BeANew "; [BE_A_NEW] }
-  | "be" (space)+ "new"              { print_string_magenta " BeNew "; [BE_A_NEW] }
-  | "monotonically" (space)+ "ascending" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT] }
-  | "monotonically" (space)+ "decreasing" (space)+ "order" (space)+ "by" (space)+ "weight" { print_string "MONOTONICALLY_DESCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT] }
-  | '['                                 { print_string_magenta " LBracket "; [LBRACKET] }
-  | ']'                                 { print_string_magenta " RBracket "; [RBRACKET] }
-  | '('                                 { print_string_magenta " LParen "; [LPAREN] }
-  | ')'                                 { print_string_magenta " RParen "; [RPAREN] }
-  | '{'                                 { print_string_magenta " LBrace "; [LBRACE] }
-  | '}'                                 { print_string_magenta " RBrace "; [RBRACE] }
-  | '.'                                 { print_string_magenta " Dot "; [DOT] }
-  | ".."                                { print_string_magenta " DOTDOT "; [DOTDOT] }
-  | ','                                 { print_string_magenta " Comma "; [COMMA] }
+  | "NIL"                               { if not !silent then print_string_magenta " NIL"; [NIL] }
+  | "be" (space)+ "a" (space)+ "new"    { if not !silent then print_string_magenta " BeANew "; [BE_A_NEW] }
+  | "be" (space)+ "new"              { if not !silent then print_string_magenta " BeNew "; [BE_A_NEW] }
+  | "monotonically" (space)+ "ascending" (space)+ "order" (space)+ "by" (space)+ "weight" { if not !silent then print_string "MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT] }
+  | "monotonically" (space)+ "decreasing" (space)+ "order" (space)+ "by" (space)+ "weight" { if not !silent then print_string "MONOTONICALLY_DESCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT] }
+  | '['                                 { if not !silent then print_string_magenta " LBracket "; [LBRACKET] }
+  | ']'                                 { if not !silent then print_string_magenta " RBracket "; [RBRACKET] }
+  | '('                                 { if not !silent then print_string_magenta " LParen "; [LPAREN] }
+  | ')'                                 { if not !silent then print_string_magenta " RParen "; [RPAREN] }
+  | '{'                                 { if not !silent then print_string_magenta " LBrace "; [LBRACE] }
+  | '}'                                 { if not !silent then print_string_magenta " RBrace "; [RBRACE] }
+  | '.'                                 { if not !silent then print_string_magenta " Dot "; [DOT] }
+  | ".."                                { if not !silent then print_string_magenta " DOTDOT "; [DOTDOT] }
+  | ','                                 { if not !silent then print_string_magenta " Comma "; [COMMA] }
   | '"'                                 { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
   | ident as id                         { [id_or_kwd id] }
-  | integer as s                        { print_int_blue s;  [CST (Cint(int_of_string s))] }
-  | eof                                 { print_endline "eof\n\n"; NEWLINE :: unindent 0 @ [EOF] }
+  | integer as s                        { if not !silent then print_int_blue s;  [CST (Cint(int_of_string s))] }
+  | eof                                 { if not !silent then print_endline "eof\n\n"; NEWLINE :: unindent 0 @ [EOF] }
   | _ as c
       {
         let pos = Lexing.lexeme_start_p lexbuf in

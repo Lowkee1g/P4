@@ -19,11 +19,17 @@ TEST_FILES := $(wildcard $(TEST_DIR)/*/*.txt)
 # Find all .py files recursively in the output directory
 OUTPUT_FILES := $(wildcard $(OUTPUT_DIR)/*/*.py)
 
+build: 
+	@echo "Compiling Files"
+	@dune build
+
+python:
+	@python3 main.py
 # Define a target to run the command for each test file
 run_tests:
 	@echo "Creating python files..."
 	@for file in $(TEST_FILES); do \
-		$(TEST_COMMAND) $$file; \
+		$(TEST_COMMAND) -silent $$file; \
 		if [ $$? -ne 0 ]; then \
 			echo "Error running test $$file"; \
 			exit 1; \
@@ -46,4 +52,6 @@ run_outputs:
 	echo "Successes: $$success_count"; \
 	echo "Failures: $$failure_count"
 
-all: run_tests run_outputs
+all: build run_tests run_outputs 
+
+test: build run_tests python

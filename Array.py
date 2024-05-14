@@ -21,10 +21,21 @@ class Array(object):
         return item in self.items
 
     def __getitem__(self, key: int) -> any:
+        if isinstance(key, tuple):
+            i, j = key
+            return self.items[i - 1][j - 1]
         return self.items[key - 1]
 
     def __setitem__(self, key: int, value: any) -> None:
-        self.items[key - 1] = value
+        if isinstance(key, tuple):
+            i, j = key
+            self.items[i - 1][j - 1] = value
+        else:
+            self.items[key - 1] = value
 
     def __delitem__(self, key: int) -> None:
-        del self.items[key - 1]
+        if isinstance(key, tuple):
+            i, j = key
+            del self.items[i - 1][j - 1]
+        else:
+            del self.items[key - 1]

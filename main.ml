@@ -7,9 +7,11 @@ open Interp
 let usage = "usage: mini-python [options] <file.txt>"
 
 let parse_only = ref false
+let silent = ref false
 
 let spec = [
   "--parse-only", Arg.Set parse_only, " stop after parsing";
+  "-silent", Arg.Set silent, "Supress output";
 ]
 
 let file = ref None
@@ -20,7 +22,9 @@ let set_file s =
   file := Some s
 
 let () =
-  Arg.parse spec set_file usage;
+  Arg.parse spec set_file usage; 
+    (* (fun x -> raise (Arg.Bad ("Bad argument : " ^ x)))
+    "Usage: -silent to suppress output"; *)
   match !file with
   | None ->
     eprintf "No file provided\n";

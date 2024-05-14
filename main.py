@@ -40,15 +40,28 @@ def main():
             except FileNotFoundError:
                 print(f"No {result_module_name} in {dir_name}")
 
-    # Example usage of Array
+    # Print every module in the test_modules
+    for module_name in dir(test_modules):
+        if not module_name.startswith("__"):
+            print(module_name)
+
+
     insertionsort()
     optimalBST()
     merge()
     memoizedMatrixChain()
+    #recursiveMatrixChain()
+    #matrixChainOrder()
+    extendedBottomUpCutRod()
+    bubbleSort()
     binarySearchTree()
+    squareMatrixMultiply()
+    #squareMatrixMultiplyRecursive()
 
 def insertionsort():
     print("-------------Insertion sort-------------")
+    # The INSERTION_SORT function sorts an array A by iteratively taking each element 
+    # and inserting it into its correct position within the sorted portion of the array.
     my_array = Array([5, 2, 4, 6, 1, 3])
     # Access and run the INSERTION_SORT function dynamically
     insertion_sort_module = getattr(test_modules, "Insertionsort")
@@ -57,6 +70,7 @@ def insertionsort():
 
 def optimalBST():
     print("-------------Optimal BST-------------")
+    # The OPTIMAL_BST function calculates the minimum search cost and structure of an optimal binary search tree (BST) using dynamic programming.
     p = Array([0.0, 0.15, 0.1, 0.05, 0.1, 0.2])
     q = Array([0.05, 0.1, 0.05, 0.05, 0.05, 0.1])
     n = len(p) - 1
@@ -75,6 +89,7 @@ def optimalBST():
 
 def merge():
     print("-------------Merge-------------")
+    # The MERGE function merges two sorted subarrays into a single sorted subarray in a given array A.
     # Example usage:
     # Define the input array and indices
     A = Array([3, 7, 12, 14, 18, 9, 11, 16, 21])
@@ -90,6 +105,7 @@ def merge():
 
 def memoizedMatrixChain():
     print("-------------Memoized Matrix Chain-------------")
+     # The function computes the minimum cost of multiplying a chain of matrices using memoization.
     p = Array([30, 35, 15, 5, 10, 20, 25])
     # Access and run the MemoizedMatrixChain function dynamically
     memoized_matrix_chain_module = getattr(test_modules, "Memoized_Matrix_Chain")
@@ -99,78 +115,120 @@ def memoizedMatrixChain():
 
 def recursiveMatrixChain():
     print("-------------Recursive matrix chain-------------")
+    # The RECURSIVE_MATRIX_CHAIN function calculates the minimum cost of multiplying a chain of matrices using a recursive approach.
+    p = Array([10, 20, 30, 40, 30])  # Dimensions of matrices
+    j = len(p) - 1  # Number of matrices
     # Access and run the RecursiveMatrixChain function dynamically
-    recursive_matrix_chain_module = getattr(test_modules, "RecursiveMatrixChain")
-    recursive_matrix_chain_module.RecursiveMatrixChain()
+    recursive_matrix_chain_module = getattr(test_modules, "Recursive_Matrix_Chain")
+    result = recursive_matrix_chain_module.RECURSIVE_MATRIX_CHAIN(p, 1, j)
+    print("Minimum number of multiplications:", result)
 
 def matrixChainOrder():
     print("-------------Matrix chain order-------------")
+    # The MATRIX_CHAIN_ORDER function calculates the minimum number of multiplications needed to multiply a chain of matrices.
     # Access and run the Matrix_Chain_Order function dynamically
-    matrix_chain_order_module = getattr(test_modules, "MatrixChainOrder")
-    matrix_chain_order_module.Matrix_Chain_Order()
+    # Example usage:
+    p = Array([10, 20, 30])  # Dimensions of matrices
+    matrix_chain_order_module = getattr(test_modules, "Matrix_Chain_Order")
+    m_result, s_result = matrix_chain_order_module.MATRIX_CHAIN_ORDER(p)
+    print("Minimum number of multiplications:", m_result, s_result)
 
 def extendedBottomUpCutRod():
     print("-------------Extended bottom up cut rod-------------")
+    # The EXTENDED_BOTTOM_UP_CUT_ROD function calculates the optimal revenue and cut positions for a rod of length n.
     # Access and run the ExtendedBottomUpCutRod function dynamically
-    extended_bottom_up_cut_rod_module = getattr(test_modules, "ExtendedBottomUpCutRod")
-    extended_bottom_up_cut_rod_module.ExtendedBottomUpCutRod()
+    p = Array([0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30])  # Prices of rod lengths
+    n = 8  # Desired rod length
+    extended_bottom_up_cut_rod_module = getattr(test_modules, "Extended_Bottom_Up_Cut_Rod")
+    r_result, s_result = extended_bottom_up_cut_rod_module.EXTENDED_BOTTOM_UP_CUT_ROD(p,n)
+    print("Optimal revenue for rod length", n, ":", r_result[n])
+    print("Cut positions:", s_result[n])
 
 def bubbleSort():
     print("-------------Bubble sort-------------")
+    # The BUBBLESORT function sorts an array A by repeatedly swapping adjacent elements if they are in the wrong order.
     # Access and run the BubbleSort function dynamically
-    bubble_sort_module = getattr(test_modules, "BubbleSort")
-    bubble_sort_module.BubbleSort()
+    A = Array([5, 2, 4, 6, 1, 3])
+    bubble_sort_module = getattr(test_modules, "Bubblesort")
+    bubble_sort_module.BUBBLESORT(A)
+    print("Sorted array:", A)
 
 def squareMatrixMultiply():
     print("-------------Square Matrix multiply-------------")
+    # The SQUARE_MATRIX_MULTIPLY function multiplies two square matrices A and B.
+    # Example usage:
+    A = Array([Array([1, 2, 3]),
+            Array([4, 5, 6]),
+            Array([7, 8, 9])])
+
+    B = Array([Array([9, 8, 7]),
+            Array([6, 5, 4]),
+            Array([3, 2, 1])])
+
     # Access and run the SquareMatrixMultiply function dynamically
-    square_matrix_multiply_module = getattr(test_modules, "SquareMatrixMultiply")
-    square_matrix_multiply_module.SquareMatrixMultiply()
+    square_matrix_multiply_module = getattr(test_modules, "Square_Matrix_Multiply")
+    result = square_matrix_multiply_module.SQUARE_MATRIX_MULTIPLY(A,B)
+    print(result)
 
 def squareMatrixMultiplyRecursive():
     print("-------------Square matrix multiply recursive-------------")
+    # The SQUARE_MATRIX_MULTIPLY_RECURSIVE function multiplies two square matrices A and B using a recursive approach.
     # Access and run the SquareMatrixMultiplyRecursive function dynamically
-    square_matrix_multiply_recursive_module = getattr(test_modules, "SquareMatrixMultiplyRecursive")
-    square_matrix_multiply_recursive_module.SquareMatrixMultiplyRecursive()
+    A = Array([Array([1, 2]),
+            Array([4, 5])])
+
+    B = Array([Array([9, 8]),
+            Array([6, 5])])
+
+    square_matrix_multiply_recursive_module = getattr(test_modules, "Square_Matrix_Multiply_Recursive")
+    result = square_matrix_multiply_recursive_module.SQUARE_MATRIX_MULTIPLY_RECURSIVE(A,B)
+    print(result)
 
 def heapIncreaseKey():
     print("-------------Heap increase key-------------")
+    # The HEAP_INCREASE_KEY function increases the value of a key in a max heap and maintains the max-heap property.
     # Access and run the HeapIncreaseKey function dynamically
     heap_increase_key_module = getattr(test_modules, "HeapIncreaseKey")
     heap_increase_key_module.HeapIncreaseKey()       
 
 def findMaxCrossingSubarray():
     print("-------------Find max crossing sub array-------------")
+    # The FIND_MAX_CROSSING_SUBARRAY function finds the maximum subarray that crosses the midpoint of an array.
     # Access and run the FindMaxCrossingSubarray function dynamically
     find_max_crossing_subarray_module = getattr(test_modules, "FindMaxCrossingSubarray")
     find_max_crossing_subarray_module.FindMaxCrossingSubarray()
 
 def randomizeInPlace():
     print("-------------Randomize in place-------------")
+    # The RANDOMIZE_IN_PLACE function randomly shuffles the elements of an array in place.
     # Access and run the RandomizeInPlace function dynamically
     randomize_in_place_module = getattr(test_modules, "RandomizeInPlace")
     randomize_in_place_module.RandomizeInPlace()
 
 def randomSample():
     print("-------------random sample-------------")
+    # The RANDOM_SAMPLE function randomly selects a sample of k elements from an array A.
     # Access and run the RandomSample function dynamically
     random_sample_module = getattr(test_modules, "RandomSample")
     random_sample_module.RandomSample()
 
 def onLineMaximum():
     print("-------------On line maximum-------------")
+    # The ON_LINE_MAXIMUM function calculates the maximum value of a sliding window of size k in an array A.
     # Access and run the OnLineMaximum function dynamically
     on_line_maximum_module = getattr(test_modules, "OnLineMaximum")
     on_line_maximum_module.OnLineMaximum()
 
 def greedyActivitySelector():
     print("-------------Greddy activity selector-------------")
+    # The GREEDY_ACTIVITY_SELECTOR function selects the maximum number of mutually compatible activities.
     # Access and run the GreedyActivitySelector function dynamically
     greedy_activity_selector_module = getattr(test_modules, "GreedyActivitySelector")
     greedy_activity_selector_module.GreedyActivitySelector()
 
 def printPath():
     print("-------------Print path-------------")
+    # The PRINT_PATH function prints the path from the source to a given vertex in a graph.
     # Access and run the PrintPath function dynamically
     print_path_module = getattr(test_modules, "PrintPath")
     print_path_module.PrintPath()        
@@ -204,6 +262,7 @@ def binarySearchTree():
 
     node19.left = node18
     print("-------------Binary Search Tree-------------")
+    # The BinarySearchTree function implements the basic operations of a binary search tree.
     # Access and run the BinarySearchTree function dynamically
     binary_search_tree_module = getattr(test_modules, "BST")
     binary_search_tree_module.TREE_INSERT(root, TreeNode(10))

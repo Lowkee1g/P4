@@ -5,7 +5,7 @@ from Array import Array
 def FIND_MAX_CROSSING_SUBARRAY(A, _low, mid, _high):
     left_sum = float('-inf')
     sum = 0
-    for i in range(mid, _low, -1):
+    for i in range(mid, _low - 1, -1):
         sum = sum + A[i]
         if sum > left_sum:
             left_sum = sum

@@ -161,7 +161,7 @@ let rec print_multiple_values exprs =
 	| Sford(ident, start_val, end_val, stmt) ->
 		let start_val_int = string_of_expr start_val in
 		let end_val_int = string_of_expr end_val in
-		Printf.sprintf "%sfor %s in range(%s, %s, -1):\n%s" 
+		Printf.sprintf "%sfor %s in range(%s, %s - 1, -1):\n%s" 
 			indent_str ident.id start_val_int end_val_int (interpret stmt (indent_level + 1))
 
 	(* IF STATEMENTS*)

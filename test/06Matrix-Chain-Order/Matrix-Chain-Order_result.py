@@ -2,7 +2,8 @@ import sys
 sys.path.append('../../')
 from Array import Array
 
-def Matrix_Chain_Order(p):
+def MATRIX_CHAIN_ORDER(p):
+    n = len(p) - 1
     m = Array([Array([0 for _ in range(1, n + 1)]) for _ in range(1, n + 1)])
     s = Array([Array([0 for _ in range(1, n - 1 + 1)]) for _ in range(2, n + 1)])
     for i in range(1, n + 1):
@@ -16,4 +17,5 @@ def Matrix_Chain_Order(p):
                 if q < m[i][j]:
                     m[i][j] = q
                     s[i][j] = k
+    return m, s
 
