@@ -19,4 +19,49 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -config > /var/folders/fz/s5csb_w941vcyvdp808cgc0c0000gn/T/dune_cec983_output
+$ /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -config > /var/folders/fz/s5csb_w941vcyvdp808cgc0c0000gn/T/dune_91abb8_output
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamldep.opt -modules -impl interp.ml) > _build/default/.main.eobjs/interp.impl.d
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -no-alias-deps -opaque -o .main.eobjs/byte/interp.cmo -c -impl interp.ml)
+> File "interp.ml", lines 16-17, characters 1-52:
+> 16 | .match c with
+> 17 | 	| ch::_ -> Char.code ch >= 65 && Char.code ch <= 90
+> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
+> Here is an example of a case that is not matched:
+> []
+> File "interp.ml", lines 74-94, characters 23-19:
+> 74 | .......................function
+> 75 | 	| Badd -> "+"
+> 76 | 	| Bsub -> "-"
+> 77 | 	| Bmul -> "*"
+> 78 | 	| Bdiv -> "/"
+> ...
+> 91 | 	| Bmod -> "%"
+> 92 | 	| Bin -> "in"
+> 93 | 	| Bun -> ".union"
+> 94 | 	| Binter -> "test"
+> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
+> Here is an example of a case that is not matched:
+> Bpow
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/interp.cmx -c -impl interp.ml)
+> File "interp.ml", lines 16-17, characters 1-52:
+> 16 | .match c with
+> 17 | 	| ch::_ -> Char.code ch >= 65 && Char.code ch <= 90
+> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
+> Here is an example of a case that is not matched:
+> []
+> File "interp.ml", lines 74-94, characters 23-19:
+> 74 | .......................function
+> 75 | 	| Badd -> "+"
+> 76 | 	| Bsub -> "-"
+> 77 | 	| Bmul -> "*"
+> 78 | 	| Bdiv -> "/"
+> ...
+> 91 | 	| Bmod -> "%"
+> 92 | 	| Bin -> "in"
+> 93 | 	| Bun -> ".union"
+> 94 | 	| Binter -> "test"
+> Warning 8 [partial-match]: this pattern-matching is not exhaustive.
+> Here is an example of a case that is not matched:
+> Bpow
+$ (cd _build/default && /Users/davidfraenkel/.opam/ocaml-base-compiler/bin/ocamlopt.opt -g -o main.exe /Users/davidfraenkel/.opam/ocaml-base-compiler/lib/ocaml/str.cmxa -I /Users/davidfraenkel/.opam/ocaml-base-compiler/lib/ocaml .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
+# Promoting "_build/default/main.exe" to "main.exe"

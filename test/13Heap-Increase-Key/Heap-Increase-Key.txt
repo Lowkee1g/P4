@@ -1,3 +1,7 @@
+PARENT(i)
+    i = i - 1 // 2
+    return i
+
 HEAP_INCREASE_KEY(A,i,key)
     if key < A[i]
         error "new key is smaller than current key"

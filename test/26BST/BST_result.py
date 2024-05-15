@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../../')
 from Array import Array
+import random
 
 def TREE_SEARCH(x, k):
     if x == None or k == x.key:

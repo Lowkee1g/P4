@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../../')
 from Array import Array
+import random
 
 def SQUARE_MATRIX_MULTIPLY_RECURSIVE(A, B):
     n = len(A)

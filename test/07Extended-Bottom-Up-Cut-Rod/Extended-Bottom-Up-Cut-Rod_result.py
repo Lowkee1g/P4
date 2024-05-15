@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../../')
 from Array import Array
+import random
 
 def EXTENDED_BOTTOM_UP_CUT_ROD(p, n):
     r = Array([0 for _ in range(0, n + 1)])

@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../../')
 from Array import Array
+import random
 
 def BUBBLESORT(A):
     for i in range(1, len(A) - 1 + 1):

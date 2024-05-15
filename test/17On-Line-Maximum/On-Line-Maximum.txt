@@ -1,3 +1,7 @@
+score(i)
+    n = random(0,100)
+    return n 
+
 ON_LINE_MAXIMUM(k,n)
     bestscore = -∞
     for i = 1 to k

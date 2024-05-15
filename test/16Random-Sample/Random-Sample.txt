@@ -2,8 +2,8 @@ Random_Sample(m,n)
     if m == 0
         return ∅
     else 
-        S = Random_Sample(m-1,n-1)
-        i = Random(1,n)
+        S = Random_Sample(m - 1, n - 1)
+        i = random(1,n)
         if i ∈ S 
             S = S ⋃ {n}
         else 

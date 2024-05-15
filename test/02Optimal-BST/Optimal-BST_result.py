@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../../')
 from Array import Array
+import random
 
 def OPTIMAL_BST(p, q, n):
     e = Array([Array([0 for _ in range(1, n + 1 + 1)]) for _ in range(0, n + 1)])

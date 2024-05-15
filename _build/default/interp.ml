@@ -56,7 +56,7 @@ let rec string_of_idents_dash idents =
 	| EfunctionCall (id, args) -> Printf.sprintf "%s(%s)" id.id (string_of_expr_params args)
 	| Eobject (id1, expr) -> Printf.sprintf "%s.%s" id1.id (objectConstant expr)
 	| Eset (expr) -> Printf.sprintf "{%s}" (string_of_expr_params expr)
-	| Memptyset -> Printf.sprintf "{}"
+	| Memptyset -> Printf.sprintf "set()"
 	| Elow (expr) -> Printf.sprintf "math.floor(%s)" (string_of_expr expr)
 	| Ehigh (expr) -> Printf.sprintf "math.ceil(%s)" (string_of_expr expr)
 	| _ -> failwith "Cannot print expression"
@@ -76,6 +76,7 @@ let rec string_of_idents_dash idents =
 	| Bsub -> "-"
 	| Bmul -> "*"
 	| Bdiv -> "/"
+	| Bfloordiv -> "//"
 	| Beq -> "=="
 	| Bneq -> "!="
 	| Blt -> "<"
@@ -149,7 +150,7 @@ let rec print_multiple_values exprs =
 	(* Handle the function call case *)
 	| SfuncCall(id, args) ->
 		let args_str = string_of_expr_params args in
-		Printf.sprintf "A minor"
+		Printf.sprintf "%s%s(%s)" indent_str id.id args_str
 
 	(* FOR LOOPS*)
 	| Sfor(ident, start_val, end_val, stmt) ->

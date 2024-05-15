@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../../')
 from Array import Array
+import random
 
 def Greedy_Activity_Selector(s, f):
     n = len(s)

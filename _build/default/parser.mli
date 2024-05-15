@@ -63,6 +63,7 @@ type token =
   | DOWNTO
   | DOTDOT
   | DOT
+  | DIVIDEFLOOR
   | DIVIDE
   | CST of (Ast.constant)
   | CROSS
