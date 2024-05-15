@@ -6,7 +6,7 @@
     if !silent then print_endline msg
 %}
 
-%token EMPTYSET LTE GTE NEQ UNION INTERSECT PI MOD TIMES DIVIDE
+%token EMPTYSET LTE GTE NEQ UNION INTERSECT PI MOD TIMES DIVIDE DIVIDEFLOOR
 
 %token <Ast.constant> CST 
 %token EOF END BEGIN NEWLINE 
@@ -89,6 +89,9 @@ math_op:
 
   | INTERSECT
   { Binter }
+
+  | DIVIDEFLOOR
+  { Bfloordiv }
 
 ;
 
@@ -351,7 +354,6 @@ array_list:
 
 expr_list:
   | id = expr { [id] }  (* Base case: a single identifier *)
-  | id = expr MINUS ids = expr_list { id :: ids }  (* Recursive case: an identifier followed by a minus and more identifiers *)
   | id = expr COMMA ids = expr_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
   | id = expr ids = expr_list { id :: ids }  (* Recursive case: an identifier followed by more identifiers *)
 ;

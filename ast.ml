@@ -31,6 +31,7 @@ type binop =
   | Binter
   | Bpow
   | Bcomma
+  | Bfloordiv
   
 type constant =
   | Cstring of string

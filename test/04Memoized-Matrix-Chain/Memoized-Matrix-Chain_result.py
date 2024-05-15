@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../../')
 from Array import Array
+import random
 
 def MEMOIZED_MATRIX_CHAIN(p):
     n = len(p) - 1

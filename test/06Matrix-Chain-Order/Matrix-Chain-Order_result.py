@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../../')
 from Array import Array
+import random
 
 def MATRIX_CHAIN_ORDER(p):
     n = len(p) - 1

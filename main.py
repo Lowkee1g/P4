@@ -50,13 +50,19 @@ def main():
     optimalBST()
     merge()
     memoizedMatrixChain()
-    #recursiveMatrixChain()
+    recursiveMatrixChain()
     #matrixChainOrder()
     extendedBottomUpCutRod()
     bubbleSort()
     binarySearchTree()
     squareMatrixMultiply()
     #squareMatrixMultiplyRecursive()
+    heapIncreaseKey()
+    findMaxCrossingSubarray()
+    randomizeInPlace()
+    randomSample()
+    onLineMaximum()
+    #greedyActivitySelector()
 
 def insertionsort():
     print("-------------Insertion sort-------------")
@@ -116,11 +122,12 @@ def memoizedMatrixChain():
 def recursiveMatrixChain():
     print("-------------Recursive matrix chain-------------")
     # The RECURSIVE_MATRIX_CHAIN function calculates the minimum cost of multiplying a chain of matrices using a recursive approach.
-    p = Array([10, 20, 30, 40, 30])  # Dimensions of matrices
-    j = len(p) - 1  # Number of matrices
+    P = Array([4,10,3,12,20,7])  # Dimensions of matrices
+    j = len(P) - 1  # Number of matrices
+    m = Array([[0 for _ in range(j + 1)] for _ in range(j + 1)])  # Initialize the m matrix
     # Access and run the RecursiveMatrixChain function dynamically
     recursive_matrix_chain_module = getattr(test_modules, "Recursive_Matrix_Chain")
-    result = recursive_matrix_chain_module.RECURSIVE_MATRIX_CHAIN(p, 1, j)
+    result = recursive_matrix_chain_module.RECURSIVE_MATRIX_CHAIN(P, 1, j, m)
     print("Minimum number of multiplications:", result)
 
 def matrixChainOrder():
@@ -188,43 +195,63 @@ def heapIncreaseKey():
     print("-------------Heap increase key-------------")
     # The HEAP_INCREASE_KEY function increases the value of a key in a max heap and maintains the max-heap property.
     # Access and run the HeapIncreaseKey function dynamically
-    heap_increase_key_module = getattr(test_modules, "HeapIncreaseKey")
-    heap_increase_key_module.HeapIncreaseKey()       
+    A = Array([16, 14, 10, 8, 7, 9, 3, 2, 4, 1])
+    i = 5
+    key = 15
+    heap_increase_key_module = getattr(test_modules, "Heap_Increase_Key")
+    heap_increase_key_module.HEAP_INCREASE_KEY(A,i,key)    
+    print(A)   
 
 def findMaxCrossingSubarray():
     print("-------------Find max crossing sub array-------------")
     # The FIND_MAX_CROSSING_SUBARRAY function finds the maximum subarray that crosses the midpoint of an array.
     # Access and run the FindMaxCrossingSubarray function dynamically
-    find_max_crossing_subarray_module = getattr(test_modules, "FindMaxCrossingSubarray")
-    find_max_crossing_subarray_module.FindMaxCrossingSubarray()
+    A = [13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7]
+    _low = 0
+    _high = len(A) - 1
+    mid = (_low + _high) // 2
+    find_max_crossing_subarray_module = getattr(test_modules, "Find_Max_Crossing_Subarray")
+    max_left, max_right, max_sum = find_max_crossing_subarray_module.FIND_MAX_CROSSING_SUBARRAY(A, _low, mid, _high)
+    print(f"Max crossing subarray: from index {max_left} to {max_right} with sum {max_sum}")
 
 def randomizeInPlace():
     print("-------------Randomize in place-------------")
     # The RANDOMIZE_IN_PLACE function randomly shuffles the elements of an array in place.
     # Access and run the RandomizeInPlace function dynamically
-    randomize_in_place_module = getattr(test_modules, "RandomizeInPlace")
-    randomize_in_place_module.RandomizeInPlace()
+    A = Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    randomize_in_place_module = getattr(test_modules, "Randomize_In_Place")
+    randomize_in_place_module.Randomize_In_Place(A)
+    print(A)
 
 def randomSample():
     print("-------------random sample-------------")
     # The RANDOM_SAMPLE function randomly selects a sample of k elements from an array A.
     # Access and run the RandomSample function dynamically
-    random_sample_module = getattr(test_modules, "RandomSample")
-    random_sample_module.RandomSample()
+    m = 5
+    n = 10
+    random_sample_module = getattr(test_modules, "Random_Sample")
+    sample = random_sample_module.Random_Sample(m,n)
+    print("Random sample:", sample)
 
 def onLineMaximum():
     print("-------------On line maximum-------------")
     # The ON_LINE_MAXIMUM function calculates the maximum value of a sliding window of size k in an array A.
     # Access and run the OnLineMaximum function dynamically
-    on_line_maximum_module = getattr(test_modules, "OnLineMaximum")
-    on_line_maximum_module.OnLineMaximum()
+    k = 5
+    n = 10
+    on_line_maximum_module = getattr(test_modules, "On_Line_Maximum")
+    result = on_line_maximum_module.ON_LINE_MAXIMUM(5,10)
+    print("Maximum values of the sliding window:", result)
 
 def greedyActivitySelector():
-    print("-------------Greddy activity selector-------------")
+    print("-------------Greedy activity selector-------------")
     # The GREEDY_ACTIVITY_SELECTOR function selects the maximum number of mutually compatible activities.
     # Access and run the GreedyActivitySelector function dynamically
-    greedy_activity_selector_module = getattr(test_modules, "GreedyActivitySelector")
-    greedy_activity_selector_module.GreedyActivitySelector()
+    s = Array([1, 3, 0, 5, 3, 5, 6, 8, 8, 2, 12])
+    f = Array([4, 5, 6, 7, 9, 9, 10, 11, 12, 14, 16])
+    greedy_activity_selector_module = getattr(test_modules, "Greedy_Activity_Selector")
+    result = greedy_activity_selector_module.Greedy_Activity_Selector(s,f)
+    print("Selected activities:", result)
 
 def printPath():
     print("-------------Print path-------------")

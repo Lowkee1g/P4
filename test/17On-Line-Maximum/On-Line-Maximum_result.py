@@ -1,7 +1,11 @@
 import sys
 sys.path.append('../../')
 from Array import Array
+import random
 
+def score(i):
+    n = random.randint(0, 100)
+    return n
 def ON_LINE_MAXIMUM(k, n):
     bestscore = float('-inf')
     for i in range(1, k + 1):

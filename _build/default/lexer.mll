@@ -45,7 +45,8 @@ let kwd_tbl = [
   "return", RETURN;
   "error", ERROR;
   "length", LENGTH;
-  "Random", RANDOM;
+  "RANDOM", RANDOM;
+  "random", RANDOM;
 
   (* While *)
   "while", WHILE;
@@ -134,6 +135,7 @@ rule next_tokens = parse
   | '-'                                 { if not !silent then print_string_magenta " Minus "; [MINUS] }
   | '+'                                 { if not !silent then print_string_magenta " Plus "; [PLUS] }
   | '/'                                 { if not !silent then print_string_magenta " Divide "; [DIVIDE] }
+  | "//"                                { if not !silent then print_string_magenta " DivideFloor "; [DIVIDEFLOOR] }
   | '%'                                 { if not !silent then print_string_magenta " Mod "; [MOD] }
   | '^'                                 { if not !silent then print_string_magenta " Power "; [POWER] }
   | "∅"                                 { if not !silent then print_string_magenta " Empty_set "; [EMPTYSET] }
