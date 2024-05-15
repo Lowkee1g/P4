@@ -11,7 +11,7 @@ let silent = ref false
 
 let spec = [
   "--parse-only", Arg.Set parse_only, " stop after parsing";
-  "-silent", Arg.Set silent, "Supress output";
+  "-silent", Arg.Unit (fun () -> Lexer.silent := true), "Suppress output";
 ]
 
 let file = ref None
@@ -27,7 +27,7 @@ let () =
     "Usage: -silent to suppress output"; *)
   match !file with
   | None ->
-    eprintf "No file provided\n";
+    Lexer.conditional_print "No file provided\n";
     exit 1
   | Some filename -> 
     let channel = open_in filename in

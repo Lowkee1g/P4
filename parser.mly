@@ -1,5 +1,9 @@
 %{
   open Ast
+  let silent = ref false
+
+  let conditional_print msg = 
+    if !silent then print_endline msg
 %}
 
 %token EMPTYSET LTE GTE NEQ UNION INTERSECT PI MOD TIMES DIVIDE
@@ -203,7 +207,7 @@ init_array:
 init_table:
   | id = ident LBRACKET e1 = expr COMMA e2 = expr RBRACKET
   { 
-    print_string_red "Einittable -> ";
+    conditional_print "Einittable -> ";
     Einittable(id, e1, e2);
   }
   ;
@@ -211,75 +215,75 @@ init_table:
 simple_stmt:
   (* Init array *)
   | LET array = array_list BE_A_NEW ARRAY {
-    print_string_green "SinitArrayList -> ";
+    conditional_print "SinitArrayList -> ";
     SinitArrayList(array)
   }
   | LET table = table_list BE_A_NEW TABLE {
-    print_string_green "SinitTable -> ";
+    conditional_print "SinitTable -> ";
     SinitTableList(table)
   }
 
 
   (* Init statments *)
   | LET ident BE_A_NEW expr CROSS expr MATRIX {
-    print_string_green "Sinitmatrix -> ";
+    conditional_print "Sinitmatrix -> ";
 	  Sinitmatrix($2, $4, $6)
 	}
 
   | PRINT e = expr_list { 
-    print_string_green "Sprint -> ";
+    conditional_print "Sprint -> ";
     Sprint(e) 
   }
 
   | SWAP expr WITH expr {
-    print_string_green "Sswap -> ";
+    conditional_print "Sswap -> ";
 	  Sswap($2, $4)
 	}
   | EXCHANGE expr WITH expr {
-    print_string_green "Sexchange -> ";
+    conditional_print "Sexchange -> ";
 	  Sexchange($2, $4)
 	}
   | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET {
-    print_string_green "SassignMatrix -> ";
+    conditional_print "SassignMatrix -> ";
 	  Smatrix($1, $3, $6)
 	}
   | expr EQUAL expr {
-    print_string_green "Sassign -> ";
+    conditional_print "Sassign -> ";
     Sassign($1, $3);  (* Capture the result of Sassign *)
   }
 
   | RETURN expr_list {
-    print_string_green "Sreturn -> ";
+    conditional_print "Sreturn -> ";
 	  Sreturn($2)
 	}
 
   | RETURN LPAREN expr_list RPAREN {
-    print_string_green "Sreturn -> ";
+    conditional_print "Sreturn -> ";
     Sreturn($3)
   }
 
   | ERROR expr {
-    print_string_green "Serror -> ";
+    conditional_print "Serror -> ";
     Serror($2)
   }
   | SORT e1 = expr INTO MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT e2 = expr{
-    print_string_green "SsortA -> ";
+    conditional_print "SsortA -> ";
     SsortA(e1, e2)
   }
   | SORT e1 = expr INTO MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT e2 = expr {
-    print_string_green "SsortD -> ";
+    conditional_print "SsortD -> ";
     SsortD(e1, e2)
   }
   | INSERT e1 = expr INTO e2 = expr {
-    print_string_green "Sinsert -> ";
+    conditional_print "Sinsert -> ";
     Sinsert(e1, e2)
   }
   | INSERT ALL ITEMS IN e1 = expr INTO e2 = expr {
-    print_string_green "SinsertAll -> ";
+    conditional_print "SinsertAll -> ";
     SinsertAll(e1, e2)
   }
   | INSERT e1 = expr INTO e2 = expr ROOTLIST {
-    print_string_green "SinsertRoot -> ";
+    conditional_print "SinsertRoot -> ";
     SinsertRoot(e1, e2)
   }
 ;

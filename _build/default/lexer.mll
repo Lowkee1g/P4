@@ -7,6 +7,8 @@ exception Lexing_error of string
 
 let silent = ref false
 
+let conditional_print str = if not !silent then print_string str
+
 let string_buff = Buffer.create 256
 
 let is_printable c = 
