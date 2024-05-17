@@ -39,3 +39,9 @@ class Array(object):
             del self.items[i - 1][j - 1]
         else:
             del self.items[key - 1]
+    def __eq__(self,other):
+        Array(other)
+        for i in range(1, len(self.items)):
+            if self.items[i] != other.items[i]:
+                return False
+        return True

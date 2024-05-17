@@ -1,5 +1,6 @@
 import os
 import importlib.util
+import unittest
 
 # Import Array from the root directory
 from Array import Array
@@ -46,7 +47,7 @@ def main():
             print(module_name)
 
 
-    insertionsort()
+    
     optimalBST()
     merge()
     memoizedMatrixChain()
@@ -63,35 +64,36 @@ def main():
     randomSample()
     onLineMaximum()
     #greedyActivitySelector()
+class TestOfCormens(unittest.TestCase):
+    def test_insertionsort(self):
+        print("-------------Insertion sort-------------")
+        # The INSERTION_SORT function sorts an array A by iteratively taking each element 
+        # and inserting it into its correct position within the sorted portion of the array.
+        my_array = Array([5, 2, 4, 6, 1, 3])
+        # Access and run the INSERTION_SORT function dynamically
+        insertion_sort_module = getattr(test_modules, "Insertionsort")
+        insertion_sort_module.INSERTION_SORT(my_array)
+        self.assertEqual(my_array, Array([1, 2, 3, 4, 5, 6]))
+        print(my_array)
 
-def insertionsort():
-    print("-------------Insertion sort-------------")
-    # The INSERTION_SORT function sorts an array A by iteratively taking each element 
-    # and inserting it into its correct position within the sorted portion of the array.
-    my_array = Array([5, 2, 4, 6, 1, 3])
-    # Access and run the INSERTION_SORT function dynamically
-    insertion_sort_module = getattr(test_modules, "Insertionsort")
-    insertion_sort_module.INSERTION_SORT(my_array)
-    print(my_array)
+    def optimalBST():
+        print("-------------Optimal BST-------------")
+        # The OPTIMAL_BST function calculates the minimum search cost and structure of an optimal binary search tree (BST) using dynamic programming.
+        p = Array([0.0, 0.15, 0.1, 0.05, 0.1, 0.2])
+        q = Array([0.05, 0.1, 0.05, 0.05, 0.05, 0.1])
+        n = len(p) - 1
+        # Access and run the OptimalBST function dynamically
+        optimal_bst_module = getattr(test_modules, "Optimal_BST")
+        e, root = optimal_bst_module.OPTIMAL_BST(p, q, n)
 
-def optimalBST():
-    print("-------------Optimal BST-------------")
-    # The OPTIMAL_BST function calculates the minimum search cost and structure of an optimal binary search tree (BST) using dynamic programming.
-    p = Array([0.0, 0.15, 0.1, 0.05, 0.1, 0.2])
-    q = Array([0.05, 0.1, 0.05, 0.05, 0.05, 0.1])
-    n = len(p) - 1
-    # Access and run the OptimalBST function dynamically
-    optimal_bst_module = getattr(test_modules, "Optimal_BST")
-    e, root = optimal_bst_module.OPTIMAL_BST(p, q, n)
+        # Print the results
+        print("Optimal Expected Search Cost Matrix (e):")
+        for row in e:
+            print(row)
 
-    # Print the results
-    print("Optimal Expected Search Cost Matrix (e):")
-    for row in e:
-        print(row)
-
-    print("\nRoot Matrix (root):")
-    for row in root:
-        print(row)
+        print("\nRoot Matrix (root):")
+        for row in root:
+            print(row)
 
 def merge():
     print("-------------Merge-------------")
@@ -299,3 +301,4 @@ def binarySearchTree():
 
 if __name__ == "__main__":
     main()
+    unittest.main()
