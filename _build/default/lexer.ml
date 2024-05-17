@@ -90,22 +90,23 @@ let id_or_kwd =
 
 let debugLines = ref 2;;
 
-let stack = ref [0]  (* indentation stack *)
+let indentStack = ref [0]  (* indentation stack *)
 
-let rec unindent n = match !stack with
-  | m :: _ when m = n -> []
-  | m :: st when m > n -> stack := st; END :: unindent n
+let rec unindent_to indentLevel = 
+  match !indentStack with
+  | stackHead :: _ when stackHead = indentLevel -> [] (* If indentLevel is at head *)
+  | stackHead :: iStack when stackHead > indentLevel -> indentStack := iStack; END :: unindent_to indentLevel (* "END" (of block) is prepended to return of the call *)
   | _ -> raise (Lexing_error "bad indentation")
 
-let update_stack n =
-  match !stack with
-  | m :: _ when m < n ->
-    stack := n :: !stack;
+let update_stack_to indentLevel =
+  match !indentStack with
+  | stackHead :: _ when stackHead < indentLevel ->
+    indentStack := indentLevel :: !indentStack;
     [NEWLINE; BEGIN]
   | _ ->
-    NEWLINE :: unindent n
+    NEWLINE :: unindent_to indentLevel
 
-# 109 "lexer.ml"
+# 110 "lexer.ml"
 let __ocaml_lex_tables = {
   Lexing.lex_base =
    "\000\000\210\255\211\255\078\000\212\255\162\000\214\255\215\255\
@@ -918,247 +919,247 @@ let rec next_tokens lexbuf =
 and __ocaml_lex_next_tokens_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 119 "lexer.mll"
-                                        ( if not !silent then (print_string_red "\nLine: "; print_int !debugLines; print_string "  "); debugLines := !debugLines + 1; new_line lexbuf; update_stack (indentation lexbuf) )
-# 924 "lexer.ml"
+# 120 "lexer.mll"
+                                        ( if not !silent then (print_string_red "\nLine: "; print_int !debugLines; print_string "  "); debugLines := !debugLines + 1; new_line lexbuf; update_stack_to (indentation lexbuf) )
+# 925 "lexer.ml"
 
   | 1 ->
-# 120 "lexer.mll"
+# 121 "lexer.mll"
                                         ( next_tokens lexbuf )
-# 929 "lexer.ml"
+# 930 "lexer.ml"
 
   | 2 ->
-# 123 "lexer.mll"
+# 124 "lexer.mll"
                                          ( if not !silent then print_string_magenta " CROSS "; [CROSS] )
-# 934 "lexer.ml"
+# 935 "lexer.ml"
 
   | 3 ->
-# 124 "lexer.mll"
+# 125 "lexer.mll"
                                         ( if not !silent then print_string_magenta " CROSS "; [CROSS] )
-# 939 "lexer.ml"
+# 940 "lexer.ml"
 
   | 4 ->
-# 125 "lexer.mll"
+# 126 "lexer.mll"
                                           ( if not !silent then print_string_magenta " Infinity "; [INFINITY] )
-# 944 "lexer.ml"
+# 945 "lexer.ml"
 
   | 5 ->
-# 126 "lexer.mll"
+# 127 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Infinity "; [INFINITY] )
-# 949 "lexer.ml"
+# 950 "lexer.ml"
 
   | 6 ->
-# 127 "lexer.mll"
+# 128 "lexer.mll"
                                           ( if not !silent then print_string_magenta " Times "; [TIMES] )
-# 954 "lexer.ml"
+# 955 "lexer.ml"
 
   | 7 ->
-# 128 "lexer.mll"
+# 129 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Times "; [TIMES] )
-# 959 "lexer.ml"
+# 960 "lexer.ml"
 
   | 8 ->
-# 132 "lexer.mll"
+# 133 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Equal "; [EQUAL] )
-# 964 "lexer.ml"
+# 965 "lexer.ml"
 
   | 9 ->
-# 133 "lexer.mll"
+# 134 "lexer.mll"
                                         ( if not !silent then print_string_magenta " GreaterThan "; [GT] )
-# 969 "lexer.ml"
+# 970 "lexer.ml"
 
   | 10 ->
-# 134 "lexer.mll"
+# 135 "lexer.mll"
                                         ( if not !silent then print_string_magenta " LessThan "; [LT] )
-# 974 "lexer.ml"
+# 975 "lexer.ml"
 
   | 11 ->
-# 135 "lexer.mll"
+# 136 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Minus "; [MINUS] )
-# 979 "lexer.ml"
+# 980 "lexer.ml"
 
   | 12 ->
-# 136 "lexer.mll"
+# 137 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Plus "; [PLUS] )
-# 984 "lexer.ml"
+# 985 "lexer.ml"
 
   | 13 ->
-# 137 "lexer.mll"
+# 138 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Divide "; [DIVIDE] )
-# 989 "lexer.ml"
+# 990 "lexer.ml"
 
   | 14 ->
-# 138 "lexer.mll"
+# 139 "lexer.mll"
                                         ( if not !silent then print_string_magenta " DivideFloor "; [DIVIDEFLOOR] )
-# 994 "lexer.ml"
+# 995 "lexer.ml"
 
   | 15 ->
-# 139 "lexer.mll"
+# 140 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Mod "; [MOD] )
-# 999 "lexer.ml"
+# 1000 "lexer.ml"
 
   | 16 ->
-# 140 "lexer.mll"
+# 141 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Power "; [POWER] )
-# 1004 "lexer.ml"
+# 1005 "lexer.ml"
 
   | 17 ->
-# 141 "lexer.mll"
+# 142 "lexer.mll"
                                           ( if not !silent then print_string_magenta " Empty_set "; [EMPTYSET] )
-# 1009 "lexer.ml"
+# 1010 "lexer.ml"
 
   | 18 ->
-# 142 "lexer.mll"
+# 143 "lexer.mll"
                                           ( if not !silent then print_string_magenta " LessThanEqual "; [LTE] )
-# 1014 "lexer.ml"
+# 1015 "lexer.ml"
 
   | 19 ->
-# 143 "lexer.mll"
+# 144 "lexer.mll"
                                           ( if not !silent then print_string_magenta " GreaterThanEqual "; [GTE] )
-# 1019 "lexer.ml"
+# 1020 "lexer.ml"
 
   | 20 ->
-# 144 "lexer.mll"
+# 145 "lexer.mll"
                                           ( if not !silent then print_string_magenta " NotEqual "; [NEQ] )
-# 1024 "lexer.ml"
+# 1025 "lexer.ml"
 
   | 21 ->
-# 145 "lexer.mll"
+# 146 "lexer.mll"
                                           ( if not !silent then print_string_magenta " In "; [IN] )
-# 1029 "lexer.ml"
+# 1030 "lexer.ml"
 
   | 22 ->
-# 146 "lexer.mll"
+# 147 "lexer.mll"
                                           ( if not !silent then print_string_magenta " Union "; [UNION] )
-# 1034 "lexer.ml"
+# 1035 "lexer.ml"
 
   | 23 ->
-# 147 "lexer.mll"
+# 148 "lexer.mll"
                                           ( if not !silent then print_string_magenta " Intersection "; [INTERSECT] )
-# 1039 "lexer.ml"
+# 1040 "lexer.ml"
 
   | 24 ->
-# 148 "lexer.mll"
+# 149 "lexer.mll"
                                          ( if not !silent then print_string_magenta " Pi "; [PI] )
-# 1044 "lexer.ml"
+# 1045 "lexer.ml"
 
   | 25 ->
-# 153 "lexer.mll"
+# 154 "lexer.mll"
                                         ( if not !silent then print_string_magenta " And "; [AND] )
-# 1049 "lexer.ml"
+# 1050 "lexer.ml"
 
   | 26 ->
-# 154 "lexer.mll"
+# 155 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Or "; [OR] )
-# 1054 "lexer.ml"
+# 1055 "lexer.ml"
 
   | 27 ->
-# 157 "lexer.mll"
+# 158 "lexer.mll"
                                         ( if not !silent then print_string_magenta " NIL"; [NIL] )
-# 1059 "lexer.ml"
+# 1060 "lexer.ml"
 
   | 28 ->
-# 158 "lexer.mll"
+# 159 "lexer.mll"
                                         ( if not !silent then print_string_magenta " BeANew "; [BE_A_NEW] )
-# 1064 "lexer.ml"
+# 1065 "lexer.ml"
 
   | 29 ->
-# 159 "lexer.mll"
+# 160 "lexer.mll"
                                      ( if not !silent then print_string_magenta " BeNew "; [BE_A_NEW] )
-# 1069 "lexer.ml"
+# 1070 "lexer.ml"
 
   | 30 ->
-# 160 "lexer.mll"
+# 161 "lexer.mll"
                                                                                           ( if not !silent then print_string "MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT] )
-# 1074 "lexer.ml"
+# 1075 "lexer.ml"
 
   | 31 ->
-# 161 "lexer.mll"
+# 162 "lexer.mll"
                                                                                            ( if not !silent then print_string "MONOTONICALLY_DESCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT] )
-# 1079 "lexer.ml"
+# 1080 "lexer.ml"
 
   | 32 ->
-# 162 "lexer.mll"
+# 163 "lexer.mll"
                                         ( if not !silent then print_string_magenta " LBracket "; [LBRACKET] )
-# 1084 "lexer.ml"
+# 1085 "lexer.ml"
 
   | 33 ->
-# 163 "lexer.mll"
+# 164 "lexer.mll"
                                         ( if not !silent then print_string_magenta " RBracket "; [RBRACKET] )
-# 1089 "lexer.ml"
+# 1090 "lexer.ml"
 
   | 34 ->
-# 164 "lexer.mll"
+# 165 "lexer.mll"
                                         ( if not !silent then print_string_magenta " LParen "; [LPAREN] )
-# 1094 "lexer.ml"
+# 1095 "lexer.ml"
 
   | 35 ->
-# 165 "lexer.mll"
+# 166 "lexer.mll"
                                         ( if not !silent then print_string_magenta " RParen "; [RPAREN] )
-# 1099 "lexer.ml"
+# 1100 "lexer.ml"
 
   | 36 ->
-# 166 "lexer.mll"
+# 167 "lexer.mll"
                                         ( if not !silent then print_string_magenta " LBrace "; [LBRACE] )
-# 1104 "lexer.ml"
+# 1105 "lexer.ml"
 
   | 37 ->
-# 167 "lexer.mll"
+# 168 "lexer.mll"
                                         ( if not !silent then print_string_magenta " RBrace "; [RBRACE] )
-# 1109 "lexer.ml"
+# 1110 "lexer.ml"
 
   | 38 ->
-# 168 "lexer.mll"
+# 169 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Dot "; [DOT] )
-# 1114 "lexer.ml"
+# 1115 "lexer.ml"
 
   | 39 ->
-# 169 "lexer.mll"
+# 170 "lexer.mll"
                                         ( if not !silent then print_string_magenta " DOTDOT "; [DOTDOT] )
-# 1119 "lexer.ml"
+# 1120 "lexer.ml"
 
   | 40 ->
-# 170 "lexer.mll"
+# 171 "lexer.mll"
                                         ( if not !silent then print_string_magenta " Comma "; [COMMA] )
-# 1124 "lexer.ml"
+# 1125 "lexer.ml"
 
   | 41 ->
-# 171 "lexer.mll"
+# 172 "lexer.mll"
                                         ( Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] )
-# 1129 "lexer.ml"
+# 1130 "lexer.ml"
 
   | 42 ->
 let
-# 172 "lexer.mll"
+# 173 "lexer.mll"
              id
-# 1135 "lexer.ml"
+# 1136 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 172 "lexer.mll"
+# 173 "lexer.mll"
                                         ( [id_or_kwd id] )
-# 1139 "lexer.ml"
+# 1140 "lexer.ml"
 
   | 43 ->
 let
-# 173 "lexer.mll"
+# 174 "lexer.mll"
                s
-# 1145 "lexer.ml"
+# 1146 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 173 "lexer.mll"
+# 174 "lexer.mll"
                                         ( if not !silent then print_int_blue s;  [CST (Cint(int_of_string s))] )
-# 1149 "lexer.ml"
+# 1150 "lexer.ml"
 
   | 44 ->
-# 174 "lexer.mll"
-                                        ( if not !silent then print_endline "eof\n\n"; NEWLINE :: unindent 0 @ [EOF] )
-# 1154 "lexer.ml"
+# 175 "lexer.mll"
+                                        ( if not !silent then print_endline "eof\n\n"; NEWLINE :: unindent_to 0 @ [EOF] )
+# 1155 "lexer.ml"
 
   | 45 ->
 let
-# 175 "lexer.mll"
-         c
-# 1160 "lexer.ml"
-= Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
 # 176 "lexer.mll"
+         c
+# 1161 "lexer.ml"
+= Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
+# 177 "lexer.mll"
       (
         let pos = Lexing.lexeme_start_p lexbuf in
         let char_info =
@@ -1171,7 +1172,7 @@ let
           pos.pos_lnum (pos.pos_cnum - pos.pos_bol + 1) char_info;
         raise (Lexing_error char_info)
       )
-# 1175 "lexer.ml"
+# 1176 "lexer.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf;
       __ocaml_lex_next_tokens_rec lexbuf __ocaml_lex_state
@@ -1181,19 +1182,19 @@ and indentation lexbuf =
 and __ocaml_lex_indentation_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 190 "lexer.mll"
+# 191 "lexer.mll"
       ( new_line lexbuf; indentation lexbuf )
-# 1187 "lexer.ml"
+# 1188 "lexer.ml"
 
   | 1 ->
 let
-# 191 "lexer.mll"
-              s
-# 1193 "lexer.ml"
-= Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
 # 192 "lexer.mll"
+              s
+# 1194 "lexer.ml"
+= Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
+# 193 "lexer.mll"
       ( String.length s )
-# 1197 "lexer.ml"
+# 1198 "lexer.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf;
       __ocaml_lex_indentation_rec lexbuf __ocaml_lex_state
@@ -1203,36 +1204,36 @@ and string lexbuf =
 and __ocaml_lex_string_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 196 "lexer.mll"
+# 197 "lexer.mll"
                             ( () )
-# 1209 "lexer.ml"
+# 1210 "lexer.ml"
 
   | 1 ->
 let
-# 197 "lexer.mll"
+# 198 "lexer.mll"
                                                  c
-# 1215 "lexer.ml"
+# 1216 "lexer.ml"
 = Lexing.sub_lexeme_char lexbuf (lexbuf.Lexing.lex_start_pos + 1) in
-# 197 "lexer.mll"
+# 198 "lexer.mll"
                                                       ( Buffer.add_char string_buff (char_for_backslash c); string lexbuf )
-# 1219 "lexer.ml"
+# 1220 "lexer.ml"
 
   | 2 ->
 let
-# 198 "lexer.mll"
+# 199 "lexer.mll"
          c
-# 1225 "lexer.ml"
+# 1226 "lexer.ml"
 = Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
-# 198 "lexer.mll"
+# 199 "lexer.mll"
                             ( Buffer.add_char string_buff c; string lexbuf )
-# 1229 "lexer.ml"
+# 1230 "lexer.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf;
       __ocaml_lex_string_rec lexbuf __ocaml_lex_state
 
 ;;
 
-# 200 "lexer.mll"
+# 201 "lexer.mll"
    
 
 let next_token =
@@ -1244,4 +1245,4 @@ let next_token =
       end;
       Queue.pop tokens
 
-# 1248 "lexer.ml"
+# 1249 "lexer.ml"

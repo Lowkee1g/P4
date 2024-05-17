@@ -3,10 +3,10 @@ EXTENDED_BOTTOM_UP_CUT_ROD (p,n)
     r[0] = 0
     for j = 1 to n
         q = -∞
-    for i = 1 to j
-        if q < p[i] + r[j - i]
-            q = p[i] + r[j- i]
-            s[j] = i
+        for i = 1 to j
+            if q < p[i] + r[j - i]
+                q = p[i] + r[j- i]
+                s[j] = i
 
-    r[j] = q
+        r[j] = q
     return r and s

@@ -89,20 +89,21 @@ let id_or_kwd =
 
 let debugLines = ref 2;;
 
-let stack = ref [0]  (* indentation stack *)
+let indentStack = ref [0]  (* indentation stack *)
 
-let rec unindent n = match !stack with
-  | m :: _ when m = n -> []
-  | m :: st when m > n -> stack := st; END :: unindent n
+let rec unindent_to indentLevel = 
+  match !indentStack with
+  | stackHead :: _ when stackHead = indentLevel -> [] (* If indentLevel is at head *)
+  | stackHead :: iStack when stackHead > indentLevel -> indentStack := iStack; END :: unindent_to indentLevel (* "END" (of block) is prepended to return of the call *)
   | _ -> raise (Lexing_error "bad indentation")
 
-let update_stack n =
-  match !stack with
-  | m :: _ when m < n ->
-    stack := n :: !stack;
+let update_stack_to indentLevel =
+  match !indentStack with
+  | stackHead :: _ when stackHead < indentLevel ->
+    indentStack := indentLevel :: !indentStack;
     [NEWLINE; BEGIN]
   | _ ->
-    NEWLINE :: unindent n
+    NEWLINE :: unindent_to indentLevel
 }
 
 let letter = ['a'-'z' 'A'-'Z']
@@ -116,7 +117,7 @@ let space = ' ' | '\t'
 
 
 rule next_tokens = parse
-  | '\n'                                { if not !silent then (print_string_red "\nLine: "; print_int !debugLines; print_string "  "); debugLines := !debugLines + 1; new_line lexbuf; update_stack (indentation lexbuf) }
+  | '\n'                                { if not !silent then (print_string_red "\nLine: "; print_int !debugLines; print_string "  "); debugLines := !debugLines + 1; new_line lexbuf; update_stack_to (indentation lexbuf) }
   | (space)+                            { next_tokens lexbuf }
 
   (* Special characters start *)
@@ -171,7 +172,7 @@ rule next_tokens = parse
   | '"'                                 { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
   | ident as id                         { [id_or_kwd id] }
   | integer as s                        { if not !silent then print_int_blue s;  [CST (Cint(int_of_string s))] }
-  | eof                                 { if not !silent then print_endline "eof\n\n"; NEWLINE :: unindent 0 @ [EOF] }
+  | eof                                 { if not !silent then print_endline "eof\n\n"; NEWLINE :: unindent_to 0 @ [EOF] }
   | _ as c
       {
         let pos = Lexing.lexeme_start_p lexbuf in
