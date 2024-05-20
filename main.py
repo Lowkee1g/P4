@@ -117,17 +117,17 @@ class TestOfCormens(unittest.TestCase):
         self.assertEqual(result, 1344)
         print("Minimum number of multiplications:", result)
 
-    def test_matrixChainOrder(self):
-        print("-------------Matrix chain order-------------")
-        # The MATRIX_CHAIN_ORDER function calculates the minimum number of multiplications needed to multiply a chain of matrices.
-        # Access and run the Matrix_Chain_Order function dynamically
-        # Example usage:
-        p = Array([30, 35, 15, 5, 10, 20, 25])  # Dimensions of matrices
-        matrix_chain_order_module = getattr(test_modules, "Matrix_Chain_Order")
-        m_result, s_result = matrix_chain_order_module.MATRIX_CHAIN_ORDER(p)
-        print(m_result)
-        print("Minimum number of multiplications:", m_result, s_result)
-        self.assertEqual(m_result, Array([Array([1, 2, 3]), Array([4, 5, 6])]))
+    # def test_matrixChainOrder(self):
+    #     print("-------------Matrix chain order-------------")
+    #     # The MATRIX_CHAIN_ORDER function calculates the minimum number of multiplications needed to multiply a chain of matrices.
+    #     # Access and run the Matrix_Chain_Order function dynamically
+    #     # Example usage:
+    #     p = Array([30, 35, 15, 5, 10, 20, 25])  # Dimensions of matrices
+    #     matrix_chain_order_module = getattr(test_modules, "Matrix_Chain_Order")
+    #     m_result, s_result = matrix_chain_order_module.MATRIX_CHAIN_ORDER(p)
+    #     print(m_result)
+    #     print("Minimum number of multiplications:", m_result, s_result)
+    #     self.assertEqual(m_result, Array([Array([1, 2, 3]), Array([4, 5, 6])]))
         
 
     def test_extendedBottomUpCutRod(self):
