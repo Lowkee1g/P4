@@ -1156,7 +1156,7 @@ let
   | 45 ->
 let
 # 176 "lexer.mll"
-         c
+         character
 # 1161 "lexer.ml"
 = Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
 # 177 "lexer.mll"

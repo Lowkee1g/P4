@@ -173,7 +173,7 @@ rule nextTokens = parse
   | ident as id                         { [idOrKeyword id] }
   | integer as s                        { if not !silent then printIntBlue s;  [CST (Cint(int_of_string s))] }
   | eof                                 { if not !silent then print_endline "eof\n\n"; NEWLINE :: unindentTo 0 @ [EOF] }
-  | _ as c
+  | _ as character
       {
         let position = Lexing.lexeme_start_p lexbuf in
         let charInfo =

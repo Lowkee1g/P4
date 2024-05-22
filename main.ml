@@ -6,23 +6,23 @@ open Interp
 
 let usage = "usage: mini-python [options] <file.txt>"
 
-let parse_only = ref false
+let parseOnly = ref false
 let silent = ref false
 
 let spec = [
-  "--parse-only", Arg.Set parse_only, " stop after parsing";
+  "--parse-only", Arg.Set parseOnly, " stop after parsing";
   "-silent", Arg.Unit (fun () -> Lexer.silent := true), "Suppress output";
 ]
 
 let file = ref None
 
-let set_file s =
-  if not (Filename.check_suffix s ".txt") then
+let setFile filename =
+  if not (Filename.check_suffix filename ".txt") then
     raise (Arg.Bad "no .txt extension");
-  file := Some s
+  file := Some filename
 
 let () =
-  Arg.parse spec set_file usage; 
+  Arg.parse spec setFile usage; 
     (* (fun x -> raise (Arg.Bad ("Bad argument : " ^ x)))
     "Usage: -silent to suppress output"; *)
   match !file with
@@ -33,23 +33,23 @@ let () =
     let channel = open_in filename in
     let lexbuf = Lexing.from_channel channel in
     try
-      let ast_list = Parser.file Lexer.nextToken lexbuf in
-      let result_string = interpret ast_list 0 in
+      let astList = Parser.file Lexer.nextToken lexbuf in
+      let interpretedString = interpret astList 0 in
       close_in channel;
-      let out_channel = open_out (Filename.remove_extension filename ^ "_result.py") in
+      let outChannel = open_out (Filename.remove_extension filename ^ "_result.py") in
       if filename = "for.txt" then
-        Printf.fprintf out_channel "from Array import Array"
+        Printf.fprintf outChannel "from Array import Array"
       else if filename = "fortest.txt" then
-        Printf.fprintf out_channel "from Array import Array"
+        Printf.fprintf outChannel "from Array import Array"
       else 
-        Printf.fprintf out_channel "import sys\n";
-        Printf.fprintf out_channel "sys.path.append('../../')\n";
-        Printf.fprintf out_channel "from Array import Array\n";
-        Printf.fprintf out_channel "import random\n\n";
+        Printf.fprintf outChannel "import sys\n";
+        Printf.fprintf outChannel "sys.path.append('../../')\n";
+        Printf.fprintf outChannel "from Array import Array\n";
+        Printf.fprintf outChannel "import random\n\n";
         
         
-      Printf.fprintf out_channel "%s\n" result_string;
-      close_out out_channel;
+      Printf.fprintf outChannel "%s\n" interpretedString;
+      close_out outChannel;
       printf "Successfully interpreted and wrote the result to %s_result.txt\n" (Filename.remove_extension filename)
     with
     | Sys_error message ->
