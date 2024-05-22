@@ -22,8 +22,6 @@ let charForBackslash = function
   | 't' -> '\t'
   | character -> character
 
-(* let backslash_escapes = ['\\'; '\''; '"'; 'n'; 't'; 'b'; 'r'; ' '] *)
-
 let keywordTable = [
   "for", FOR;
   "to", TO;
@@ -110,7 +108,6 @@ let letter = ['a'-'z' 'A'-'Z']
 let digit = ['0'-'9']
 let ident = (letter | '_') (letter | digit | '_')*
 let integer = '0' | ['1'-'9'] digit* 
-(* let expr = ident | ['1'-'9'] digit* *)
 let space = ' ' | '\t'
 
 

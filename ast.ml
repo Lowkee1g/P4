@@ -1,12 +1,10 @@
 type location = Lexing.position * Lexing.position
 
 type ident = { loc: location; id: string; }
-let print_string_green s = print_string ("\027[32m" ^ s ^ "\027[0m ")
 let printStringRed s = print_string ("\027[31m" ^ s ^ "\027[0m ")
 let printStringYellow s = print_string ("\027[33m" ^ s ^ "\027[0m ")
 let printStringBlue s = print_string ("\027[34m" ^ s ^ "\027[0m ")
 let printStringMagenta s = print_string ("\027[35m" ^ s ^ "\027[0m ")
-let print_string_cyan i = print_string ("\027[36m" ^ i ^ "\027[0m ")
 let printIntBlue i = print_string ("\027[34m" ^  i ^ "\027[0m ")
 
 
