@@ -201,17 +201,17 @@ expr:
 
 init_array:
   (* Array *)
-  | id = ident LBRACKET e1 = expr RBRACKET
+  | id = ident LBRACKET expr1 = expr RBRACKET
   { 
-    Einitarray(id, e1) 
+    Einitarray(id, expr1) 
   }
   ;
 
 init_table:
-  | id = ident LBRACKET e1 = expr COMMA e2 = expr RBRACKET
+  | id = ident LBRACKET expr1 = expr COMMA expr2 = expr RBRACKET
   { 
     conditionalPrint "Einittable -> ";
-    Einittable(id, e1, e2);
+    Einittable(id, expr1, expr2);
   }
   ;
 
@@ -269,25 +269,25 @@ simple_stmt:
     conditionalPrint "Serror -> ";
     Serror($2)
   }
-  | SORT e1 = expr INTO MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT e2 = expr{
+  | SORT expr1 = expr INTO MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT expr2 = expr{
     conditionalPrint "SsortA -> ";
-    SsortA(e1, e2)
+    SsortA(expr1, expr2)
   }
-  | SORT e1 = expr INTO MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT e2 = expr {
+  | SORT expr1 = expr INTO MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT expr2 = expr {
     conditionalPrint "SsortD -> ";
-    SsortD(e1, e2)
+    SsortD(expr1, expr2)
   }
-  | INSERT e1 = expr INTO e2 = expr {
+  | INSERT expr1 = expr INTO expr2 = expr {
     conditionalPrint "Sinsert -> ";
-    Sinsert(e1, e2)
+    Sinsert(expr1, expr2)
   }
-  | INSERT ALL ITEMS IN e1 = expr INTO e2 = expr {
+  | INSERT ALL ITEMS IN expr1 = expr INTO expr2 = expr {
     conditionalPrint "SinsertAll -> ";
-    SinsertAll(e1, e2)
+    SinsertAll(expr1, expr2)
   }
-  | INSERT e1 = expr INTO e2 = expr ROOTLIST {
+  | INSERT expr1 = expr INTO expr2 = expr ROOTLIST {
     conditionalPrint "SinsertRoot -> ";
-    SinsertRoot(e1, e2)
+    SinsertRoot(expr1, expr2)
   }
 ;
 
@@ -341,14 +341,14 @@ ident:
 
 table_list:
   | e = init_table { [e] }
-  | e = init_table AND e1 = init_table { [e; e1] }
-  | e = init_table COMMA AND e1 = init_table { [e; e1] } 
+  | e = init_table AND expr1 = init_table { [e; expr1] }
+  | e = init_table COMMA AND expr1 = init_table { [e; expr1] } 
   | e = init_table COMMA es = table_list { e :: es }
 
 array_list:
   | e = init_array { [e] }
-  | e = init_array AND e1 = init_array { [e; e1] }
-  | e = init_array COMMA AND e1 = init_array { [e; e1] } 
+  | e = init_array AND expr1 = init_array { [e; expr1] }
+  | e = init_array COMMA AND expr1 = init_array { [e; expr1] } 
   | e = init_array COMMA es = array_list { e :: es }
 ;
 
