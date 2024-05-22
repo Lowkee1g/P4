@@ -73,6 +73,7 @@ let rec stringOfExpr expr =
 	| Bin -> "in"
 	| Bun -> ".union"
 	| Binter -> "test"
+	| Bpow -> "**"
 
 	and objectConstant = function
 	| Ocst const -> stringOfConstant const
@@ -116,11 +117,11 @@ let rec interpret ast indentLevel : string =
 		if indentLevel = 0 then
 			Printf.sprintf "%sdef %s(%s):\n%s" indentString id.id argsString stmtString
 		else
-			Printf.sprintf "%s%s(%s)" indentString id.id argsString
+			Printf.sprintf "%s%s(%s)\n" indentString id.id argsString
 	(* Handle the function call case *)
 	| SfuncCall(id, args) ->
 		let argsString = stringOfExprParams args in
-		Printf.sprintf "%s%s(%s)" indentString id.id argsString
+		Printf.sprintf "%s%s(%s)\n" indentString id.id argsString
 
 
 	(* FOR LOOPS*)
@@ -226,7 +227,7 @@ let rec interpret ast indentLevel : string =
 			
 	| Sprint(expr) ->
 		let exprString = printMultipleValues expr in
-		Printf.sprintf "%s%s\n" indentString exprString
+		Printf.sprintf "%sprint(%s)\n" indentString exprString
 
 	| Serror(expr) ->
 		let exprString = stringOfExpr expr in

@@ -42,7 +42,6 @@ type token =
   | ITEMS
   | INTO
   | INTERSECT
-  | INTEGER of (int)
   | INSERT
   | INFINITY
   | IN

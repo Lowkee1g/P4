@@ -25,13 +25,9 @@
 %token AND OR POWER
 %token <string> STRING 
 %token <string> IDENT
-%token <int> INTEGER 
 %start file
 %type <Ast.file> file
 %%
-
-
-
 
 
 file:
@@ -41,13 +37,13 @@ file:
 
 (* indentation *)
 suite:
-  | s = simple_stmt NEWLINE
+  | s = simpleStmt NEWLINE
       { s }
   | NEWLINE BEGIN l = nonempty_list(stmt) END
       { Sblock l }
 ;
 
-math_op:
+mathOperator:
   | TIMES
   { Bmul }
 
@@ -103,20 +99,21 @@ objectConstant:
   { Oident i }
 
   | pi = PI
-  { Ocst Cinfinity }
+  { Ocst Cpi }
 ;
+
 eDotnotation:
-  | ident DOT ROWS
-  { Erows($1) }
+  | i = ident DOT ROWS
+  { Erows(i) }
 
-  | ident DOT COLUMNS
-  { Ecolumns($1) }
+  | i = ident DOT COLUMNS
+  { Ecolumns(i) }
 
-  | ident DOT LENGTH
-  { Elength($1) }
+  | i = ident DOT LENGTH
+  { Elength(i) }
 
-  | ident DOT objectConstant
-  { Eobject($1, $3) }
+  | i = ident DOT oConst = objectConstant
+  { Eobject(i, oConst) }
 ;
 
 
@@ -149,57 +146,49 @@ expr:
   | s = STRING 
 	{ Ecst (Cstring s) }
 
-  | expr m = math_op expr 
-	{ Ebinop(m, $1, $3) }
+  | e1 = expr m = mathOperator e2 = expr 
+	{ Ebinop(m, e1, e2) }
 
-  /* | MINUS i = CST
-  {
-    match i with
-    | Cint n -> Ecst (Cint (-n))
-    | _ -> failwith "Expected an integer constant" } */
-  | LBRACE exprList RBRACE 
-  { Eset($2) }
+  | LBRACE eList = exprList RBRACE 
+  { Eset(eList) }
 
-  | LOW LBRACKET expr RBRACKET
-  { Elow($3) }
+  | LOW LBRACKET e1 = expr RBRACKET
+  { Elow(e1) }
 
-  | HIGH LBRACKET expr RBRACKET
-  { Ehigh($3) }
+  | HIGH LBRACKET e1 = expr RBRACKET
+  { Ehigh(e1) }
 
-  | expr EQUAL EQUAL expr 
-	{ Ebinop(Beq, $1, $4) }
+  | e1 = expr EQUAL EQUAL e2 = expr 
+	{ Ebinop(Beq, e1, e2) }
 
-  /* | expr COMMA expr
-  { Ebinop(Bcomma, $1, $3) } */
+  | e1 = expr AND e2 = expr
+  { Ebinop(Band, e1, e2) }
 
-  | expr AND expr
-  { Ebinop(Band, $1, $3) }
+  | e1 = expr OR e2 = expr
+  { Ebinop(Bor, e1, e2) }
 
-  | expr OR expr
-  { Ebinop(Bor, $1, $3) }
+  | i = ident LBRACKET e = expr RBRACKET
+	{ Earray(i, e) }
 
-  | ident LBRACKET expr RBRACKET
-	{ Earray($1, $3) }
+  | i = ident LBRACKET e1 = expr COMMA e2 = expr RBRACKET
+  { Etable(i, e1, e2) }
 
-  | ident LBRACKET expr COMMA expr RBRACKET
-  { Etable($1, $3, $5) }
-
-  | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET
-	{ Ematrix($1, $3, $6) }
+  | i = ident LBRACKET e1 = expr RBRACKET LBRACKET e2 = expr RBRACKET
+	{ Ematrix(i, e1, e2) }
 
 
-  | RANDOM LPAREN expr COMMA expr RPAREN
-  { Erandom($3, $5) }
+  | RANDOM LPAREN e1 = expr COMMA e2 = expr RPAREN
+  { Erandom(e1, e2) }
 
-  | ident LPAREN l = exprList RPAREN
-  { EfunctionCall($1, l) }
+  | i = ident LPAREN eList = exprList RPAREN
+  { EfunctionCall(i, eList) }
 
 
-  | expr DOTDOT expr
-  { Erange($1, $3) }  
+  | e1 = expr DOTDOT e2 = expr
+  { Erange(e1, e2) }  
   ;
 
-init_array:
+initArray:
   (* Array *)
   | id = ident LBRACKET expr1 = expr RBRACKET
   { 
@@ -207,7 +196,7 @@ init_array:
   }
   ;
 
-init_table:
+initTable:
   | id = ident LBRACKET expr1 = expr COMMA expr2 = expr RBRACKET
   { 
     conditionalPrint "Einittable -> ";
@@ -215,9 +204,9 @@ init_table:
   }
   ;
 
-simple_stmt:
+simpleStmt:
   (* Init array *)
-  | LET array = array_list BE_A_NEW ARRAY {
+  | LET array = arrayList BE_A_NEW ARRAY {
     conditionalPrint "SinitArrayList -> ";
     SinitArrayList(array)
   }
@@ -226,48 +215,47 @@ simple_stmt:
     SinitTableList(table)
   }
 
-
   (* Init statments *)
-  | LET ident BE_A_NEW expr CROSS expr MATRIX {
+  | LET i = ident BE_A_NEW e1 = expr CROSS e2 = expr MATRIX {
     conditionalPrint "Sinitmatrix -> ";
-	  Sinitmatrix($2, $4, $6)
+	  Sinitmatrix(i, e1, e2)
 	}
 
-  | PRINT e = exprList { 
+  | PRINT eList = exprList { 
     conditionalPrint "Sprint -> ";
-    Sprint(e) 
+    Sprint(eList) 
   }
 
-  | SWAP expr WITH expr {
+  | SWAP e1 = expr WITH e2 = expr {
     conditionalPrint "Sswap -> ";
-	  Sswap($2, $4)
+	  Sswap(e1, e2)
 	}
-  | EXCHANGE expr WITH expr {
+  | EXCHANGE e1 = expr WITH e2 = expr {
     conditionalPrint "Sexchange -> ";
-	  Sexchange($2, $4)
+	  Sexchange(e1, e2)
 	}
-  | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET {
+  | i = ident LBRACKET e1 = expr RBRACKET LBRACKET e2 = expr RBRACKET {
     conditionalPrint "SassignMatrix -> ";
-	  Smatrix($1, $3, $6)
+	  Smatrix(i, e1, e2)
 	}
-  | expr EQUAL expr {
+  | e1 = expr EQUAL e2 = expr {
     conditionalPrint "Sassign -> ";
-    Sassign($1, $3);  (* Capture the result of Sassign *)
+    Sassign(e1, e2);
   }
 
-  | RETURN exprList {
+  | RETURN eList = exprList {
     conditionalPrint "Sreturn -> ";
-	  Sreturn($2)
+	  Sreturn(eList)
 	}
 
-  | RETURN LPAREN exprList RPAREN {
+  | RETURN LPAREN eList = exprList RPAREN {
     conditionalPrint "Sreturn -> ";
-    Sreturn($3)
+    Sreturn(eList)
   }
 
-  | ERROR expr {
+  | ERROR e1 = expr {
     conditionalPrint "Serror -> ";
-    Serror($2)
+    Serror(e1)
   }
   | SORT expr1 = expr INTO MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT expr2 = expr{
     conditionalPrint "SsortA -> ";
@@ -292,45 +280,44 @@ simple_stmt:
 ;
 
 stmt:
-  | s = simple_stmt NEWLINE
+  | s = simpleStmt NEWLINE
     { s }
   
 
   // FUNCTION DEFINITIONS
-  | id = ident LPAREN l = exprList RPAREN NEWLINE {
-    SfuncCall (id, l)
+  | id = ident LPAREN eList = exprList RPAREN NEWLINE {
+    SfuncCall (id, eList)
   }
-  | id = ident LPAREN l = exprList RPAREN s = suite {
-    Sfunc (id, l, s)
+  | id = ident LPAREN eList = exprList RPAREN s = suite {
+    Sfunc (id, eList, s)
   }
 
   
   // FOR LOOPS
-  | FOR id = ident EQUAL expr TO expr s = suite {
-	  Sfor(id, $4, $6, s)
+  | FOR id = ident EQUAL e1 = expr TO e2 = expr s = suite {
+	  Sfor(id, e1, e2, s)
 	}
-  | FOR id = ident EQUAL expr DOWNTO expr s = suite {
-	  Sford(id, $4, $6, s)
+  | FOR id = ident EQUAL e1 = expr DOWNTO e2 = expr s = suite {
+	  Sford(id, e1, e2, s)
 	}
 
   // IF STATEMENTS
-  | IF expr s = suite stmt 
-    {Sifnest($2, s, $4) }
-  | IF expr s = suite 
-    { Sif($2, s) }
-  | ELSEIF expr s = suite stmt
-    { Selseifnest($2, s, $4) }
-  | ELSEIF expr s = suite 
-    { Selseif($2, s) }
+  | IF e1 = expr s = suite stmt = stmt 
+    {Sifnest(e1, s, stmt) }
+  | IF e1 = expr s = suite 
+    { Sif(e1, s) }
+  | ELSEIF e1 = expr s = suite stmt = stmt
+    { Selseifnest(e1, s, stmt) }
+  | ELSEIF e1 = expr s = suite 
+    { Selseif(e1, s) }
   | ELSE s = suite 
     { Selse(s) }
 
   
   // WHILE LOOPS
-  | WHILE expr s = suite {
-	  Swhile($2, s)
+  | WHILE e1 = expr s = suite {
+	  Swhile(e1, s)
 	}
-  
   ;
 
 ident:
@@ -340,20 +327,20 @@ ident:
 ;
 
 table_list:
-  | e = init_table { [e] }
-  | e = init_table AND expr1 = init_table { [e; expr1] }
-  | e = init_table COMMA AND expr1 = init_table { [e; expr1] } 
-  | e = init_table COMMA es = table_list { e :: es }
+  | e = initTable { [e] }
+  | e = initTable AND expr1 = initTable { [e; expr1] }
+  | e = initTable COMMA AND expr1 = initTable { [e; expr1] } 
+  | e = initTable COMMA es = table_list { e :: es }
 
-array_list:
-  | e = init_array { [e] }
-  | e = init_array AND expr1 = init_array { [e; expr1] }
-  | e = init_array COMMA AND expr1 = init_array { [e; expr1] } 
-  | e = init_array COMMA es = array_list { e :: es }
+arrayList:
+  | e = initArray { [e] }
+  | e = initArray AND expr1 = initArray { [e; expr1] }
+  | e = initArray COMMA AND expr1 = initArray { [e; expr1] } 
+  | e = initArray COMMA es = arrayList { e :: es }
 ;
 
 exprList:
-  | id = expr { [id] }  (* Base case: a single identifier *)
-  | id = expr COMMA ids = exprList { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
-  | id = expr ids = exprList { id :: ids }  (* Recursive case: an identifier followed by more identifiers *)
+  | id = expr { [id] } 
+  | id = expr COMMA ids = exprList { id :: ids } 
+  | id = expr ids = exprList { id :: ids } 
 ;

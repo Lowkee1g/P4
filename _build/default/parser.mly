@@ -25,13 +25,9 @@
 %token AND OR POWER
 %token <string> STRING 
 %token <string> IDENT
-%token <int> INTEGER 
 %start file
 %type <Ast.file> file
 %%
-
-
-
 
 
 file:
@@ -41,13 +37,13 @@ file:
 
 (* indentation *)
 suite:
-  | s = simple_stmt NEWLINE
+  | s = simpleStmt NEWLINE
       { s }
   | NEWLINE BEGIN l = nonempty_list(stmt) END
       { Sblock l }
 ;
 
-math_op:
+mathOperator:
   | TIMES
   { Bmul }
 
@@ -103,20 +99,21 @@ objectConstant:
   { Oident i }
 
   | pi = PI
-  { Ocst Cinfinity }
+  { Ocst Cpi }
 ;
+
 eDotnotation:
-  | ident DOT ROWS
-  { Erows($1) }
+  | i = ident DOT ROWS
+  { Erows(i) }
 
-  | ident DOT COLUMNS
-  { Ecolumns($1) }
+  | i = ident DOT COLUMNS
+  { Ecolumns(i) }
 
-  | ident DOT LENGTH
-  { Elength($1) }
+  | i = ident DOT LENGTH
+  { Elength(i) }
 
-  | ident DOT objectConstant
-  { Eobject($1, $3) }
+  | i = ident DOT objectConstant
+  { Eobject(i, $3) }
 ;
 
 
@@ -149,7 +146,7 @@ expr:
   | s = STRING 
 	{ Ecst (Cstring s) }
 
-  | expr m = math_op expr 
+  | expr m = mathOperator expr 
 	{ Ebinop(m, $1, $3) }
 
   /* | MINUS i = CST
@@ -157,7 +154,7 @@ expr:
     match i with
     | Cint n -> Ecst (Cint (-n))
     | _ -> failwith "Expected an integer constant" } */
-  | LBRACE expr_list RBRACE 
+  | LBRACE exprList RBRACE 
   { Eset($2) }
 
   | LOW LBRACKET expr RBRACKET
@@ -191,7 +188,7 @@ expr:
   | RANDOM LPAREN expr COMMA expr RPAREN
   { Erandom($3, $5) }
 
-  | ident LPAREN l = expr_list RPAREN
+  | ident LPAREN l = exprList RPAREN
   { EfunctionCall($1, l) }
 
 
@@ -215,7 +212,7 @@ init_table:
   }
   ;
 
-simple_stmt:
+simpleStmt:
   (* Init array *)
   | LET array = array_list BE_A_NEW ARRAY {
     conditionalPrint "SinitArrayList -> ";
@@ -233,7 +230,7 @@ simple_stmt:
 	  Sinitmatrix($2, $4, $6)
 	}
 
-  | PRINT e = expr_list { 
+  | PRINT e = exprList { 
     conditionalPrint "Sprint -> ";
     Sprint(e) 
   }
@@ -255,12 +252,12 @@ simple_stmt:
     Sassign($1, $3);  (* Capture the result of Sassign *)
   }
 
-  | RETURN expr_list {
+  | RETURN exprList {
     conditionalPrint "Sreturn -> ";
 	  Sreturn($2)
 	}
 
-  | RETURN LPAREN expr_list RPAREN {
+  | RETURN LPAREN exprList RPAREN {
     conditionalPrint "Sreturn -> ";
     Sreturn($3)
   }
@@ -292,15 +289,15 @@ simple_stmt:
 ;
 
 stmt:
-  | s = simple_stmt NEWLINE
+  | s = simpleStmt NEWLINE
     { s }
   
 
   // FUNCTION DEFINITIONS
-  | id = ident LPAREN l = expr_list RPAREN NEWLINE {
+  | id = ident LPAREN l = exprList RPAREN NEWLINE {
     SfuncCall (id, l)
   }
-  | id = ident LPAREN l = expr_list RPAREN s = suite {
+  | id = ident LPAREN l = exprList RPAREN s = suite {
     Sfunc (id, l, s)
   }
 
@@ -352,8 +349,8 @@ array_list:
   | e = init_array COMMA es = array_list { e :: es }
 ;
 
-expr_list:
+exprList:
   | id = expr { [id] }  (* Base case: a single identifier *)
-  | id = expr COMMA ids = expr_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
-  | id = expr ids = expr_list { id :: ids }  (* Recursive case: an identifier followed by more identifiers *)
+  | id = expr COMMA ids = exprList { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
+  | id = expr ids = exprList { id :: ids }  (* Recursive case: an identifier followed by more identifiers *)
 ;
