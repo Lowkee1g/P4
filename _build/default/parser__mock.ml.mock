@@ -94,7 +94,7 @@ type token =
   open Ast
   let silent = ref false
 
-  let conditional_print msg = 
+  let conditionalPrint msg = 
     if !silent then print_endline msg
 
 # 101 "parser__mock.ml.mock"
@@ -527,7 +527,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 288 "parser.mly"
                                              (
-    conditional_print "SinsertRoot -> ";
+    conditionalPrint "SinsertRoot -> ";
     SinsertRoot(e1, e2)
   )
 # 534 "parser__mock.ml.mock"
@@ -564,7 +564,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 284 "parser.mly"
                                                  (
-    conditional_print "SinsertAll -> ";
+    conditionalPrint "SinsertAll -> ";
     SinsertAll(e1, e2)
   )
 # 571 "parser__mock.ml.mock"
@@ -589,7 +589,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 280 "parser.mly"
                                     (
-    conditional_print "Sinsert -> ";
+    conditionalPrint "Sinsert -> ";
     Sinsert(e1, e2)
   )
 # 596 "parser__mock.ml.mock"
@@ -618,7 +618,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 276 "parser.mly"
                                                                            (
-    conditional_print "SsortD -> ";
+    conditionalPrint "SsortD -> ";
     SsortD(e1, e2)
   )
 # 625 "parser__mock.ml.mock"
@@ -647,7 +647,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 272 "parser.mly"
                                                                          (
-    conditional_print "SsortA -> ";
+    conditionalPrint "SsortA -> ";
     SsortA(e1, e2)
   )
 # 654 "parser__mock.ml.mock"
@@ -664,7 +664,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 268 "parser.mly"
                (
-    conditional_print "Serror -> ";
+    conditionalPrint "Serror -> ";
     Serror(_2)
   )
 # 671 "parser__mock.ml.mock"
@@ -689,7 +689,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 263 "parser.mly"
                                    (
-    conditional_print "Sreturn -> ";
+    conditionalPrint "Sreturn -> ";
     Sreturn(_3)
   )
 # 696 "parser__mock.ml.mock"
@@ -706,7 +706,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 258 "parser.mly"
                      (
-    conditional_print "Sreturn -> ";
+    conditionalPrint "Sreturn -> ";
 	  Sreturn(_2)
 	)
 # 713 "parser__mock.ml.mock"
@@ -727,7 +727,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 253 "parser.mly"
                     (
-    conditional_print "Sassign -> ";
+    conditionalPrint "Sassign -> ";
     Sassign(_1, _3);  (* Capture the result of Sassign *)
   )
 # 734 "parser__mock.ml.mock"
@@ -764,7 +764,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 249 "parser.mly"
                                                         (
-    conditional_print "SassignMatrix -> ";
+    conditionalPrint "SassignMatrix -> ";
 	  Smatrix(_1, _3, _6)
 	)
 # 771 "parser__mock.ml.mock"
@@ -789,7 +789,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 245 "parser.mly"
                             (
-    conditional_print "Sexchange -> ";
+    conditionalPrint "Sexchange -> ";
 	  Sexchange(_2, _4)
 	)
 # 796 "parser__mock.ml.mock"
@@ -814,7 +814,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 241 "parser.mly"
                         (
-    conditional_print "Sswap -> ";
+    conditionalPrint "Sswap -> ";
 	  Sswap(_2, _4)
 	)
 # 821 "parser__mock.ml.mock"
@@ -831,7 +831,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 236 "parser.mly"
                         ( 
-    conditional_print "Sprint -> ";
+    conditionalPrint "Sprint -> ";
     Sprint(e) 
   )
 # 838 "parser__mock.ml.mock"
@@ -868,7 +868,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 231 "parser.mly"
                                               (
-    conditional_print "Sinitmatrix -> ";
+    conditionalPrint "Sinitmatrix -> ";
 	  Sinitmatrix(_2, _4, _6)
 	)
 # 875 "parser__mock.ml.mock"
@@ -893,7 +893,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 224 "parser.mly"
                                           (
-    conditional_print "SinitTable -> ";
+    conditionalPrint "SinitTable -> ";
     SinitTableList(table)
   )
 # 900 "parser__mock.ml.mock"
@@ -918,7 +918,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 220 "parser.mly"
                                           (
-    conditional_print "SinitArrayList -> ";
+    conditionalPrint "SinitArrayList -> ";
     SinitArrayList(array)
   )
 # 925 "parser__mock.ml.mock"
@@ -1135,7 +1135,7 @@ and (xv_table_list, xv_suite, xv_stmt, xv_simple_stmt, xv_option_NEWLINE_, xv_ob
     
 # 212 "parser.mly"
   ( 
-    conditional_print "Einittable -> ";
+    conditionalPrint "Einittable -> ";
     Einittable(id, e1, e2);
   )
 # 1142 "parser__mock.ml.mock"

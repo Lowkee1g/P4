@@ -2,7 +2,7 @@
   open Ast
   let silent = ref false
 
-  let conditional_print msg = 
+  let conditionalPrint msg = 
     if !silent then print_endline msg
 %}
 
@@ -210,7 +210,7 @@ init_array:
 init_table:
   | id = ident LBRACKET e1 = expr COMMA e2 = expr RBRACKET
   { 
-    conditional_print "Einittable -> ";
+    conditionalPrint "Einittable -> ";
     Einittable(id, e1, e2);
   }
   ;
@@ -218,75 +218,75 @@ init_table:
 simple_stmt:
   (* Init array *)
   | LET array = array_list BE_A_NEW ARRAY {
-    conditional_print "SinitArrayList -> ";
+    conditionalPrint "SinitArrayList -> ";
     SinitArrayList(array)
   }
   | LET table = table_list BE_A_NEW TABLE {
-    conditional_print "SinitTable -> ";
+    conditionalPrint "SinitTable -> ";
     SinitTableList(table)
   }
 
 
   (* Init statments *)
   | LET ident BE_A_NEW expr CROSS expr MATRIX {
-    conditional_print "Sinitmatrix -> ";
+    conditionalPrint "Sinitmatrix -> ";
 	  Sinitmatrix($2, $4, $6)
 	}
 
   | PRINT e = expr_list { 
-    conditional_print "Sprint -> ";
+    conditionalPrint "Sprint -> ";
     Sprint(e) 
   }
 
   | SWAP expr WITH expr {
-    conditional_print "Sswap -> ";
+    conditionalPrint "Sswap -> ";
 	  Sswap($2, $4)
 	}
   | EXCHANGE expr WITH expr {
-    conditional_print "Sexchange -> ";
+    conditionalPrint "Sexchange -> ";
 	  Sexchange($2, $4)
 	}
   | ident LBRACKET expr RBRACKET LBRACKET expr RBRACKET {
-    conditional_print "SassignMatrix -> ";
+    conditionalPrint "SassignMatrix -> ";
 	  Smatrix($1, $3, $6)
 	}
   | expr EQUAL expr {
-    conditional_print "Sassign -> ";
+    conditionalPrint "Sassign -> ";
     Sassign($1, $3);  (* Capture the result of Sassign *)
   }
 
   | RETURN expr_list {
-    conditional_print "Sreturn -> ";
+    conditionalPrint "Sreturn -> ";
 	  Sreturn($2)
 	}
 
   | RETURN LPAREN expr_list RPAREN {
-    conditional_print "Sreturn -> ";
+    conditionalPrint "Sreturn -> ";
     Sreturn($3)
   }
 
   | ERROR expr {
-    conditional_print "Serror -> ";
+    conditionalPrint "Serror -> ";
     Serror($2)
   }
   | SORT e1 = expr INTO MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT e2 = expr{
-    conditional_print "SsortA -> ";
+    conditionalPrint "SsortA -> ";
     SsortA(e1, e2)
   }
   | SORT e1 = expr INTO MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT e2 = expr {
-    conditional_print "SsortD -> ";
+    conditionalPrint "SsortD -> ";
     SsortD(e1, e2)
   }
   | INSERT e1 = expr INTO e2 = expr {
-    conditional_print "Sinsert -> ";
+    conditionalPrint "Sinsert -> ";
     Sinsert(e1, e2)
   }
   | INSERT ALL ITEMS IN e1 = expr INTO e2 = expr {
-    conditional_print "SinsertAll -> ";
+    conditionalPrint "SinsertAll -> ";
     SinsertAll(e1, e2)
   }
   | INSERT e1 = expr INTO e2 = expr ROOTLIST {
-    conditional_print "SinsertRoot -> ";
+    conditionalPrint "SinsertRoot -> ";
     SinsertRoot(e1, e2)
   }
 ;

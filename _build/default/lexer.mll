@@ -7,24 +7,24 @@ exception Lexing_error of string
 
 let silent = ref false
 
-let conditional_print str = if not !silent then print_string str
+let conditionalPrint str = if not !silent then print_string str
 
-let string_buff = Buffer.create 256
+let stringBuff = Buffer.create 256
 
-let is_printable c = 
-  let code = Char.code c in
-  code >= 32 && code <= 126  (* Printable ASCII range *)
+let isPrintable character = 
+  let asciiCode = Char.code character in
+  asciiCode >= 32 && asciiCode <= 126  (* Printable ASCII range *)
 
-let char_for_backslash = function
+let charForBackslash = function
   | 'n' -> '\n'
   | 'r' -> '\r'
   | 'b' -> '\b'
   | 't' -> '\t'
-  | c   -> c
+  | character -> character
 
-let backslash_escapes = ['\\'; '\''; '"'; 'n'; 't'; 'b'; 'r'; ' ']
+(* let backslash_escapes = ['\\'; '\''; '"'; 'n'; 't'; 'b'; 'r'; ' '] *)
 
-let kwd_tbl = [
+let keywordTable = [
   "for", FOR;
   "to", TO;
   "downto", DOWNTO;
@@ -74,36 +74,36 @@ let kwd_tbl = [
   "root-list", ROOTLIST;
 ]
 
-let id_or_kwd = 
-  let h = Hashtbl.create 50 in
-  List.iter (fun (s, t) -> Hashtbl.add h s t) kwd_tbl;
-  fun s ->
+let idOrKeyword = 
+  let hashTable = Hashtbl.create 50 in
+  List.iter (fun (keywordString, keywordToken) -> Hashtbl.add hashTable keywordString keywordToken) keywordTable;
+  fun searchString ->
     try 
-      let found = Hashtbl.find h s in
-      if not !silent then print_string_yellow ("keyword: " ^ s ^ " ");
+      let found = Hashtbl.find hashTable searchString in
+      if not !silent then printStringYellow ("keyword: " ^ searchString ^ " ");
       found
     with Not_found ->
-      if not !silent then print_string_blue ("Ident: " ^ s ^ " ");
-      IDENT s
+      if not !silent then printStringBlue ("Ident: " ^ searchString ^ " ");
+      IDENT searchString
 
 
 let debugLines = ref 2;;
 
 let indentStack = ref [0]  (* indentation stack *)
 
-let rec unindent_to indentLevel = 
+let rec unindentTo indentLevel = 
   match !indentStack with
   | stackHead :: _ when stackHead = indentLevel -> [] (* If indentLevel is at head *)
-  | stackHead :: iStack when stackHead > indentLevel -> indentStack := iStack; END :: unindent_to indentLevel (* "END" (of block) is prepended to return of the call *)
+  | stackHead :: iStack when stackHead > indentLevel -> indentStack := iStack; END :: unindentTo indentLevel (* "END" (of block) is prepended to return of the call *)
   | _ -> raise (Lexing_error "bad indentation")
 
-let update_stack_to indentLevel =
+let updateStackTo indentLevel =
   match !indentStack with
   | stackHead :: _ when stackHead < indentLevel ->
     indentStack := indentLevel :: !indentStack;
     [NEWLINE; BEGIN]
   | _ ->
-    NEWLINE :: unindent_to indentLevel
+    NEWLINE :: unindentTo indentLevel
 }
 
 let letter = ['a'-'z' 'A'-'Z']
@@ -116,75 +116,75 @@ let space = ' ' | '\t'
 
 
 
-rule next_tokens = parse
-  | '\n'                                { if not !silent then (print_string_red "\nLine: "; print_int !debugLines; print_string "  "); debugLines := !debugLines + 1; new_line lexbuf; update_stack_to (indentation lexbuf) }
-  | (space)+                            { next_tokens lexbuf }
+rule nextTokens = parse
+  | '\n'                                { if not !silent then (printStringRed "\nLine: "; print_int !debugLines; print_string "  "); debugLines := !debugLines + 1; new_line lexbuf; updateStackTo (indentation lexbuf) }
+  | (space)+                            { nextTokens lexbuf }
 
   (* Special characters start *)
-  | "×"                                 { if not !silent then print_string_magenta " CROSS "; [CROSS] }
-  | "cross"                             { if not !silent then print_string_magenta " CROSS "; [CROSS] }
-  | "∞"                                 { if not !silent then print_string_magenta " Infinity "; [INFINITY] }
-  | "inf"                               { if not !silent then print_string_magenta " Infinity "; [INFINITY] }
-  | "⋅"                                 { if not !silent then print_string_magenta " Times "; [TIMES] }
-  | "*"                                 { if not !silent then print_string_magenta " Times "; [TIMES] }
+  | "×"                                 { if not !silent then printStringMagenta " CROSS "; [CROSS] }
+  | "cross"                             { if not !silent then printStringMagenta " CROSS "; [CROSS] }
+  | "∞"                                 { if not !silent then printStringMagenta " Infinity "; [INFINITY] }
+  | "inf"                               { if not !silent then printStringMagenta " Infinity "; [INFINITY] }
+  | "⋅"                                 { if not !silent then printStringMagenta " Times "; [TIMES] }
+  | "*"                                 { if not !silent then printStringMagenta " Times "; [TIMES] }
   (* Special characters end *)
 
   (* Math *)
-  | '='                                 { if not !silent then print_string_magenta " Equal "; [EQUAL] }
-  | '>'                                 { if not !silent then print_string_magenta " GreaterThan "; [GT] }
-  | '<'                                 { if not !silent then print_string_magenta " LessThan "; [LT] }
-  | '-'                                 { if not !silent then print_string_magenta " Minus "; [MINUS] }
-  | '+'                                 { if not !silent then print_string_magenta " Plus "; [PLUS] }
-  | '/'                                 { if not !silent then print_string_magenta " Divide "; [DIVIDE] }
-  | "//"                                { if not !silent then print_string_magenta " DivideFloor "; [DIVIDEFLOOR] }
-  | '%'                                 { if not !silent then print_string_magenta " Mod "; [MOD] }
-  | '^'                                 { if not !silent then print_string_magenta " Power "; [POWER] }
-  | "∅"                                 { if not !silent then print_string_magenta " Empty_set "; [EMPTYSET] }
-  | "≤"                                 { if not !silent then print_string_magenta " LessThanEqual "; [LTE] }
-  | "≥"                                 { if not !silent then print_string_magenta " GreaterThanEqual "; [GTE] }
-  | "≠"                                 { if not !silent then print_string_magenta " NotEqual "; [NEQ] }
-  | "∈"                                 { if not !silent then print_string_magenta " In "; [IN] }
-  | "⋃"                                 { if not !silent then print_string_magenta " Union "; [UNION] }
-  | "⋂"                                 { if not !silent then print_string_magenta " Intersection "; [INTERSECT] }
-  | "π"                                 { if not !silent then print_string_magenta " Pi "; [PI] }
+  | '='                                 { if not !silent then printStringMagenta " Equal "; [EQUAL] }
+  | '>'                                 { if not !silent then printStringMagenta " GreaterThan "; [GT] }
+  | '<'                                 { if not !silent then printStringMagenta " LessThan "; [LT] }
+  | '-'                                 { if not !silent then printStringMagenta " Minus "; [MINUS] }
+  | '+'                                 { if not !silent then printStringMagenta " Plus "; [PLUS] }
+  | '/'                                 { if not !silent then printStringMagenta " Divide "; [DIVIDE] }
+  | "//"                                { if not !silent then printStringMagenta " DivideFloor "; [DIVIDEFLOOR] }
+  | '%'                                 { if not !silent then printStringMagenta " Mod "; [MOD] }
+  | '^'                                 { if not !silent then printStringMagenta " Power "; [POWER] }
+  | "∅"                                 { if not !silent then printStringMagenta " Empty_set "; [EMPTYSET] }
+  | "≤"                                 { if not !silent then printStringMagenta " LessThanEqual "; [LTE] }
+  | "≥"                                 { if not !silent then printStringMagenta " GreaterThanEqual "; [GTE] }
+  | "≠"                                 { if not !silent then printStringMagenta " NotEqual "; [NEQ] }
+  | "∈"                                 { if not !silent then printStringMagenta " In "; [IN] }
+  | "⋃"                                 { if not !silent then printStringMagenta " Union "; [UNION] }
+  | "⋂"                                 { if not !silent then printStringMagenta " Intersection "; [INTERSECT] }
+  | "π"                                 { if not !silent then printStringMagenta " Pi "; [PI] }
 
 
 
   (* Logical *)
-  | "and"                               { if not !silent then print_string_magenta " And "; [AND] }
-  | "or"                                { if not !silent then print_string_magenta " Or "; [OR] }
+  | "and"                               { if not !silent then printStringMagenta " And "; [AND] }
+  | "or"                                { if not !silent then printStringMagenta " Or "; [OR] }
 
   (* Everything else *)
-  | "NIL"                               { if not !silent then print_string_magenta " NIL"; [NIL] }
-  | "be" (space)+ "a" (space)+ "new"    { if not !silent then print_string_magenta " BeANew "; [BE_A_NEW] }
-  | "be" (space)+ "new"              { if not !silent then print_string_magenta " BeNew "; [BE_A_NEW] }
+  | "NIL"                               { if not !silent then printStringMagenta " NIL"; [NIL] }
+  | "be" (space)+ "a" (space)+ "new"    { if not !silent then printStringMagenta " BeANew "; [BE_A_NEW] }
+  | "be" (space)+ "new"              { if not !silent then printStringMagenta " BeNew "; [BE_A_NEW] }
   | "monotonically" (space)+ "ascending" (space)+ "order" (space)+ "by" (space)+ "weight" { if not !silent then print_string "MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_ASCENDING_ORDER_BY_WEIGHT] }
   | "monotonically" (space)+ "decreasing" (space)+ "order" (space)+ "by" (space)+ "weight" { if not !silent then print_string "MONOTONICALLY_DESCENDING_ORDER_BY_WEIGHT "; [MONOTONICALLY_DECREASING_ORDER_BY_WEIGHT] }
-  | '['                                 { if not !silent then print_string_magenta " LBracket "; [LBRACKET] }
-  | ']'                                 { if not !silent then print_string_magenta " RBracket "; [RBRACKET] }
-  | '('                                 { if not !silent then print_string_magenta " LParen "; [LPAREN] }
-  | ')'                                 { if not !silent then print_string_magenta " RParen "; [RPAREN] }
-  | '{'                                 { if not !silent then print_string_magenta " LBrace "; [LBRACE] }
-  | '}'                                 { if not !silent then print_string_magenta " RBrace "; [RBRACE] }
-  | '.'                                 { if not !silent then print_string_magenta " Dot "; [DOT] }
-  | ".."                                { if not !silent then print_string_magenta " DOTDOT "; [DOTDOT] }
-  | ','                                 { if not !silent then print_string_magenta " Comma "; [COMMA] }
-  | '"'                                 { Buffer.clear string_buff; string lexbuf; [STRING (Buffer.contents string_buff)] }
-  | ident as id                         { [id_or_kwd id] }
-  | integer as s                        { if not !silent then print_int_blue s;  [CST (Cint(int_of_string s))] }
-  | eof                                 { if not !silent then print_endline "eof\n\n"; NEWLINE :: unindent_to 0 @ [EOF] }
+  | '['                                 { if not !silent then printStringMagenta " LBracket "; [LBRACKET] }
+  | ']'                                 { if not !silent then printStringMagenta " RBracket "; [RBRACKET] }
+  | '('                                 { if not !silent then printStringMagenta " LParen "; [LPAREN] }
+  | ')'                                 { if not !silent then printStringMagenta " RParen "; [RPAREN] }
+  | '{'                                 { if not !silent then printStringMagenta " LBrace "; [LBRACE] }
+  | '}'                                 { if not !silent then printStringMagenta " RBrace "; [RBRACE] }
+  | '.'                                 { if not !silent then printStringMagenta " Dot "; [DOT] }
+  | ".."                                { if not !silent then printStringMagenta " DOTDOT "; [DOTDOT] }
+  | ','                                 { if not !silent then printStringMagenta " Comma "; [COMMA] }
+  | '"'                                 { Buffer.clear stringBuff; string lexbuf; [STRING (Buffer.contents stringBuff)] }
+  | ident as id                         { [idOrKeyword id] }
+  | integer as s                        { if not !silent then printIntBlue s;  [CST (Cint(int_of_string s))] }
+  | eof                                 { if not !silent then print_endline "eof\n\n"; NEWLINE :: unindentTo 0 @ [EOF] }
   | _ as c
       {
-        let pos = Lexing.lexeme_start_p lexbuf in
-        let char_info =
-          if is_printable c then
-            Printf.sprintf "illegal character: '%c' (ASCII code: %d)" c (Char.code c)
+        let position = Lexing.lexeme_start_p lexbuf in
+        let charInfo =
+          if isPrintable character then
+            Printf.sprintf "illegal character: '%c' (ASCII code: %d)" character (Char.code character)
           else
-            Printf.sprintf "illegal character with ASCII code: %d" (Char.code c)
+            Printf.sprintf "illegal character with ASCII code: %d" (Char.code character)
         in
         Printf.eprintf "\x1b[31mError on line %d, column %d: %s\x1b[0m\n"
-          pos.pos_lnum (pos.pos_cnum - pos.pos_bol + 1) char_info;
-        raise (Lexing_error char_info)
+          position.pos_lnum (position.pos_cnum - position.pos_bol + 1) charInfo;
+        raise (Lexing_error charInfo)
       }
 and indentation = parse
   | (space)* '\n'
@@ -195,17 +195,17 @@ and indentation = parse
 
 and string = parse
   | '"'                     { () }  (* End of string literal *)
-  | '\\' (['\\' '\'' '"' 'n' 't' 'b' 'r' ' '] as c)   { Buffer.add_char string_buff (char_for_backslash c); string lexbuf }
-  | _ as c                  { Buffer.add_char string_buff c; string lexbuf }
+  | '\\' (['\\' '\'' '"' 'n' 't' 'b' 'r' ' '] as c)   { Buffer.add_char stringBuff (charForBackslash c); string lexbuf }
+  | _ as c                  { Buffer.add_char stringBuff c; string lexbuf }
 
   {
 
-let next_token =
+let nextToken =
     let tokens = Queue.create () in (* next tokens to emit *)
-    fun lb ->
+    fun lexerBuffer ->
       if Queue.is_empty tokens then begin
-	let l = next_tokens lb in
-	List.iter (fun t -> Queue.add t tokens) l
+        let lexedTokens = nextTokens lexerBuffer in
+        List.iter (fun inputToken -> Queue.add inputToken tokens) lexedTokens
       end;
       Queue.pop tokens
 }

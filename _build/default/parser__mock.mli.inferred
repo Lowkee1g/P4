@@ -72,7 +72,7 @@ type token =
   | AND
   | ALL
 val silent : bool ref
-val conditional_print : string -> unit
+val conditionalPrint : string -> unit
 val menhir_begin_marker : int
 val xv_table_list : Ast.expr list
 val xv_suite : Ast.stmt

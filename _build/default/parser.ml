@@ -106,7 +106,7 @@ include MenhirBasics
   open Ast
   let silent = ref false
 
-  let conditional_print msg = 
+  let conditionalPrint msg = 
     if !silent then print_endline msg
 
 # 113 "parser.ml"
@@ -1071,7 +1071,7 @@ let _menhir_action_37 =
     (
 # 212 "parser.mly"
   ( 
-    conditional_print "Einittable -> ";
+    conditionalPrint "Einittable -> ";
     Einittable(id, e1, e2);
   )
 # 1078 "parser.ml"
@@ -1258,7 +1258,7 @@ let _menhir_action_60 =
     (
 # 220 "parser.mly"
                                           (
-    conditional_print "SinitArrayList -> ";
+    conditionalPrint "SinitArrayList -> ";
     SinitArrayList(array)
   )
 # 1265 "parser.ml"
@@ -1269,7 +1269,7 @@ let _menhir_action_61 =
     (
 # 224 "parser.mly"
                                           (
-    conditional_print "SinitTable -> ";
+    conditionalPrint "SinitTable -> ";
     SinitTableList(table)
   )
 # 1276 "parser.ml"
@@ -1280,7 +1280,7 @@ let _menhir_action_62 =
     (
 # 231 "parser.mly"
                                               (
-    conditional_print "Sinitmatrix -> ";
+    conditionalPrint "Sinitmatrix -> ";
 	  Sinitmatrix(_2, _4, _6)
 	)
 # 1287 "parser.ml"
@@ -1291,7 +1291,7 @@ let _menhir_action_63 =
     (
 # 236 "parser.mly"
                         ( 
-    conditional_print "Sprint -> ";
+    conditionalPrint "Sprint -> ";
     Sprint(e) 
   )
 # 1298 "parser.ml"
@@ -1302,7 +1302,7 @@ let _menhir_action_64 =
     (
 # 241 "parser.mly"
                         (
-    conditional_print "Sswap -> ";
+    conditionalPrint "Sswap -> ";
 	  Sswap(_2, _4)
 	)
 # 1309 "parser.ml"
@@ -1313,7 +1313,7 @@ let _menhir_action_65 =
     (
 # 245 "parser.mly"
                             (
-    conditional_print "Sexchange -> ";
+    conditionalPrint "Sexchange -> ";
 	  Sexchange(_2, _4)
 	)
 # 1320 "parser.ml"
@@ -1324,7 +1324,7 @@ let _menhir_action_66 =
     (
 # 249 "parser.mly"
                                                         (
-    conditional_print "SassignMatrix -> ";
+    conditionalPrint "SassignMatrix -> ";
 	  Smatrix(_1, _3, _6)
 	)
 # 1331 "parser.ml"
@@ -1335,7 +1335,7 @@ let _menhir_action_67 =
     (
 # 253 "parser.mly"
                     (
-    conditional_print "Sassign -> ";
+    conditionalPrint "Sassign -> ";
     Sassign(_1, _3);  (* Capture the result of Sassign *)
   )
 # 1342 "parser.ml"
@@ -1346,7 +1346,7 @@ let _menhir_action_68 =
     (
 # 258 "parser.mly"
                      (
-    conditional_print "Sreturn -> ";
+    conditionalPrint "Sreturn -> ";
 	  Sreturn(_2)
 	)
 # 1353 "parser.ml"
@@ -1357,7 +1357,7 @@ let _menhir_action_69 =
     (
 # 263 "parser.mly"
                                    (
-    conditional_print "Sreturn -> ";
+    conditionalPrint "Sreturn -> ";
     Sreturn(_3)
   )
 # 1364 "parser.ml"
@@ -1368,7 +1368,7 @@ let _menhir_action_70 =
     (
 # 268 "parser.mly"
                (
-    conditional_print "Serror -> ";
+    conditionalPrint "Serror -> ";
     Serror(_2)
   )
 # 1375 "parser.ml"
@@ -1379,7 +1379,7 @@ let _menhir_action_71 =
     (
 # 272 "parser.mly"
                                                                          (
-    conditional_print "SsortA -> ";
+    conditionalPrint "SsortA -> ";
     SsortA(e1, e2)
   )
 # 1386 "parser.ml"
@@ -1390,7 +1390,7 @@ let _menhir_action_72 =
     (
 # 276 "parser.mly"
                                                                            (
-    conditional_print "SsortD -> ";
+    conditionalPrint "SsortD -> ";
     SsortD(e1, e2)
   )
 # 1397 "parser.ml"
@@ -1401,7 +1401,7 @@ let _menhir_action_73 =
     (
 # 280 "parser.mly"
                                     (
-    conditional_print "Sinsert -> ";
+    conditionalPrint "Sinsert -> ";
     Sinsert(e1, e2)
   )
 # 1408 "parser.ml"
@@ -1412,7 +1412,7 @@ let _menhir_action_74 =
     (
 # 284 "parser.mly"
                                                  (
-    conditional_print "SinsertAll -> ";
+    conditionalPrint "SinsertAll -> ";
     SinsertAll(e1, e2)
   )
 # 1419 "parser.ml"
@@ -1423,7 +1423,7 @@ let _menhir_action_75 =
     (
 # 288 "parser.mly"
                                              (
-    conditional_print "SinsertRoot -> ";
+    conditionalPrint "SinsertRoot -> ";
     SinsertRoot(e1, e2)
   )
 # 1430 "parser.ml"

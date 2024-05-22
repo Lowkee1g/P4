@@ -27,13 +27,13 @@ let () =
     "Usage: -silent to suppress output"; *)
   match !file with
   | None ->
-    Lexer.conditional_print "No file provided\n";
+    Lexer.conditionalPrint "No file provided\n";
     exit 1
   | Some filename -> 
     let channel = open_in filename in
     let lexbuf = Lexing.from_channel channel in
     try
-      let ast_list = Parser.file Lexer.next_token lexbuf in
+      let ast_list = Parser.file Lexer.nextToken lexbuf in
       let result_string = interpret ast_list 0 in
       close_in channel;
       let out_channel = open_out (Filename.remove_extension filename ^ "_result.py") in
