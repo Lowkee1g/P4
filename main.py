@@ -43,8 +43,9 @@ def main():
 
     # Print every module in the test_modules
     for module_name in dir(test_modules):
-        if not module_name.startswith("__"):
-            print(module_name)
+        # if not module_name.startswith("__"):
+        print(module_name)
+            
 class TestOfCormens(unittest.TestCase):
     def test_insertionsort(self):
         print("-------------Insertion sort-------------")
@@ -52,7 +53,7 @@ class TestOfCormens(unittest.TestCase):
         # and inserting it into its correct position within the sorted portion of the array.
         my_array = Array([5, 2, 4, 6, 1, 3])
         # Access and run the INSERTION_SORT function dynamically
-        insertion_sort_module = getattr(test_modules, "Insertionsort")
+        insertion_sort_module = getattr(test_modules, "InsertionSort")
         insertion_sort_module.INSERTION_SORT(my_array)
         self.assertEqual(my_array, Array([1, 2, 3, 4, 5, 6]))
         print(my_array)
@@ -150,7 +151,7 @@ class TestOfCormens(unittest.TestCase):
         # The BUBBLESORT function sorts an array A by repeatedly swapping adjacent elements if they are in the wrong order.
         # Access and run the BubbleSort function dynamically
         myArray = Array([5, 2, 4, 6, 1, 3])
-        bubble_sort_module = getattr(test_modules, "Bubblesort")
+        bubble_sort_module = getattr(test_modules, "BubbleSort")
         bubble_sort_module.BUBBLESORT(myArray)
         self.assertEqual(myArray, Array([1, 2, 3, 4, 5, 6]))
         print("Sorted array:", myArray)

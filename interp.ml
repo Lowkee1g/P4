@@ -17,12 +17,12 @@ let rec stringOfExpr expr =
       Printf.sprintf "%s and %s" leftExpr rightExpr 
 	| Ebinop(opperator, expr1, expr2) ->
 		let opperatorString = stringOfBinaryOperator opperator in
-		let expr1Str = stringOfExpr expr1 in
-		let expr2Str = stringOfExpr expr2 in
+		let expr1String = stringOfExpr expr1 in
+		let expr2String = stringOfExpr expr2 in
 		if opperatorString = ".union" then
-			Printf.sprintf "%s.union(%s)" expr1Str expr2Str
+			Printf.sprintf "%s.union(%s)" expr1String expr2String
 		else
-			Printf.sprintf "%s %s %s" expr1Str opperatorString expr2Str
+			Printf.sprintf "%s %s %s" expr1String opperatorString expr2String
 	| Ecst const -> stringOfConstant const
 	| Eident id -> id.id
 	| Earray (id, index) -> Printf.sprintf "%s[%s]" id.id (stringOfExpr index)
@@ -83,215 +83,183 @@ let rec stringOfExpr expr =
 		| [] -> ""
 		| head::[] -> stringOfExpr head 
 		| head::rest -> stringOfExpr head ^ ", " ^ stringOfExprParams rest
-
-				
+		
 let rec stringOfArrays (arraylist: expr list) : string =
 	match arraylist with
 	| [] -> ""
 	| head::[] -> stringOfExpr head 
 	| head::rest -> stringOfExpr head ^ "\n" ^ stringOfArrays rest
 
-let rec string_of_tables (tablelist: expr list) : string =
+let rec stringOfTables (tablelist: expr list) : string =
 	match tablelist with
 	| [] -> ""
 	| head::[] -> stringOfExpr head 
-	| head::rest -> stringOfExpr head ^ "\n" ^ string_of_tables rest 
+	| head::rest -> stringOfExpr head ^ "\n" ^ stringOfTables rest 
 	
-
-let rec print_multiple_values exprs =
+let rec printMultipleValues exprs =
 	match exprs with
 	| [] -> ""
 	| expr::[] -> stringOfExpr expr
-	| expr::rest -> stringOfExpr expr ^ ", " ^ print_multiple_values rest
+	| expr::rest -> stringOfExpr expr ^ ", " ^ printMultipleValues rest
 
 
-
-
-(* let rec print_value expr = 
-	match expr with
-	| Ecst (Cstring s) -> Printf.sprintf "print('%s')" s
-	| Eident id -> Printf.sprintf "print(%s)" id.id
-	| Earray (id, index) -> Printf.sprintf "print(%s[%s])" id.id (stringOfExpr index)
-	| Ematrix (id, ident1, ident2) -> Printf.sprintf "print(%s[%s][%s])" id.id (stringOfExpr ident1) (stringOfExpr ident2)
-	| _ -> failwith "Cannot print expression" *)
-	
-	let rec interpret ast indent_level : string =
+let rec interpret ast indentLevel : string =
 		(* Generate a string for indentation: *)
-		let indent_str = if indent_level = 0 then "" else String.make (indent_level * 4) ' ' in
+		let indentString = if indentLevel = 0 then "" else String.make (indentLevel * 4) ' ' in
 	match ast with
+
+
 	(* Function *)
-	(* Handle the function definition case *)
 	| Sfunc(id, args, stmt) ->
-		let args_str = stringOfExprParams args in
-		let stmt_str = interpret stmt (indent_level + 1) in
-		if indent_level = 0 then
-			Printf.sprintf "%sdef %s(%s):\n%s" indent_str id.id args_str stmt_str
+		let argsString = stringOfExprParams args in
+		let stmtString = interpret stmt (indentLevel + 1) in
+		if indentLevel = 0 then
+			Printf.sprintf "%sdef %s(%s):\n%s" indentString id.id argsString stmtString
 		else
-			Printf.sprintf "%s%s(%s)" indent_str id.id args_str
+			Printf.sprintf "%s%s(%s)" indentString id.id argsString
 	(* Handle the function call case *)
 	| SfuncCall(id, args) ->
-		let args_str = stringOfExprParams args in
-		Printf.sprintf "%s%s(%s)" indent_str id.id args_str
+		let argsString = stringOfExprParams args in
+		Printf.sprintf "%s%s(%s)" indentString id.id argsString
+
 
 	(* FOR LOOPS*)
-	| Sfor(ident, start_val, end_val, stmt) ->
-		let start_val_str = stringOfExpr start_val in
-		let end_val_str = stringOfExpr end_val in
+	| Sfor(ident, startValue, endValue, stmt) ->
+		let startValueString = stringOfExpr startValue in
+		let endValueString = stringOfExpr endValue in
 		Printf.sprintf "%sfor %s in range(%s, %s + 1):\n%s" (* + 1 to compensate for pythons range function not including last number *)
-			indent_str ident.id start_val_str end_val_str (interpret stmt (indent_level + 1))
+			indentString ident.id startValueString endValueString (interpret stmt (indentLevel + 1))
 
-	| Sford(ident, start_val, end_val, stmt) ->
-		let start_val_int = stringOfExpr start_val in
-		let end_val_int = stringOfExpr end_val in
+	| Sford(ident, startValue, endValue, stmt) ->
+		let startValueInt = stringOfExpr startValue in
+		let endValueInt = stringOfExpr endValue in
 		Printf.sprintf "%sfor %s in range(%s, %s - 1, -1):\n%s" 
-			indent_str ident.id start_val_int end_val_int (interpret stmt (indent_level + 1))
+			indentString ident.id startValueInt endValueInt (interpret stmt (indentLevel + 1))
+
 
 	(* IF STATEMENTS*)
-	| Sifnest(cond, body, body2) ->
-		let cond_str = stringOfExpr cond in
-		let body_str = interpret body (indent_level + 1) in
-		let body2_str = interpret body2 (indent_level) in
+	| Sifnest(condition, body, body2) ->
+		let conditionString = stringOfExpr condition in
+		let bodyString = interpret body (indentLevel + 1) in
+		let body2String = interpret body2 (indentLevel) in
 		Printf.sprintf "%sif %s:\n%s%s" 
-			indent_str cond_str body_str body2_str
+			indentString conditionString bodyString body2String
 	
-	| Sif(cond, body) ->
-		let cond_str = stringOfExpr cond in
-		let body_str = interpret body (indent_level + 1) in
+	| Sif(condition, body) ->
+		let conditionString = stringOfExpr condition in
+		let bodyString = interpret body (indentLevel + 1) in
 		Printf.sprintf "%sif %s:\n%s" 
-			indent_str cond_str body_str 
+			indentString conditionString bodyString 
 		
-
-	| Selseifnest(cond, body1, nextIfStmt) ->
-		let cond_str = stringOfExpr cond in
+	| Selseifnest(condition, body1, nextIfStmt) ->
+		let conditionString = stringOfExpr condition in
 		Printf.sprintf "%selif (%s):\n%s%s" 
-			indent_str cond_str (interpret body1 (indent_level + 1)) (interpret nextIfStmt (indent_level))
-	| Selseif(cond, body) ->
-		let cond_str = stringOfExpr cond in
+			indentString conditionString (interpret body1 (indentLevel + 1)) (interpret nextIfStmt (indentLevel))
+	| Selseif(condition, body) ->
+		let conditionString = stringOfExpr condition in
 		Printf.sprintf "%selif (%s):\n%s" 
-			indent_str cond_str (interpret body (indent_level + 1))
-	
+			indentString conditionString (interpret body (indentLevel + 1))
 	
 	| Selse(body) ->
-		Printf.sprintf "%selse:\n%s" indent_str (interpret body (indent_level + 1))
-
+		Printf.sprintf "%selse:\n%s" indentString (interpret body (indentLevel + 1))
 	| Sendif -> "" 
 	  
 
-
 	(* WHILE LOOPS*)
-	| Swhile (cond, body) ->
-		let cond_str = stringOfExpr cond in
-		Printf.sprintf "%swhile %s:\n%s" indent_str cond_str (interpret body (indent_level + 1))
+	| Swhile (condition, body) ->
+		let conditionString = stringOfExpr condition in
+		Printf.sprintf "%swhile %s:\n%s" indentString conditionString (interpret body (indentLevel + 1))
 
 
 	(* ARRAY *)
 	| SinitArrayList (arrays) ->
-		let arrays_str = stringOfArrays arrays in
-		(* Replace each comma with a comma, newline, and indentation *)
-		let formatted_arrays_str = Str.global_replace (Str.regexp_string "\n") ("\n" ^ indent_str) arrays_str in
-		Printf.sprintf "%s%s\n" indent_str formatted_arrays_str
+		let arraysString = stringOfArrays arrays in
+		let formattedArraysString = Str.global_replace (Str.regexp_string "\n") ("\n" ^ indentString) arraysString in
+		Printf.sprintf "%s%s\n" indentString formattedArraysString
 	
 	| SinitTableList (tables) ->
-		let tables_str = string_of_tables tables in
-		(* Replace each comma with a comma, newline, and indentation *)
-		let formatted_tables_str = Str.global_replace (Str.regexp_string "\n") ("\n" ^ indent_str) tables_str in
-		Printf.sprintf "%s%s\n" indent_str formatted_tables_str
-
+		let tablesString = stringOfTables tables in
+		let formattedTablesString = Str.global_replace (Str.regexp_string "\n") ("\n" ^ indentString) tablesString in
+		Printf.sprintf "%s%s\n" indentString formattedTablesString
 
 	| Slength (expr) ->
-		let expr_str = stringOfExpr expr in
-		Printf.sprintf "%slen(%s)\n" indent_str expr_str
+		let exprString = stringOfExpr expr in
+		Printf.sprintf "%slen(%s)\n" indentString exprString
 
 	| Scolumns (expr) ->
-		let expr_str = stringOfExpr expr in
-		Printf.sprintf "%slen(%s[0])\n" indent_str expr_str
+		let exprString = stringOfExpr expr in
+		Printf.sprintf "%slen(%s[0])\n" indentString exprString
 
 	| Srows (expr) ->
-		let expr_str = stringOfExpr expr in
-		Printf.sprintf "%slen(%s)\n" indent_str expr_str
+		let exprString = stringOfExpr expr in
+		Printf.sprintf "%slen(%s)\n" indentString exprString
 
 	| Sswap (expr1, expr2) ->
-		let expr1Str = stringOfExpr expr1 in
-		let expr2Str = stringOfExpr expr2 in
-		Printf.sprintf "%s%s, %s = %s, %s\n" indent_str expr1Str expr2Str expr2Str expr1Str
+		let expr1String = stringOfExpr expr1 in
+		let expr2String = stringOfExpr expr2 in
+		Printf.sprintf "%s%s, %s = %s, %s\n" indentString expr1String expr2String expr2String expr1String
 		
 	| Sexchange (expr1, expr2) ->
-		let expr1Str = stringOfExpr expr1 in
-		let expr2Str = stringOfExpr expr2 in
-		Printf.sprintf "%s%s, %s = %s, %s\n" indent_str expr1Str expr2Str expr2Str expr1Str
+		let expr1String = stringOfExpr expr1 in
+		let expr2String = stringOfExpr expr2 in
+		Printf.sprintf "%s%s, %s = %s, %s\n" indentString expr1String expr2String expr2String expr1String
 
 	| Sinitmatrix (id, size1, size2) ->
-		let size1_str = stringOfExpr size1 in
-		let size2_str = stringOfExpr size2 in
-		Printf.sprintf "%s%s = Array([Array([0 for _ in range(%s)]) for _ in range(%s)])\n" indent_str id.id size2_str size1_str
+		let size1String = stringOfExpr size1 in
+		let size2String = stringOfExpr size2 in
+		Printf.sprintf "%s%s = Array([Array([0 for _ in range(%s)]) for _ in range(%s)])\n" indentString id.id size2String size1String
 
 	| Smatrix (id, size1, size2) ->
-		let size1_str = stringOfExpr size1 in
-		let size2_str = stringOfExpr size2 in
-		Printf.sprintf "%s%s[%s][%s]\n" indent_str id.id size2_str size1_str
+		let size1String = stringOfExpr size1 in
+		let size2String = stringOfExpr size2 in
+		Printf.sprintf "%s%s[%s][%s]\n" indentString id.id size2String size1String
 
 	| Sassign (expr1, expr2) ->
-		let expr1Str = stringOfExpr expr1 in
-		let expr2Str = stringOfExpr expr2 in
-		Printf.sprintf "%s%s = %s\n" indent_str expr1Str expr2Str
+		let expr1String = stringOfExpr expr1 in
+		let expr2String = stringOfExpr expr2 in
+		Printf.sprintf "%s%s = %s\n" indentString expr1String expr2String
 
 	| Sreturn (expr) ->
-		let expr_str = stringOfExprParams expr in
-		let formatted_expr_str = Str.global_replace (Str.regexp_string "and") (", ") expr_str in
-		Printf.sprintf "%sreturn %s\n" indent_str formatted_expr_str
+		let exprString = stringOfExprParams expr in
+		let formattedExprString = Str.global_replace (Str.regexp_string "and") (", ") exprString in
+		Printf.sprintf "%sreturn %s\n" indentString formattedExprString
 			
 	| Sprint(expr) ->
-		let expr_str = print_multiple_values expr in
-		Printf.sprintf "%s%s\n" indent_str expr_str
+		let exprString = printMultipleValues expr in
+		Printf.sprintf "%s%s\n" indentString exprString
 
 	| Serror(expr) ->
-		let expr_str = stringOfExpr expr in
-		Printf.sprintf "%sraise Exception('%s')\n" indent_str expr_str
+		let exprString = stringOfExpr expr in
+		Printf.sprintf "%sraise Exception('%s')\n" indentString exprString
 
 	(* Sort *)
 	| SsortA(expr, expr2) ->
-		let expr_str = stringOfExpr expr in
-		let expr2Str = stringOfExpr expr2 in
-		Printf.sprintf "%s%s.sort(reverse=False, key=%s)\n" indent_str expr_str expr2Str
+		let exprString = stringOfExpr expr in
+		let expr2String = stringOfExpr expr2 in
+		Printf.sprintf "%s%s.sort(reverse=False, key=%s)\n" indentString exprString expr2String
 	| SsortD(expr, expr2) ->
-		let expr_str = stringOfExpr expr in
-		let expr2Str = stringOfExpr expr2 in
-		Printf.sprintf "%s%s.sort(reverse=True, key=%s)\n" indent_str expr_str expr2Str
-
-	(* Get *)
-
-	(* Insert *)
-	(*insert x into H's root list
-    insert A[i] into H's root list
-    insert all-items-in T.table into new-table
-    insert x into T.table
-
-    insert expr into expr
-    insert all-items-in expr into expr
-    insert expr into expr root list *)
+		let exprString = stringOfExpr expr in
+		let expr2String = stringOfExpr expr2 in
+		Printf.sprintf "%s%s.sort(reverse=True, key=%s)\n" indentString exprString expr2String
 
 	| Sinsert(expr, expr2) ->
 		let insertValue = stringOfExpr expr in
-		let expr_list = stringOfExpr expr2 in
-		Printf.sprintf "%s%s.insert(0, %s)\n" indent_str expr_list insertValue
+		let exprList = stringOfExpr expr2 in
+		Printf.sprintf "%s%s.insert(0, %s)\n" indentString exprList insertValue
 		
 	| SinsertRoot(expr, expr2) ->
 		let insertValue = stringOfExpr expr in
-		let expr_list = stringOfExpr expr2 in
-		let loop_code = Printf.sprintf "%sfor i in range(0, len(%s)):\n" indent_str expr_list in
-		let insert_code = Printf.sprintf "%s%s.insert(0, %s)\n" (indent_str ^ (String.make (indent_level * 4) ' ')) expr_list insertValue in
+		let exprList = stringOfExpr expr2 in
+		let loop_code = Printf.sprintf "%sfor i in range(0, len(%s)):\n" indentString exprList in
+		let insert_code = Printf.sprintf "%s%s.insert(0, %s)\n" (indentString ^ (String.make (indentLevel * 4) ' ')) exprList insertValue in
 		loop_code ^ insert_code
 	
-		
 	| SinsertAll(expr, expr2) ->
 		let insertValue = stringOfExpr expr in
-		let expr_list = stringOfExpr expr2 in
-		Printf.sprintf "%s%s.extend(%s)\n" indent_str expr_list insertValue
-
-	
+		let exprList = stringOfExpr expr2 in
+		Printf.sprintf "%s%s.extend(%s)\n" indentString exprList insertValue
 
 	| Sblock(stmts) ->
-		let stmt_strs = List.map (fun s -> interpret s indent_level) stmts in
-		String.concat "" stmt_strs
-	(*| _ -> error "Unrecognized AST node"*)
+		let stmtStrings = List.map (fun s -> interpret s indentLevel) stmts in
+		String.concat "" stmtStrings
 	

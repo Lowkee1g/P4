@@ -157,7 +157,7 @@ expr:
     match i with
     | Cint n -> Ecst (Cint (-n))
     | _ -> failwith "Expected an integer constant" } */
-  | LBRACE expr_list RBRACE 
+  | LBRACE exprList RBRACE 
   { Eset($2) }
 
   | LOW LBRACKET expr RBRACKET
@@ -191,7 +191,7 @@ expr:
   | RANDOM LPAREN expr COMMA expr RPAREN
   { Erandom($3, $5) }
 
-  | ident LPAREN l = expr_list RPAREN
+  | ident LPAREN l = exprList RPAREN
   { EfunctionCall($1, l) }
 
 
@@ -233,7 +233,7 @@ simple_stmt:
 	  Sinitmatrix($2, $4, $6)
 	}
 
-  | PRINT e = expr_list { 
+  | PRINT e = exprList { 
     conditionalPrint "Sprint -> ";
     Sprint(e) 
   }
@@ -255,12 +255,12 @@ simple_stmt:
     Sassign($1, $3);  (* Capture the result of Sassign *)
   }
 
-  | RETURN expr_list {
+  | RETURN exprList {
     conditionalPrint "Sreturn -> ";
 	  Sreturn($2)
 	}
 
-  | RETURN LPAREN expr_list RPAREN {
+  | RETURN LPAREN exprList RPAREN {
     conditionalPrint "Sreturn -> ";
     Sreturn($3)
   }
@@ -297,10 +297,10 @@ stmt:
   
 
   // FUNCTION DEFINITIONS
-  | id = ident LPAREN l = expr_list RPAREN NEWLINE {
+  | id = ident LPAREN l = exprList RPAREN NEWLINE {
     SfuncCall (id, l)
   }
-  | id = ident LPAREN l = expr_list RPAREN s = suite {
+  | id = ident LPAREN l = exprList RPAREN s = suite {
     Sfunc (id, l, s)
   }
 
@@ -352,8 +352,8 @@ array_list:
   | e = init_array COMMA es = array_list { e :: es }
 ;
 
-expr_list:
+exprList:
   | id = expr { [id] }  (* Base case: a single identifier *)
-  | id = expr COMMA ids = expr_list { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
-  | id = expr ids = expr_list { id :: ids }  (* Recursive case: an identifier followed by more identifiers *)
+  | id = expr COMMA ids = exprList { id :: ids }  (* Recursive case: an identifier followed by a comma and more identifiers *)
+  | id = expr ids = exprList { id :: ids }  (* Recursive case: an identifier followed by more identifiers *)
 ;
