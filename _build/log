@@ -19,16 +19,9 @@
 #        }
 #  ; instrument_with = []
 #  }
-$ /Users/aau/.opam/default/bin/ocamlc.opt -config > /var/folders/wh/dhw73np90ml8tntw_82wnzb40000gp/T/dune_b2f594_output
-$ (cd _build/default && /Users/aau/.opam/default/bin/menhir parser.mly --base parser --infer-write-query parser__mock.ml.mock)
-$ (cd _build/default && /Users/aau/.opam/default/bin/ocamldep.opt -modules -impl parser__mock.ml.mock) > _build/default/.main.eobjs/parser__mock.impl.d
-$ (cd _build/.sandbox/228fd72f1f24ca30d3a7256966d518cf/default && /Users/aau/.opam/default/bin/ocamlc.opt -g -I .main.eobjs/byte -I /Users/aau/.opam/default/lib/ocaml/str -short-paths -i -impl parser__mock.ml.mock) > _build/.sandbox/228fd72f1f24ca30d3a7256966d518cf/default/parser__mock.mli.inferred
-$ (cd _build/default && /Users/aau/.opam/default/bin/menhir parser.mly --base parser --infer-read-reply parser__mock.mli.inferred)
-> Warning: 9 states have shift/reduce conflicts.
-> Warning: 147 shift/reduce conflicts were arbitrarily resolved.
-$ (cd _build/default && /Users/aau/.opam/default/bin/ocamldep.opt -modules -impl parser.ml) > _build/default/.main.eobjs/parser.impl.d
+$ /Users/aau/.opam/default/bin/ocamlc.opt -config > /var/folders/wh/dhw73np90ml8tntw_82wnzb40000gp/T/dune_3fbd24_output
+$ (cd _build/default && /Users/aau/.opam/default/bin/ocamldep.opt -modules -impl interp.ml) > _build/default/.main.eobjs/interp.impl.d
 $ (cd _build/default && /Users/aau/.opam/default/bin/ocamlc.opt -g -bin-annot -I .main.eobjs/byte -I /Users/aau/.opam/default/lib/ocaml/str -no-alias-deps -opaque -o .main.eobjs/byte/interp.cmo -c -impl interp.ml)
 $ (cd _build/default && /Users/aau/.opam/default/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /Users/aau/.opam/default/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/interp.cmx -c -impl interp.ml)
-$ (cd _build/default && /Users/aau/.opam/default/bin/ocamlopt.opt -g -I .main.eobjs/byte -I .main.eobjs/native -I /Users/aau/.opam/default/lib/ocaml/str -intf-suffix .ml -no-alias-deps -opaque -o .main.eobjs/native/parser.cmx -c -impl parser.ml)
 $ (cd _build/default && /Users/aau/.opam/default/bin/ocamlopt.opt -g -o main.exe /Users/aau/.opam/default/lib/ocaml/str/str.cmxa .main.eobjs/native/ast.cmx .main.eobjs/native/interp.cmx .main.eobjs/native/parser.cmx .main.eobjs/native/lexer.cmx .main.eobjs/native/main.cmx)
 # Promoting "_build/default/main.exe" to "main.exe"

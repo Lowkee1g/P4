@@ -251,9 +251,9 @@ let rec interpret ast indentLevel : string =
 	| SinsertRoot(expr, expr2) ->
 		let insertValue = stringOfExpr expr in
 		let exprList = stringOfExpr expr2 in
-		let loop_code = Printf.sprintf "%sfor i in range(0, len(%s)):\n" indentString exprList in
-		let insert_code = Printf.sprintf "%s%s.insert(0, %s)\n" (indentString ^ (String.make (indentLevel * 4) ' ')) exprList insertValue in
-		loop_code ^ insert_code
+		let loopCode = Printf.sprintf "%sfor i in range(0, len(%s)):\n" indentString exprList in
+		let insertCode = Printf.sprintf "%s%s.insert(0, %s)\n" (indentString ^ (String.make (indentLevel * 4) ' ')) exprList insertValue in
+		loopCode ^ insertCode
 	
 	| SinsertAll(expr, expr2) ->
 		let insertValue = stringOfExpr expr in
