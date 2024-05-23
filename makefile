@@ -31,5 +31,17 @@ run_tests:
 	done
 	@echo "Cormen Pseudocode successfully interperet."
 
+run_debug:
+	@echo "Creating python files..."
+	@for file in $(TEST_FILES); do \
+		$(TEST_COMMAND) $$file; \
+		if [ $$? -ne 0 ]; then \
+			echo "Error running test $$file"; \
+			exit 1; \
+		fi; \
+	done
+	@echo "Cormen Pseudocode successfully interperet."
+
 
 test: build run_tests python
+debug: build run_debug
