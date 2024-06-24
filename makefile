@@ -40,7 +40,7 @@ run_debug:
 			exit 1; \
 		fi; \
 	done
-	@echo "Cormen Pseudocode successfully interperet."
+	@echo "Cormen Pseudocode successfully compiled."
 
 
 test: build run_tests python
