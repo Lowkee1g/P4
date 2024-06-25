@@ -29,7 +29,7 @@ run_tests:
 			exit 1; \
 		fi; \
 	done
-	@echo "Cormen Pseudocode successfully interperet."
+	@echo "Cormen Pseudocode successfully compiled."
 
 run_debug:
 	@echo "Creating python files..."
