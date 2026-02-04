@@ -1,0 +1,33 @@
+# Build outputs
+_build/
+*.exe
+*.bc
+*.o
+*.cmi
+*.cmo
+*.cmx
+*.cma
+*.cmxa
+*.a
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Git
+.git/
+.gitignore
+
+# IDE and editor files
+.vscode/
+.devcontainer/
+*.swp
+*.swo
+*~
+
+# Documentation
+README.md
+
+# Test results
+*_result.py

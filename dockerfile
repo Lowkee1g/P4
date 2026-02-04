@@ -1,17 +1,38 @@
-# Use the official OCaml image
-FROM ocaml/opam:ubuntu
+# Use a specific OCaml version with preinstalled dune for faster builds
+FROM ocaml/opam:debian-ocaml-4.14
 
-# Set the working directory inside the container
-WORKDIR /app
+# Switch to root to install system packages
+USER root
 
-# Copy your project into the container
-COPY . .
+# Install system dependencies (minimal, fast)
+RUN apt-get update && apt-get install -y \
+    sudo \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies (if any)
- RUN opam install . --deps-only
+# Switch back to opam user
+USER opam
 
-# Build your project (update this command based on your build system)
-# RUN eval $(opam env) && dune build
+# Set the working directory
+WORKDIR /workspaces/P4
 
-# Command to run your application
-# CMD [ "your_application_command_here" ]
+# Install only what we need
+RUN opam install -y dune menhir
+
+# Copy only dependency files first for better caching
+COPY --chown=opam:opam dune-project dune ./
+COPY --chown=opam:opam test.opam ./
+COPY --chown=opam:opam bin/dune ./bin/
+COPY --chown=opam:opam lib/dune ./lib/
+COPY --chown=opam:opam test/dune ./test/
+
+# Now copy the rest of the source code
+COPY --chown=opam:opam . .
+
+# Fix line endings for text files (convert Windows CRLF to Unix LF)
+RUN find . -name "*.txt" -type f -exec sed -i 's/\r$//' {} \; 2>/dev/null || true
+
+# Build the project
+RUN eval $(opam env) && dune build
+
+# Default command
+CMD ["/bin/bash"]
